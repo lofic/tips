@@ -1,0 +1,658 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<meta name="generator" content="AsciiDoc 10.2.1" />
+<title>Linux - performance audit</title>
+<style type="text/css">
+/* ---------------------------------------------------------------------------
+ *  Pryz theme based on Bare Theme (http://tomayko.com/src/adoc-themes/)
+ *  https://github.com/Pryz/asciidoc
+ *-------------------------------------------------------------------------- */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+
+blockquote, q {
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+a:focus {
+  outline: none;
+}
+
+body {
+	font-family:verdana,helvetica,arial,sans-serif;
+	margin:40px auto;
+	max-width:53.8461538462em;
+    box-sizing: border-box;
+    color:#373737;
+    background: #f2f2f2;
+    font-size: 16px;
+    font-family: 'Myriad Pro', Calibri, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+
+em {
+	font-style:italic;
+}
+
+strong {
+	font-weight:bold;
+	color:#000;
+}
+
+tt {
+	font-family: monospace, consolas, 'lucida console', 'bitstream vera sans mono',
+	           'courier new';
+	color:#000;
+}
+
+p, ul, ol, dl {
+	margin:10px 0;
+    /*font-size:15px;*/
+    font-size:13px;
+}
+
+dl {
+	margin-left:40px
+}
+
+dt {
+	font-weight:normal;
+	color:#000;
+}
+
+h1, h2, h3, h4, h5 {
+    margin: 10px 0;
+    font-weight: 700;
+    color:#222222;
+    font-family: 'Lucida Grande', 'Calibri', Helvetica, Arial, sans-serif;
+    letter-spacing: -1px;
+}
+
+h1 {
+	font-size:30px;
+	line-height:1.428;
+	margin:20px 0;
+}
+
+h2 {
+	font-size:23px;
+	line-height:1.36363636;
+	margin:20px 0;
+}
+
+h2 + .sectionbody {}
+
+h3 {
+	font-size:18px;
+	line-height:1.1;
+	margin:30px 0 10px 0;
+}
+
+h4 {
+	font-size:13px;
+	font-weight:bold;
+	line-height:1.538;
+}
+
+h5 {
+	font-size:13px;
+	font-style:italic;
+	line-height:1.538;
+}
+
+pre {
+	font-size:larger;
+}
+
+#header {
+	text-align:center;
+	margin-bottom:30px;
+}
+
+#header h1 { margin-bottom:0 }
+
+
+.title, .sidebar-title {
+	font-weight:normal;
+	color:#000;
+	margin-bottom:5px;
+	margin-top:10px;
+}
+
+.admonitionblock .title {
+	font-weight:bold;
+}
+
+.admonitionblock {
+	margin:30px 0px;
+	color:#555;
+}
+
+.admonitionblock td.icon {
+	width:30px;
+	padding-right:20px;
+	padding-left:20px;
+	text-transform:uppercase;
+	font-weight:bold;
+	color:#888;
+}
+
+.listingblock {
+    margin-bottom:30px;
+}
+
+.listingblock .content {
+	background:#eee;
+    width: 100%;
+    box-shadow: 0 0 10px rgba(0,0,0,.1);
+    overflow: auto;
+}
+
+.listingblock .content pre {
+    color: #222;
+    background-color: #fff;
+    font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
+    font-size: 14px;
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    padding: 10px;
+}
+
+.literalblock .content {
+	margin-left:40px;
+}
+
+.verseblock .content {
+	white-space:pre
+}
+
+.sidebarblock .sidebar-content {
+	border:1px solid silver;
+	background:#FFFFEE;
+	padding:0 10px;
+	color:#222;
+	font-size:smaller;
+	line-height:1.5;
+}
+
+.sidebar-title {
+	margin:10px 0;
+	font-weight:bold;
+	color:#442;
+}
+
+.quoteblock-content {
+	font-style:italic;
+	color:#444;
+	margin-left:40px;
+}
+
+.quoteblock-content .attribution {
+	font-style:normal;
+	text-align:right;
+	color:#000;
+}
+
+.exampleblock-content *:first-child { margin-top:0 }
+.exampleblock-content {
+	border-left:2px solid silver;
+	padding-left:8px;
+}
+
+#footer {
+	font-size:11px;
+	margin-top:40px;
+	border-top:1px solid silver;
+	color:#555;
+}
+
+#author {
+	color:#000;
+	text-transform:uppercase
+}
+
+a:link, a:visited {
+    text-decoration:none;
+    color:#1C1C1C;
+}
+
+a:hover {
+    text-decoration:underline;
+    text-decoration-color:red;
+}
+
+#search {
+    margin-right:10px;
+}
+
+.sort {
+    margin-left:15px;
+    font-size:13px;
+}
+
+.sort:hover {
+    cursor:pointer;
+}
+
+hidden {
+    display:none;
+}
+
+#toc {
+    text-align:left;
+    margin-bottom:30px;
+}
+
+/* vim: set ft=css ts=4 sw=4 noexpandtab: */
+
+
+</style>
+<script type="text/javascript">
+/*<![CDATA[*/
+var asciidoc = {  // Namespace.
+
+/////////////////////////////////////////////////////////////////////
+// Table Of Contents generator
+/////////////////////////////////////////////////////////////////////
+
+/* Author: Mihai Bazon, September 2002
+ * http://students.infoiasi.ro/~mishoo
+ *
+ * Table Of Content generator
+ * Version: 0.4
+ *
+ * Feel free to use this script under the terms of the GNU General Public
+ * License, as long as you do not remove or alter this notice.
+ */
+
+ /* modified by Troy D. Hanson, September 2006. License: GPL */
+ /* modified by Stuart Rackham, 2006, 2009. License: GPL */
+
+// toclevels = 1..4.
+toc: function (toclevels) {
+
+  function getText(el) {
+    var text = "";
+    for (var i = el.firstChild; i != null; i = i.nextSibling) {
+      if (i.nodeType == 3 /* Node.TEXT_NODE */) // IE doesn't speak constants.
+        text += i.data;
+      else if (i.firstChild != null)
+        text += getText(i);
+    }
+    return text;
+  }
+
+  function TocEntry(el, text, toclevel) {
+    this.element = el;
+    this.text = text;
+    this.toclevel = toclevel;
+  }
+
+  function tocEntries(el, toclevels) {
+    var result = new Array;
+    var re = new RegExp('[hH]([2-'+(toclevels+1)+'])');
+    // Function that scans the DOM tree for header elements (the DOM2
+    // nodeIterator API would be a better technique but not supported by all
+    // browsers).
+    var iterate = function (el) {
+      for (var i = el.firstChild; i != null; i = i.nextSibling) {
+        if (i.nodeType == 1 /* Node.ELEMENT_NODE */) {
+          var mo = re.exec(i.tagName);
+          if (mo && (i.getAttribute("class") || i.getAttribute("className")) != "float") {
+            result[result.length] = new TocEntry(i, getText(i), mo[1]-1);
+          }
+          iterate(i);
+        }
+      }
+    }
+    iterate(el);
+    return result;
+  }
+
+  var toc = document.getElementById("toc");
+  if (!toc) {
+    return;
+  }
+
+  // Delete existing TOC entries in case we're reloading the TOC.
+  var tocEntriesToRemove = [];
+  var i;
+  for (i = 0; i < toc.childNodes.length; i++) {
+    var entry = toc.childNodes[i];
+    if (entry.nodeName == 'div'
+     && entry.getAttribute("class")
+     && entry.getAttribute("class").match(/^toclevel/))
+      tocEntriesToRemove.push(entry);
+  }
+  for (i = 0; i < tocEntriesToRemove.length; i++) {
+    toc.removeChild(tocEntriesToRemove[i]);
+  }
+
+  // Rebuild TOC entries.
+  var entries = tocEntries(document.getElementById("content"), toclevels);
+  for (var i = 0; i < entries.length; ++i) {
+    var entry = entries[i];
+    if (entry.element.id == "")
+      entry.element.id = "_toc_" + i;
+    var a = document.createElement("a");
+    a.href = "#" + entry.element.id;
+    a.appendChild(document.createTextNode(entry.text));
+    var div = document.createElement("div");
+    div.appendChild(a);
+    div.className = "toclevel" + entry.toclevel;
+    toc.appendChild(div);
+  }
+  if (entries.length == 0)
+    toc.parentNode.removeChild(toc);
+},
+
+
+/////////////////////////////////////////////////////////////////////
+// Footnotes generator
+/////////////////////////////////////////////////////////////////////
+
+/* Based on footnote generation code from:
+ * http://www.brandspankingnew.net/archive/2005/07/format_footnote.html
+ */
+
+footnotes: function () {
+  // Delete existing footnote entries in case we're reloading the footnodes.
+  var i;
+  var noteholder = document.getElementById("footnotes");
+  if (!noteholder) {
+    return;
+  }
+  var entriesToRemove = [];
+  for (i = 0; i < noteholder.childNodes.length; i++) {
+    var entry = noteholder.childNodes[i];
+    if (entry.nodeName == 'div' && entry.getAttribute("class") == "footnote")
+      entriesToRemove.push(entry);
+  }
+  for (i = 0; i < entriesToRemove.length; i++) {
+    noteholder.removeChild(entriesToRemove[i]);
+  }
+
+  // Rebuild footnote entries.
+  var cont = document.getElementById("content");
+  var spans = cont.getElementsByTagName("span");
+  var refs = {};
+  var n = 0;
+  for (i=0; i<spans.length; i++) {
+    if (spans[i].className == "footnote") {
+      n++;
+      var note = spans[i].getAttribute("data-note");
+      if (!note) {
+        // Use [\s\S] in place of . so multi-line matches work.
+        // Because JavaScript has no s (dotall) regex flag.
+        note = spans[i].innerHTML.match(/\s*\[([\s\S]*)]\s*/)[1];
+        spans[i].innerHTML =
+          "[<a id='_footnoteref_" + n + "' href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+        spans[i].setAttribute("data-note", note);
+      }
+      noteholder.innerHTML +=
+        "<div class='footnote' id='_footnote_" + n + "'>" +
+        "<a href='#_footnoteref_" + n + "' title='Return to text'>" +
+        n + "</a>. " + note + "</div>";
+      var id =spans[i].getAttribute("id");
+      if (id != null) refs["#"+id] = n;
+    }
+  }
+  if (n == 0)
+    noteholder.parentNode.removeChild(noteholder);
+  else {
+    // Process footnoterefs.
+    for (i=0; i<spans.length; i++) {
+      if (spans[i].className == "footnoteref") {
+        var href = spans[i].getElementsByTagName("a")[0].getAttribute("href");
+        href = href.match(/#.*/)[0];  // Because IE return full URL.
+        n = refs[href];
+        spans[i].innerHTML =
+          "[<a href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+      }
+    }
+  }
+},
+
+install: function(toclevels) {
+  var timerId;
+
+  function reinstall() {
+    asciidoc.footnotes();
+    if (toclevels) {
+      asciidoc.toc(toclevels);
+    }
+  }
+
+  function reinstallAndRemoveTimer() {
+    clearInterval(timerId);
+    reinstall();
+  }
+
+  timerId = setInterval(reinstall, 500);
+  if (document.addEventListener)
+    document.addEventListener("DOMContentLoaded", reinstallAndRemoveTimer, false);
+  else
+    window.onload = reinstallAndRemoveTimer;
+}
+
+}
+asciidoc.install();
+/*]]>*/
+</script>
+</head>
+<body class="article">
+<div id="header">
+<h1>Linux - performance audit</h1>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph"><p>Voici les PRINCIPAUX compteurs que j&#8217;utilise:</p></div>
+<div class="paragraph"><p>vmstat:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>      r (run queue length, number of processes waiting for run time)
+      b (number of process blocked and waiting on IO)
+      si (Amount of memory swapped in from disk/s)
+      so (Amount of memory swapped to disk/s)
+      cs (cswch/s, number of context switches per second)
+      us (% user CPU utilization)
+      sy (% kernel and interrupts CPU utilization)
+      wa (% CPU waiting on IO)
+      id (% CPU idle)</code></pre>
+</div></div>
+<div class="paragraph"><p>iostat -x:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>      r/s (read requests/s)
+      w/s (write requests/s)
+      rkB/s (number of kilobytes read from the device per second)
+      wkB/s (number of kilobytes written to the device per second)
+      await (average wait time for I/O requests)
+      svctm (average service time for I/O requests)
+      %util (device saturation)</code></pre>
+</div></div>
+<div class="paragraph"><p>sar:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>      -n DEV -&gt; Network
+      rxbyt/s (bytes received/s)
+      txbyt/s (bytes transmitted/s)</code></pre>
+</div></div>
+<div class="paragraph"><p>Généralement je graphe ça dans graphite (<a href="http://graphite.wikidot.com/screen-shots">http://graphite.wikidot.com/screen-shots</a>)</p></div>
+<div class="paragraph"><p>On commence par l&#8217;audit mémoire. En effet s&#8217;il y a un problème mémoire ça
+se répercute sur les disques (stress) et sur les CPU (IOwait), donc il faut
+regarder si l&#8217;origine est un problème mémoire.</p></div>
+<div class="paragraph"><p>Compteurs si et so de vmstat (en ko/s). A partir de 3 chiffres de façon
+soutenue, c&#8217;est mauvais.</p></div>
+<div class="paragraph"><p>Quelques centaines de ko/s ça parait peu comme bande passante mais le problème
+du swap ce n&#8217;est pas la bande passante, c&#8217;est le stress I/O. Il se produit de
+multiples petits I/O en swap in et out qui peuvent effondrer un disque.
+A corréler avec %util de iostat -x</p></div>
+<div class="paragraph"><p>Si il y a du si et so : comparer avec les compteurs bi et bo, généralement on
+voit que l&#8217;activité disque est phagocytée par le swap.</p></div>
+<div class="paragraph"><p>Puis je regarde l&#8217;activité CPU, avec vmstat.</p></div>
+<div class="paragraph"><p>Colonne r (runq). Nombre de processus en attente de traitement.
+Au delà de 2 fois le nombre de coeurs dispo, l&#8217;activité est importante.
+Par exemple, runq de 5 soutenue sur une VM avec 2 vCPU</p></div>
+<div class="paragraph"><p>Comparer aussi avec le load average (commande = uptime)</p></div>
+<div class="paragraph"><p>Regarder aussi si des processus sont bloqués (colonne b) et corréler
+éventuellement avec un stress disque ou réseau (abordé ci-dessous)</p></div>
+<div class="paragraph"><p>Colonne cs : nombre de changements de contextes par secondes</p></div>
+<div class="paragraph"><p>Sur des processeurs modernes, au delà de 50000 c&#8217;est un symptôme de multiples
+tâches (threads, processus, parallélisme de traitements&#8230;.).
+Et au delà de 100 000 on peut suspecter un stress.</p></div>
+<div class="paragraph"><p>En cas de contention CPU :</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+forte runq et faibles cs : les traitements se font en série donc il faut
+donner plus de puissance ex : résa CPU et shares en high pour la VM sur vSphere
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>ex : processeurs à plus haute fréquence sur un serveur physsique</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+forte runq et forts cs : augmenter le nombre de coeurs, activer
+l&#8217;hyperthreading
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Attention sur l&#8217;augmentation du nombre de vCPU sur vSphere, ça peut être
+contre-productif s&#8217;il y a contention sur l&#8217;accès aux CPU physiques de
+l&#8217;hyperviseur.</p></div>
+<div class="quoteblock">
+<div class="content">
+<div class="paragraph"><p>VMware’s scheduler requires that all the vCPU’s on a VM run concurrently
+(even if the Guest OS is trying to execute a single thread).</p></div>
+<div class="paragraph"><p>The 4 vCPU’s on a VM have to wait until all logical pCPU’s on the box are idle
+(including the one that runs ESX itself) before it can run.</p></div>
+<div class="paragraph"><p>If ESX can’t accomplish that (we are experiencing resource contention) it
+starts prioritizing workloads according to what it can best run. It is much
+easier to schedule the smaller VM’s, so it tends to run those on pCPU more
+frequently</p></div>
+</div>
+<div class="attribution">
+</div></div>
+<div class="paragraph"><p>Donc il faut tester et vérifier que le CPU ready (métrique dans vSphere)
+n&#8217;est pas élevé sur la VM après ajout des vCPU.</p></div>
+<div class="paragraph"><p>Colonne wa de vmstat : c&#8217;est déjà un très bon indicateur de stress I/O (disque
+ou réseau). C&#8217;est le % de temps CPU perdu à attendre des remontées
+d&#8217;information (généralement disques ou réseau)</p></div>
+<div class="paragraph"><p>Audit réseau : regarder</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+sar -n DEV
+</p>
+</li>
+<li>
+<p>
+le nombre d&#8217;interruptions CPU (compteur <em>in</em> sur vmstat)
+</p>
+</li>
+<li>
+<p>
+le pourcentage de CPU système (compteur <em>sy</em> sur vmstat)
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Forts I/O disques ou réseau = fort %CPU système et nombreuses interruptions.</p></div>
+<div class="paragraph"><p>Audit disques : regarder</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+iostat -x
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>%util : élevé (80% ou plus), c&#8217;est un symptôme de saturation disque</p></div>
+<div class="paragraph"><p>r/s, w/s :  IO en lecture et écriture</p></div>
+<div class="paragraph"><p>Attention, ce sont les I/O DEMANDES par le kernel.</p></div>
+<div class="paragraph"><p>S&#8217;ils sont servis correctement, le temps d&#8217;IO est faible (compteur await =
+temps d&#8217;attente dans la file I/O + temps de service = svctm) et le %util est
+faible</p></div>
+<div class="paragraph"><p>S&#8217;il y a goulet, await et %util sont élevés.</p></div>
+<div class="paragraph"><p>Pour donner un ordre de grandeur, sur un besoin courant on souhaite généralement
+await &lt; 20ms et pour une base de donnée await &lt; 4 ou 2ms</p></div>
+<div class="paragraph"><p>L&#8217;intérêt d&#8217;avoir les I/O demandés est que l&#8217;on peut tailler le sous-système
+disque pour répondre à la demande.</p></div>
+<div class="paragraph"><p>En gros, un disque classique SAS ou FC 15 ktpm fournit 150 à 200 IOPS en mode
+I/O aléatoires (et plus pour des I/O séquentiels) avec un temps de service I/O
+correct.</p></div>
+<div class="paragraph"><p>Attention à la pondération RAID ou vRAID.</p></div>
+<div class="paragraph"><p>1 I/O logique = demande du kernel et ce qu&#8217;on voit avec iostat -x</p></div>
+<div class="paragraph"><p>1 IO logique en lecture = 1 IO physique en RAID 1</p></div>
+<div class="paragraph"><p>1 IO logique en écriture = 2 IO physiques en RAID 1</p></div>
+<div class="paragraph"><p>1 IO logique en lecture = 1 IO physique en RAID 5</p></div>
+<div class="paragraph"><p>1 IO logique en écriture = 4 IO physiques en RAID 5</p></div>
+<div class="paragraph"><p>Par exemple, si on voit avec iostat 100 r/s et 100 w/s et que l&#8217;on sait que le
+backend est un RAID 5, il faut 100+4x100 = 500 IO physiques pour soutenir la
+charge. Donc 3 disques SAS ou FC 15 ktpm. Sachant qu&#8217;il y des caches sur les
+contrôleurs et les baies donc qu&#8217;avec les 3 disques on aura que des bonnes
+surprises.</p></div>
+<div class="paragraph"><p>Pour des disques SSD le nombre d&#8217;IOps fournis est considérablement plus
+important.</p></div>
+<div class="paragraph"><p>Compteurs à vérifier cette fois-ci coté vSphere :</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Memory Ballooning
+</p>
+</li>
+<li>
+<p>
+CPU Ready
+</p>
+</li>
+<li>
+<p>
+SCSI Queue Length
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+</div>
+<div id="footnotes"><hr /></div>
+<div id="footer">
+<div id="footer-text">
+</div>
+</div>
+</body>
+</html>
