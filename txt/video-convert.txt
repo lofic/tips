@@ -1,0 +1,10 @@
+video - convert
+===============
+
+-----------------------------------------------------------------------------
+ffmpeg -i input.ext -c:v libx264 -crf 23 output.mp4
+ffmpeg -i in.mov -vcodec h264 -acodec aac -strict -2 out.mp4
+ffmpeg -fflags +genpts -i in.webm -vcodec h264 -acodec aac -r 24 out.mp4
+-----------------------------------------------------------------------------
+
+Additional tags : h264, mp4, webm

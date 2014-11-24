@@ -1,0 +1,132 @@
+git - create a ro and rw repo
+=============================
+
+Tested on RHEL 6.
+
+1° Some settings
+----------------
+
+--------------------------------------------------------------------------------
+projectname='myproject'
+repohost='el6'
+repopath='/var/lib/git'
+--------------------------------------------------------------------------------
+
+2° On the repo
+--------------
+
+--------------------------------------------------------------------------------
+yum -y install git git-daemon httpd
+--------------------------------------------------------------------------------
+
+In /etc/xinetd.d/git
+
+--------------------------------------------------------------------------------
+service git
+{
+  disable         = no
+  socket_type     = stream
+  wait            = no
+  user            = apache
+  server          = /usr/libexec/git-core/git-daemon
+  server_args     = --base-path=/var/lib/git --export-all --user-path=public_git
+                    --syslog --inetd --verbose --enable=receive-pack
+  log_on_failure  += USERID
+}
+--------------------------------------------------------------------------------
+
+Change the daemon user to be 'apache'.
+
+Set `--enable=receive-pack` if you want to be able to push on the repo.
+
+Then :
+
+--------------------------------------------------------------------------------
+/sbin/chkconfig xinetd on
+/sbin/service xinetd restart
+--------------------------------------------------------------------------------
+
+You can restrict the hosts authorized to connect to the git-daemon, for example :
+
+`/etc/hosts.allow`
+
+--------------------------------------------------------------------------------
+git-daemon : 192.168.0.15
+--------------------------------------------------------------------------------
+
+`/etc/hosts.deny`
+
+--------------------------------------------------------------------------------
+git-daemon : ALL
+--------------------------------------------------------------------------------
+
+
+Give an access to the repo for Apache :
+
+--------------------------------------------------------------------------------
+# /etc/httpd/conf.d/git-ro.conf
+
+Alias /git "/var/lib/git/"
+<Directory "/var/lib/git/">
+    Options Indexes FollowSymLinks MultiViews
+    Allow from all
+    Order allow,deny
+ </Directory>
+--------------------------------------------------------------------------------
+
+Without DAV this will be read only.
+
+Then :
+
+--------------------------------------------------------------------------------
+/sbin/chkconfig httpd on
+/sbin/service httpd restart
+--------------------------------------------------------------------------------
+
+Create the repo :
+
+--------------------------------------------------------------------------------
+cd $repopath
+mkdir $projectname
+cd $projectname
+git --bare init
+chown -R apache $repopath/$projectname
+mv hooks/post-update.sample hooks/post-update
+chmod +x hooks/post-update
+touch git-daemon-export-ok
+sudo -u apache git update-server-info
+--------------------------------------------------------------------------------
+
+
+2° On the workstation
+---------------------
+
+Initialize the repo.
+
+--------------------------------------------------------------------------------
+mkdir $projectname
+cd $projectname
+git init
+git remote add origin git://$repohost/$projectname
+echo 'Hello World' > README
+git add README
+git commit -m '1st commit' README
+git push origin master
+--------------------------------------------------------------------------------
+
+3° git 'rw'
+-----------
+
+--------------------------------------------------------------------------------
+git clone git://$repohost/$projectname
+--------------------------------------------------------------------------------
+
+
+4° git 'ro'
+-----------
+
+--------------------------------------------------------------------------------
+git clone http://$repohost/git/$projectname
+--------------------------------------------------------------------------------
+
+

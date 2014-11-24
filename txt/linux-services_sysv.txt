@@ -1,0 +1,26 @@
+linux - system V services
+=========================
+
+Transitional. Mostly deprecated.
+
+* Runlevel configuration : `/etc/inittab` or `/etc/init/rc-sysinit.conf`
+
+* Enable or disable a service (Debian, Ubuntu)
+
+-----------------------------------------------------------------------------
+update-rc.d apache2 enable  2
+update-rc.d apache2 disable 2
+-----------------------------------------------------------------------------
+
+* Start/stop a service
+
+-----------------------------------------------------------------------------
+/etc/init.d/apache2 start
+/etc/init.d/apache2 stop
+-----------------------------------------------------------------------------
+
+* Run some commands at the end of system initialization
+
+-----------------------------------------------------------------------------
+vi /etc/rc.local
+-----------------------------------------------------------------------------

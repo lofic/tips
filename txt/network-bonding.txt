@@ -1,0 +1,94 @@
+network - Linux network bonding or teaming
+==========================================
+
+Install NICs on separate busses
+-------------------------------
+
+For availability.
+
+== New method : teaming for el7
+
+Cf
+https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/Networking_Guide/sec-Comparison_of_Network_Teaming_to_Bonding.html
+
+With nmcli (example) :
+
+-----------------------------------------------------------------------------
+yum -y install at mutt teamd
+systemctl enable atd
+systemctl start atd
+
+cat<<'EOF'>/tmp/teaming.sh
+ifdev1=eno1
+ifdev2=enp2s0
+
+nmcli con del $ifdev1
+nmcli con del $ifdev2
+
+nmcli con add type team con-name team0 ifname team0
+nmcli con add type team-slave con-name team0-port1 ifname $ifdev1 master team0
+nmcli con add type team-slave con-name team0-port2 ifname $ifdev2 master team0
+nmcli connection up team0
+nmcli connection up team0-port1
+nmcli connection up team0-port2
+EOF
+
+chmod +x /tmp/teaming.sh
+
+echo '/tmp/teaming.sh' | at -q a now
+-----------------------------------------------------------------------------
+
+
+== Bonding for el5 and el6
+
+
+=== Configure the module
+
+el5 : in `/etc/modprobe.conf`
+
+el6 : in `/etc/modprobe.d/bond.conf`
+
+--------------------------------------------------------------------------------
+alias bond0 bonding
+--------------------------------------------------------------------------------
+
+=== Configure the interfaces
+
+In `/etc/sysconfig/network-scripts`
+
+==== ifcfg-bond0
+
+
+--------------------------------------------------------------------------------
+DEVICE=bond0
+IPADDR=192.168.0.1
+PREFIX=24
+ONBOOT=yes
+BOOTPROTO=none
+BONDING_OPTS="mode=6 miimon=100 use_carrier=0"
+--------------------------------------------------------------------------------
+
+==== ifcfg-eth0
+
+--------------------------------------------------------------------------------
+DEVICE=eth0
+MASTER=bond0
+SLAVE=yes
+ONBOOT=yes
+BOOTPROTO=none
+--------------------------------------------------------------------------------
+
+==== ifcfg-eth1
+
+--------------------------------------------------------------------------------
+DEVICE=eth1
+MASTER=bond0
+SLAVE=yes
+ONBOOT=yes
+BOOTPROTO=none
+--------------------------------------------------------------------------------
+
+
+== Tuning parameters
+
+Cf bonding.txt (rpm = kernel-doc)

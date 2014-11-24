@@ -1,0 +1,28 @@
+ruby - case statements on the type of a variable
+================================================
+
+[source, ruby]
+--------------------------------------------------------------------------------
+foo = "bar"
+
+case foo
+   when String
+      puts "it's a string"
+   when Symbol
+      puts "its a symbol"
+end
+--------------------------------------------------------------------------------
+
+But beware :
+
+[source, ruby]
+--------------------------------------------------------------------------------
+foo = "bar"
+
+case foo
+  when String
+        puts "trollface"
+  when "bar"
+        puts "expected"
+end
+--------------------------------------------------------------------------------

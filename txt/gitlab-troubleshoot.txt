@@ -1,0 +1,42 @@
+gitlab - troubleshoot
+=====================
+
+ATOW (201410), it's sparsely documented for the omnibus package version (see:
+'Starting a Rails console session' at
+https://gitlab.com/gitlab-org/omnibus-gitlab/blob/master/README.md)
+
+In comparison to
+https://github.com/gitlabhq/gitlab-public-wiki/wiki/Trouble-Shooting-Guide
+for the standard version, not working with omnibus.
+
+Edit : fixed on 28 Oct 2014 - commit 7d561b7
+
+Change admin password :
+
+-----------------------------------------------------------------------------
+gitlab-rails console production
+-----------------------------------------------------------------------------
+
+The console may take several minutes to start up. Be patient. Once you get an
+irb prompt (you must type the same password in both password and
+password_confirmation method or validations will not pass and the password will
+not be updated) :
+
+-----------------------------------------------------------------------------
+user = User.find_by(email: 'admin@local.host')
+# or
+user = User.find_by(name: 'Administrator')
+user.password = 'secret_pass'
+user.password_confirmation = 'secret_pass'
+user.save
+-----------------------------------------------------------------------------
+
+Troubleshooting commands :
+
+-----------------------------------------------------------------------------
+gitlab-rails console production
+gitlab-rake
+gitlab-rake cache:clear
+-----------------------------------------------------------------------------
+
+Additional tag : omnibus

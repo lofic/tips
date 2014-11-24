@@ -1,0 +1,11 @@
+firefox - get rid of Google ads
+===============================
+
+in `res\html.css` (Firefox’s default internal CSS stylesheet), add the line:
+
+--------------------------------------------------------------------------------
+iframe[name="google_ads_frame"] { display: none; }
+--------------------------------------------------------------------------------
+
+
+

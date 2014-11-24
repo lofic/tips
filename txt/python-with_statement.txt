@@ -1,0 +1,61 @@
+python - with statement and blocks
+==================================
+
+The with statement simplifies exception handling by encapsulating common
+preparation and cleanup tasks in so-called context managers.
+
+The with statement is used to wrap the execution of a block with methods defined
+by a context manager.
+
+This allows common try...except...finally usage patterns to be encapsulated for
+convenient reuse.
+
+Example : auto close.
+
+[source, python]
+--------------------------------------------------------------------------------
+import contextlib
+
+with contextlib.closing(open('/tmp/test','w')) as f:
+    f.write("Louis was here\n")
+--------------------------------------------------------------------------------
+
+Or even :
+
+[source, python]
+--------------------------------------------------------------------------------
+with open("/tmp/test") as f:
+   f.write("Louis was here\n")
+--------------------------------------------------------------------------------
+
+In Ruby you can also do this with blocks, `block_given?` and `yield` :
+
+[source, ruby]
+--------------------------------------------------------------------------------
+#!/usr/bin/env ruby
+File.open('/tmp/test','w') { |f| f.write("Louis was here\n") }
+--------------------------------------------------------------------------------
+
+Other example :
+
+[source, python]
+--------------------------------------------------------------------------------
+import contextlib, sys
+
+class NullDevice():
+    def write(self, s): pass
+
+@contextlib.contextmanager # <- decorator for the function
+def nooutput():
+    stdout_ori,stderr_ori=sys.stdout,sys.stderr
+    sys.stdout,sys.stderr=NullDevice(),NullDevice()
+    try:
+        yield # <- the block goes here
+    finally:
+        sys.stdout,sys.stderr=stdout_ori,stderr_ori
+
+with nooutput():
+    print 'Louis was here'
+
+print 'Louis was here too'
+--------------------------------------------------------------------------------

@@ -1,0 +1,33 @@
+Satellite 6 - purge tasks
+=========================
+
+For Satellite 6.2 only !
+
+Cf https://access.redhat.com/solutions/2755731
+
+
+Examples :
+
+-----------------------------------------------------------------------------
+# Purge only the tasks in stopped state
+foreman-rake foreman_tasks:cleanup TASK_SEARCH='label ~ *' AFTER='30d' VERBOSE=true NOOP=true
+foreman-rake foreman_tasks:cleanup TASK_SEARCH='label ~ GenerateApplicability' AFTER='30d' VERBOSE=true NOOP=true
+
+service foreman-tasks stop
+foreman-rake console
+ForemanTasks::Task.where(:label => "Actions::Katello::Host::GenerateApplicability",  :state => "paused").map { |task| task.update_column(:state, "stopped") }
+ForemanTasks::Task.where(:label => "Actions::Katello::Host::UploadPackageProfile", :state => "planning").map { |task| task.update_column(:state, "stopped") }
+exit
+
+katello-service stop
+katello-service start
+-----------------------------------------------------------------------------
+
+DB vacuum :
+
+-----------------------------------------------------------------------------
+katello-service stop
+service postgresql start
+su - postgres -c 'vacuumdb -f -d foreman'
+katello-service start
+-----------------------------------------------------------------------------

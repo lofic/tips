@@ -1,0 +1,126 @@
+python - daemonize
+==================
+
+Method 1 : using the std libs only
+----------------------------------
+
+Using the double fork magic.
+
+[source, python]
+--------------------------------------------------------------------------------
+#!/usr/bin/env python
+# Louis Coilliot
+"""Simple test daemon for training purpose, logging messages to syslog
+ from time to time"""
+MESSAGE = 'Louis was here'
+DAEMONNAME = 'TestDaemon'
+LOGINTERVAL = 60 # in seconds
+PIDFILE = '/tmp/%s' % (DAEMONNAME)
+
+from os import environ, fork, getpid, setsid, umask, dup2
+from sys import stdin, stdout, stderr, exit
+import time
+import logging, logging.handlers
+
+def getmessage():
+    """Try to get the message to log from an environment variable.
+Fall back to a default if the variable is not set."""
+    message = environ.get('MSG')
+    if message is None:
+        message = MESSAGE
+    return message
+
+def initlog():
+    """Create a logging channel to syslog"""
+    log = logging.getLogger(__name__)
+    logging.basicConfig(level = logging.INFO)
+    loghandler = logging.handlers.SysLogHandler('/dev/log',
+                            logging.handlers.SysLogHandler.LOG_LOCAL0)
+    fmt = DAEMONNAME + ' : %(levelname)s %(message)s'
+    loghandler.setFormatter(logging.Formatter(fmt))
+    log.addHandler(loghandler)
+    return log
+
+def daemonize():
+    """Do a very basic UNIX double-fork magic"""
+    if fork():
+        exit(0)
+    umask(0)
+    setsid()
+    if fork():
+        exit(0)
+
+    stdout.flush()
+    stderr.flush()
+    stdi = file('/dev/null', 'r')
+    stdo = file('/dev/null', 'a+')
+    stde = file('/dev/null', 'a+', 0)
+    dup2(stdi.fileno(), stdin.fileno())
+    dup2(stdo.fileno(), stdout.fileno())
+    dup2(stde.fileno(), stderr.fileno())
+
+def savepid():
+    """Save the PID of the daemon for later use (i.e. kill it)"""
+    outfile = open(PIDFILE, 'w')
+    outfile.write('%i' % getpid())
+    outfile.close()
+
+if __name__ == '__main__':
+    daemonize()
+    MSG = getmessage()
+    print MSG
+    LOG = initlog()
+    savepid()
+    while True:
+        LOG.info(MSG)
+        time.sleep(LOGINTERVAL)
+--------------------------------------------------------------------------------
+
+Method 2 : with a third part module
+-----------------------------------
+
+Unsing bda.daemon
+
+[source, python]
+--------------------------------------------------------------------------------
+#!/usr/bin/env python
+"""Basic test of the bda daemon implementation
+See:
+http://pypi.python.org/pypi/bda.daemon/
+Below is an extract of the documentation.
+There are several things to consider:
+* the instance object given to the constructor MUST provide a run method which
+  represents the main routine of the daemon
+* the instance object MUST provide global file descriptors for (and named as):
+    -stdin
+    -stdout
+    -stderr
+* the instance object MUST provide a global (and named as) pidfile.
+"""
+
+from bda import daemon
+import time
+
+class TestService(object):
+    """Test class for bda.daemon"""
+    def __init__(self):
+        self.stdin = '/dev/null'
+        self.stdout = '/dev/null'
+        self.stderr = '/dev/null'
+        self.pidfile = '/tmp/bdadaemon.pid'
+
+    def run(self):
+        """The instance object given to the constructor MUST provide a
+run method which represents the main routine of the daemon"""
+        while True:
+            time.sleep(60)
+
+testservice = TestService()
+try:
+    testdaemon = daemon.Daemon(testservice)
+except NameError:
+    # You probably try to stop a daemon that is not started
+    print('Daemon not running, I suppose.')
+--------------------------------------------------------------------------------
+
+Additional tag : daemon

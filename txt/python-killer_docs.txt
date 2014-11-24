@@ -1,0 +1,108 @@
+python - killer docs
+====================
+
+Official doc
+------------
+
+http://www.python.org/doc/
+
+
+Book - Beginner - Apprendre à programmer en python
+--------------------------------------------------
+
+http://www.inforef.be/swi/download/python_notes.pdf
+
+
+Book - Intermediate - How to Think Like a Computer Scientist: Learning with Python
+----------------------------------------------------------------------------------
+
+http://greenteapress.com/thinkpython/thinkCSpy.pdf
+
+New version :
+
+http://greenteapress.com/thinkpython/
+
+
+Book - Advanced - Dive into python
+----------------------------------
+
+http://www.diveintopython.net/
+
+
+Quick ref
+---------
+
+http://rgruet.free.fr/#QuickRef
+
+
+Style guide
+-----------
+http://www.python.org/dev/peps/pep-0008/
+
+
+Useful modules
+--------------
+
+http://wiki.python.org/moin/UsefulModules
+
+
+Py 2.5 et 2.6 for RHEL 5
+-------------------------
+
+http://www.geekymedia.com/tech-articles/rhel5-centos5-rpms-for-python-2-5-and-2-6/
+
+
+Pydev/eclipse IDE
+-----------------
+
+http://pydev.org/
+
+
+Advanced - Decorators
+---------------------
+
+http://www.artima.com/weblogs/viewpost.jsp?thread=240808
+
+http://www.artima.com/weblogs/viewpost.jsp?thread=240845
+
+http://www.artima.com/weblogs/viewpost.jsp?thread=241209
+
+
+Advanced - Closures
+-------------------
+
+http://ynniv.com/blog/2007/08/closures-in-python.html
+
+
+Advanced - Attributes and methods
+---------------------------------
+
+http://www.cafepy.com/article/python_attributes_and_methods/python_attributes_and_methods.html
+
+
+Advanced - Metaclasses/Metaprogramming
+--------------------------------------
+
+http://en.wikipedia.org/wiki/Metaclass
+
+http://en.wikipedia.org/wiki/Metaprogramming
+
+Advanced - The property builtin
+-------------------------------
+
+http://adam.gomaa.us/blog/2008/aug/11/the-python-property-builtin/
+
+http://stefaanlippens.net/python_property_trick
+
+Advanced - Parallel Python
+--------------------------
+
+http://www.artima.com/weblogs/viewpost.jsp?thread=214303
+
+Advanced - Functional programming
+---------------------------------
+
+http://docs.python.org/dev/howto/functional.html
+
+
+Additional tags : documentation, doc

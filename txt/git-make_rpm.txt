@@ -1,0 +1,20 @@
+= git - make rpm
+
+Build rpm on el6 (example : version 2.0.1)
+
+== Prerequisites
+
+-----------------------------------------------------------------------------
+yum -y install gcc rpm-build zlib-devel openssl-devel autoconf curl-devel \
+       expat-devel gettext xmlto asciidoc perl-ExtUtils-MakeMaker
+-----------------------------------------------------------------------------
+
+== Make rpm
+
+-----------------------------------------------------------------------------
+git clone https://github.com/git/git.git
+cd git
+git checkout v2.0.1
+make rpm
+-----------------------------------------------------------------------------
+

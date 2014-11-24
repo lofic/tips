@@ -1,0 +1,19 @@
+gnome 3 - favorite apps
+=======================
+
+[source, sh]
+-------------------------------------------------------------------------------
+a1='org.gnome.Nautilus.desktop'
+a2='org.gnome.Terminal.desktop'
+a3='terminator.desktop'
+a4='pidgin.desktop'
+a5='google-chrome.desktop'
+a6='chromium.desktop'
+a7='firefox-esr.desktop'
+a8='virt-manager.desktop'
+a9='mikutter.desktop'
+dconf write /org/gnome/shell/favorite-apps \
+  "[ '${a1}', '${a2}', '${a3}', '${a4}', '${a5}', '${a6}', '${a7}','${a8}', '${a9}']"
+-------------------------------------------------------------------------------
+
+Additional tags : gnome3, application, applications, menu

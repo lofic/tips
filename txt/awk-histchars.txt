@@ -1,0 +1,17 @@
+awk - get rid of history characters
+===================================
+
+--------------------------------------------------------------------------------
+$ echo "Test !"
+-bash: !": event not found
+
+$ export histchars=
+
+$ echo "Test !"
+Test !
+
+$ SEARCH=pim; echo "pim pam poum" | awk "/$SEARCH/ && !/poum/ { print }"
+
+$ SEARCH=pim; echo "pim pam poum" | awk "/$SEARCH/ && !/pom/ { print }"
+pim pam poum
+--------------------------------------------------------------------------------

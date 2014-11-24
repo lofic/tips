@@ -1,0 +1,177 @@
+puppet - running the master with passenger
+==========================================
+
+Much more scalable. Webrick is for testing with a few nodes only.
+
+Warning
+-------
+
+If you change the default ssldir, to need to set it in the `[main]`
+section of `puppet.conf` on the puppet master.
+
+puppetmaster.conf
+-----------------
+
+In the configuration of Apache.
+
+[source, apacheconf]
+------------------------------------------------------------------------------
+# /etc/httpd/conf.d/puppetmaster.conf
+# It replaces webrick and listens by default on 8140
+
+Listen 8140
+
+<VirtualHost *:8140>
+
+SSLEngine on
+SSLProtocol -ALL +SSLv3 +TLSv1
+SSLCipherSuite ALL:!ADH:RC4+RSA:+HIGH:+MEDIUM:-LOW:-SSLv2:-EXP
+
+# Change this :
+SSLCertificateFile /var/lib/puppet/ssl/certs/CHANGEME1.pem
+SSLCertificateKeyFile /var/lib/puppet/ssl/private_keys/CHANGEME2.pem
+
+SSLCertificateChainFile /var/lib/puppet/ssl/certs/ca.pem
+SSLCACertificateFile /var/lib/puppet/ssl/ca/ca_crt.pem
+
+SSLCARevocationFile /var/lib/puppet/ssl/ca/ca_crl.pem
+
+SSLVerifyClient optional
+SSLVerifyDepth 1
+SSLOptions +StdEnvVars
+
+RequestHeader set X-SSL-Subject %{SSL_CLIENT_S_DN}e
+RequestHeader set X-Client-DN %{SSL_CLIENT_S_DN}e
+RequestHeader set X-Client-Verify %{SSL_CLIENT_VERIFY}e
+
+RackAutoDetect On
+
+DocumentRoot /etc/puppet/rack/puppetmaster/public/
+
+<Directory /etc/puppet/rack/puppetmaster/>
+Options None
+AllowOverride None
+Order allow,deny
+allow from all
+</Directory>
+
+</VirtualHost>
+------------------------------------------------------------------------------
+
+Script for el 6.3 with yum
+--------------------------
+
+`install-pupmasterpax.sh` :
+
+[source, sh]
+------------------------------------------------------------------------------
+CONF=conf # folder that contains the model for the puppetmaster.conf
+
+yum -y install ruby rubygems make
+yum -y install httpd mod_ssl
+yum -y install facter puppet puppet-server
+
+/sbin/service httpd stop
+/sbin/service puppetmaster start
+/sbin/service puppetmaster stop
+
+# Passenger prereqs
+yum -y install rubygem-rake
+yum -y install rubygem-daemon_controller             # repo EPEL
+yum -y install rubygem-rack rubygem-fastthread libev # repo EPEL
+
+# Passenger from http://passenger.stealthymonkeys.com/rhel/6/
+yum -y install rubygem-passenger
+yum -y install rubygem-passenger-native
+yum -y install rubygem-passenger-native-libs
+yum -y install mod_passenger
+
+mkdir -p /etc/puppet/rack/puppetmaster/{public,tmp}
+chown puppet:puppet /usr/share/puppet/ext/rack/files/config.ru
+cp -f /usr/share/puppet/ext/rack/files/config.ru /etc/puppet/rack/puppetmaster/
+chown puppet:puppet /etc/puppet/rack/puppetmaster/config.ru
+
+cp -f $CONF/puppetmaster.conf /etc/httpd/conf.d/puppetmaster.conf
+sed -i "s/CHANGEME1/$(hostname)/g" /etc/httpd/conf.d/puppetmaster.conf
+sed -i "s/CHANGEME2/$(hostname)/g" /etc/httpd/conf.d/puppetmaster.conf
+
+/sbin/chkconfig httpd on
+/sbin/chkconfig puppetmaster off
+
+usermod -a -G puppet apache
+
+/sbin/service puppetmaster stop
+/sbin/service httpd restart
+
+sed -i '/^exit 1$/d' /etc/init.d/puppetmaster
+sed -i '1i\
+exit 1' /etc/init.d/puppetmaster
+------------------------------------------------------------------------------
+
+Script for el 6.2 with rpms provided
+------------------------------------
+
+`install-pupmasterpax.sh` :
+
+[source, sh]
+------------------------------------------------------------------------------
+# Needs RHEL 6 u2
+facter operatingsystemrelease | grep -q '6.2' || exit 1
+
+PKGPATH=rpms
+PPATH=$PKGPATH/passenger-el6.2
+CONF=conf
+
+yum -y install ruby rubygems make
+yum -y install httpd mod_ssl
+
+rpm -ivh $PKGPATH/puppet/facter-1.6.7-1.el6.noarch.rpm \
+         $PKGPATH/puppet/puppet-2.7.11-2.el6.noarch.rpm \
+         $PKGPATH/puppet/puppet-server-2.7.11-2.el6.noarch.rpm
+
+/sbin/service httpd stop
+/sbin/service puppetmaster start
+/sbin/service puppetmaster stop
+
+
+# Passenger prereqs
+rpm -ivh $PKGPATH/osoptional/rubygem-rake-0.8.7-2.1.el6.noarch.rpm
+rpm -ivh $PPATH/rubygem-daemon_controller-0.2.5-1.noarch.rpm
+yum -y install rubygem-rack rubygem-fastthread libev # repo EPEL
+
+# Passenger from http://passenger.stealthymonkeys.com/rhel/6/
+rpm -ivh $PPATH/rubygem-passenger-3.0.11-9.el6.x86_64.rpm
+rpm -ivh $PPATH/rubygem-passenger-native-3.0.11-9.el6.x86_64.rpm
+rpm -ivh $PPATH/rubygem-passenger-native-libs-3.0.11-9.el6_1.8.7.352.x86_64.rpm
+rpm -ivh $PPATH/mod_passenger-3.0.11-9.el6.x86_64.rpm
+
+mkdir -p /etc/puppet/rack/puppetmaster/{public,tmp}
+chown puppet:puppet /usr/share/puppet/ext/rack/files/config.ru
+cp -f /usr/share/puppet/ext/rack/files/config.ru /etc/puppet/rack/puppetmaster/
+chown puppet:puppet /etc/puppet/rack/puppetmaster/config.ru
+
+cp -f $CONF/puppetmaster.conf /etc/httpd/conf.d/puppetmaster.conf
+sed -i "s/CHANGEME1/$(hostname)/g" /etc/httpd/conf.d/puppetmaster.conf
+sed -i "s/CHANGEME2/$(hostname)/g" /etc/httpd/conf.d/puppetmaster.conf
+
+/sbin/chkconfig httpd on
+/sbin/chkconfig puppetmaster off
+
+usermod -a -G puppet apache
+
+/sbin/service puppetmaster stop
+/sbin/service httpd restart
+
+sed -i '/^exit 1$/d' /etc/init.d/puppetmaster
+sed -i '1i\
+exit 1' /etc/init.d/puppetmaster
+------------------------------------------------------------------------------
+
+
+References
+----------
+
+* http://docs.puppetlabs.com/guides/passenger.html
+* The book 'Pro Puppet', chapter 'Puppet scalability', section 'Running the Puppet Master with Apache and Passenger'
+
+

@@ -1,0 +1,36 @@
+python - object oriented switch case
+====================================
+
+[source, python]
+--------------------------------------------------------------------------------
+#!/usr/bin/python
+
+def action1():
+        print 'Action 1'
+
+def action2():
+        print 'Action 2'
+
+def d():
+        print 'This is the default'
+
+takeaction = {
+'test1' : action1,
+'test2' : action2
+}
+
+print takeaction.get.__doc__
+
+choix='test2'
+takeaction.get(choix,d)()
+choix='test3'
+takeaction.get(choix,d)()
+--------------------------------------------------------------------------------
+
+Result :
+
+--------------------------------------------------------------------------------
+D.get(k[,d]) -> D[k] if k in D, else d.  d defaults to None.
+Action 2
+This is the default
+--------------------------------------------------------------------------------

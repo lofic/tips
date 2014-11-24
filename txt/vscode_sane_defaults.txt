@@ -1,0 +1,14 @@
+vscode sane defaults
+====================
+
+In ~/.config/Code/User/settings.json
+
+-----------------------------------------------------------------------------
+{
+    "files.trimTrailingWhitespace": true,
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true
+}
+------------------------------------------------------------------------------
+
+Additional tags : visual, studio, code

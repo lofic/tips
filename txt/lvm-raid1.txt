@@ -1,0 +1,37 @@
+lvm - RAID 1
+============
+
+Example; on a physical machine, with multipathing.
+
+Here we don't have friendly names for the devices because we set in
+/etc/multipath.conf :
+
+-----------------------------------------------------------------------------
+defaults {
+    find_multipaths yes
+    user_friendly_names no
+}
+# (...)
+-----------------------------------------------------------------------------
+
+
+Create pv/vg/lv and mkfs, for example:
+
+-----------------------------------------------------------------------------
+pvcreate /dev/mapper/36006016042e02a0055f07b4289f7e311
+pvcreate /dev/mapper/36006016042e02a0057f07b4289f7e311
+
+#-- to automate it:
+for i in $( multipath -l | awk '/VRAID/ { print $1 }' )
+do
+pvcreate /dev/mapper/$i
+done
+#--
+
+vgcreate pg_xlog /dev/mapper/36006016042e02a0055f07b4289f7e311 \
+                 /dev/mapper/36006016042e02a0057f07b4289f7e311
+lvcreate -L 49G -m1 --type raid1 -n pg_xlog_mirror pg_xlog
+mkfs.xfs /dev/pg_xlog/pg_xlog_mirror
+-----------------------------------------------------------------------------
+
+Additional tags : lvm, raid

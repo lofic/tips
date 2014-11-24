@@ -1,0 +1,69 @@
+gnome 3 - desktop background
+============================
+
+Some options :
+
+[source, sh]
+-------------------------------------------------------------------------------
+gsettings set org.gnome.desktop.background picture-options "centered"
+gsettings set org.gnome.desktop.background primary-color "#000000"
+gsettings set org.gnome.desktop.background secondary-color "#000000"
+gsettings set org.gnome.desktop.background color-shading-type "solid"
+-------------------------------------------------------------------------------
+
+
+Change GDM, the Gnome Desktop background and the Lock screen.
+
+cf
+
+* https://wiki.archlinux.org/index.php/GNOME_3#GDM_Customization
+* http://www.webupd8.org/2011/07/change-gnome-3-login-screen-gdm3.html
+* http://fabhax.com/technology/change-wallpapers-in-gnome-3.4/
+
+[source, sh]
+-------------------------------------------------------------------------------
+#!/bin/bash
+GNOMEBGFOLDER=/usr/share/backgrounds/gnome
+GDMUSER=Debian-gdm
+
+# FULL PATH to the wallpaper :
+#MYBG=$HOME/Documents/images/wallpapers/treeflower/wallpaper-1280x800.png
+MYBG=$HOME/Documents/images/wallpapers/crazyrough.jpg
+
+# Desktop background
+GSETTINGS_BACKEND=dconf gsettings set org.gnome.desktop.background picture-uri \
+  "file://$MYBG"
+
+# Login screen (GDM)
+id $GDMUSER || GDMUSER=gdm
+sudo cp $MYBG $GNOMEBGFOLDER
+basebg=$(basename $MYBG)
+newbg=$GNOMEBGFOLDER/$basebg
+xhost +SI:localuser:$GDMUSER
+sudo su - $GDMUSER -s /bin/bash --command="
+dbus-launch
+GSETTINGS_BACKEND=dconf gsettings set org.gnome.desktop.background picture-uri "file://$newbg";
+GSETTINGS_BACKEND=dconf gsettings get org.gnome.desktop.background picture-uri;
+"
+xhost -SI:localuser:$GDMUSER
+
+# Lock screen
+# Resolution : cf xdpyinfo  | grep 'dimensions:'
+cat <<EOF>/tmp/lockscreen.xml
+<background>
+  <static>
+    <duration>8640000.0</duration>
+    <file>
+      <size width="1600" height="900">$newbg</size>
+    </file>
+  </static>
+</background>
+EOF
+sudo mv /tmp/lockscreen.xml /usr/share/images/desktop-base/lockscreen.xml
+sudo ln -sf /usr/share/images/desktop-base/lockscreen.xml /etc/alternatives/desktop-background.xml
+
+
+echo -e "\nYou need to restart the service gdm3 in a text console (i.e. tty1), as root."
+-------------------------------------------------------------------------------
+
+Additional tags : gnome3, tweak, tweaks

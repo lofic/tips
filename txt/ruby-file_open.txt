@@ -1,0 +1,11 @@
+ruby - open file
+================
+
+Open a file, write to it, and close it in one line.
+
+[source, ruby]
+--------------------------------------------------------------------------------
+File.open(local_filename, 'w') {|f| f.write(doc) }
+--------------------------------------------------------------------------------
+
+(from : http://snippets.dzone.com)

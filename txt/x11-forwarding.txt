@@ -1,0 +1,20 @@
+X11 Forwarding
+==============
+
+Remote host :
+
+* install `xorg-x11-xauth` (Red Hat) or `xauth` (Debian)
+* in `/etc/ssh/sshd_config`, set `X11Forwarding yes`
+* restart the sshd (Red Hat) or ssh (Debian) service
+
+Local host :
+
+* in `/etc/ssh/ssh_config`, set `ForwardX11 yes`
+
+Connect with the option :
+
+------------------------------------------------------------------------------
+ssh -X
+-----------------------------------------------------------------------------
+
+Additional tags : ssh, sshd

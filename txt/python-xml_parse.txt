@@ -1,0 +1,53 @@
+python - examples of xml parsing
+================================
+
+Given :
+
+[source, xml]
+--------------------------------------------------------------------------------
+<?xml version="1.0" encoding="UTF-8" ?>
+<FileZilla3>
+<Settings>
+    <!-- ... -->
+    <Setting name="Last local directory" type="string">/tmp</Setting>
+    <Setting name="Filelist directory sort" type="number">0</Setting>
+    <!-- ... -->
+    </Settings>
+</FileZilla3>
+--------------------------------------------------------------------------------
+
+Let's use ElementTree that is faster than DOM and more elegant than SAX.
+
+[source, python]
+--------------------------------------------------------------------------------
+#!/usr/bin/env python
+# -*- coding: utf-8
+import xml.etree.ElementTree as ElementTree
+
+xmlfile='filezilla.xml'
+etree = ElementTree.ElementTree()
+with open(xmlfile) as x: etree.parse(x)
+
+for item in etree.findall('/Settings/Setting'):
+   if item.attrib['name'] == 'Last local directory':
+       item.text='/home/louis/Téléchargements/'.decode('utf-8')
+
+etree.write(xmlfile,encoding="UTF-8")
+--------------------------------------------------------------------------------
+
+Result :
+
+[source, xml]
+--------------------------------------------------------------------------------
+<?xml version='1.0' encoding='UTF-8'?>
+<FileZilla3>
+<Settings>
+    <!-- ... -->
+    <Setting name="Last local directory" type="string">/home/louis/Téléchargements/</Setting>
+    <Setting name="Filelist directory sort" type="number">0</Setting>
+    <!-- ... -->
+</Settings>
+</FileZilla3>
+--------------------------------------------------------------------------------
+
+Additional tag : parser

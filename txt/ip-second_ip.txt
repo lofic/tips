@@ -1,0 +1,103 @@
+IP - add a second IP on the same interface
+==========================================
+
+In the examples the two IPs are 192.168.0.30 and 10.0.0.3
+
+Debian and Co
+-------------
+
+Tested on Debian Squeeze.
+
+First method
+~~~~~~~~~~~~
+
+Using the `ip` command.
+
+
+In `/etc/network/interfaces` :
+
+--------------------------------------------------------------------------------
+auto eth0
+iface eth0 inet static
+        address 192.168.0.30
+        netmask 255.255.255.0
+        gateway 192.168.0.1
+        # specific settings for the second IP :
+        up   ip addr add 10.0.0.30/24 dev eth0
+        down ip addr del 10.0.0.30/24 dev eth0
+--------------------------------------------------------------------------------
+
+Note : the second IP is NOT shown by `ifconfig`. Use `ip addr show` (`ip a s`)
+
+To activate this the first time, use :
+
+--------------------------------------------------------------------------------
+ifdown eth0 # ignore the warnings
+ip addr del 192.168.0.30/24 dev eth0
+ifup   eth0
+--------------------------------------------------------------------------------
+
+
+Second method
+~~~~~~~~~~~~~
+
+Using a NIC alias.
+
+--------------------------------------------------------------------------------
+auto eth0
+iface eth0 inet static
+        address 192.168.0.30
+        netmask 255.255.255.0
+        gateway 192.168.0.1
+
+auto eth0:0
+        iface eth0:0 inet static
+        address 10.0.0.30
+        netmask 255.255.255.0
+--------------------------------------------------------------------------------
+
+Then :
+
+--------------------------------------------------------------------------------
+/etc/init.d/networking stop
+/etc/init.d/networking start
+--------------------------------------------------------------------------------
+
+Red Hat and Co
+--------------
+
+Tested on RHEL 6
+
+`/etc/sysconfig/network-scripts/ifcfg-eth0:0` :
+
+--------------------------------------------------------------------------------
+DEVICE="eth0:0"
+ONPARENT=yes
+NM_CONTROLLED=no
+BOOTPROTO=none
+ONBOOT="yes"
+TYPE="Ethernet"
+IPADDR=10.0.0.30
+NETMASK=255.255.255.0
+--------------------------------------------------------------------------------
+
+Then :
+
+--------------------------------------------------------------------------------
+/sbin/service network restart
+--------------------------------------------------------------------------------
+
+New method for RHEL 7 :
+
+-----------------------------------------------------------------------------
+DEVICE="eth0"
+ONBOOT="yes"
+IPADDR0=10.0.0.100
+PREFIX0=24
+IPADDR1=10.0.0.101
+PREFIX1=24
+IPADDR2=10.0.0.102
+PREFIX2=24
+-----------------------------------------------------------------------------
+
+Additional tags : secondary, virtual, network

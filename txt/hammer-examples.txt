@@ -1,0 +1,10 @@
+Hammer - examples
+=================
+
+-----------------------------------------------------------------------------
+hammer host list --per-page=9999 --search 'last_report > "40 minutes ago" and status.enabled = true'
+-----------------------------------------------------------------------------
+
+Additional tags : satellite, foreman
+
+

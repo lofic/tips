@@ -1,0 +1,28 @@
+bash - heredoc
+==============
+
+You can quote the EOF indicator to disable variable interpretation.
+
+[source, sh]
+--------------------------------------------------------------------------------
+#!/bin/bash
+
+cat > thingy << 'EOT'
+blah $blah
+EOT
+--------------------------------------------------------------------------------
+
+Text in a file descriptor :
+
+--------------------------------------------------------------------------------
+exec 4<<EOF
+toto
+titi
+EOF
+
+while read i <&4; do
+    echo $i
+done
+--------------------------------------------------------------------------------
+
+Additional tag : heredocument

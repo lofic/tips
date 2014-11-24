@@ -1,0 +1,18 @@
+disk - full fsck
+================
+
+Forced file system check, with the search of badblocks and a progress bar.
+
+-----------------------------------------------------------------------------
+fsck.ext4 -cDfty -C 0 /dev/the_device
+-----------------------------------------------------------------------------
+
+On an encrypted disk, you need to do a luksOpen before :
+
+-----------------------------------------------------------------------------
+cryptsetup luksOpen /dev/the_device somename
+fsck.ext4 -cDfty -C 0 /dev/mapper/somename
+cryptsetup luksClose somename
+-----------------------------------------------------------------------------
+
+Additional tags : cryptsetup, luks, LUKS

@@ -1,0 +1,15 @@
+= git - remove some branches
+
+remove a local branch
+
+------------------------------------------------------------------------------
+git branch -d 'theuselessbranch'
+-----------------------------------------------------------------------------
+
+Remove tracking branches for which remote branches are removed
+
+-----------------------------------------------------------------------------
+git remote prune origin
+-----------------------------------------------------------------------------
+
+Additional tag : branch

@@ -1,0 +1,28 @@
+openssl - trust a custom CA
+===========================
+
+Adding trusted root certificates.
+
+RedHat-like distributions :
+
+------------------------------------------------------------------------------
+openssldir=$(openssl version -a | awk -F'"' '/OPENSSLDIR/ { print $2 }')
+
+cp ca_cert.pem $openssldir/certs/my_ca.crt
+
+cd $openssldir/certs
+
+ln -s my_ca.crt `openssl x509 -hash -noout -in my_ca.crt`.0
+-----------------------------------------------------------------------------
+
+Debian-like distributions :
+
+-----------------------------------------------------------------------------
+sudo cp foo.crt /usr/local/share/ca-certificates/foo.crt
+sudo update-ca-certificates
+# The certs and hash links are installed in /etc/ssl/certs
+-----------------------------------------------------------------------------
+
+
+Additional tags : ssl, certificate, authority, ca, cert, root
+

@@ -1,0 +1,70 @@
+gnome 3 - misc. tweaks
+======================
+
+Those are some of my custom settings for Gnome 3 on Ubuntu 12.04
+
+With a standard user :
+
+[source, sh]
+--------------------------------------------------------------------------------
+gsettings set org.gnome.desktop.media-handling autorun-never true
+
+gsettings set org.gnome.shell.calendar show-weekdate true
+
+# Depending on the gnome shell version :
+gsettings set org.gnome.desktop.interface clock-show-date true
+gsettings set org.gnome.shell.clock show-date true
+
+gsettings set org.gnome.SessionManager logout-prompt 'false'
+
+gsettings set org.gnome.nautilus.preferences always-use-location-entry true
+
+gsettings set org.gnome.desktop.interface menus-have-icons true
+
+gsettings set org.gnome.desktop.interface buttons-have-icons true
+
+gsettings set org.gnome.desktop.background show-desktop-icons false
+
+gsettings set org.gnome.nautilus.desktop network-icon-visible false
+
+gsettings set org.gnome.nautilus.desktop home-icon-visible false
+
+gsettings set org.gnome.nautilus.desktop computer-icon-visible false
+
+gsettings set org.gnome.nautilus.desktop trash-icon-visible false
+
+gsettings set org.gnome.nautilus.desktop volumes-visible false
+
+gsettings set org.gnome.nautilus.preferences enable-delete true
+
+# or :
+
+gsettings set org.gnome.nautilus.preferences show-delete-permanently true
+# Cf gsettings list-recursively | grep nautilus
+
+gsettings set org.gnome.nautilus.preferences default-folder-viewer 'list-view'
+
+gsettings set org.gnome.nautilus.icon-view default-zoom-level small
+
+gsettings set org.gnome.desktop.wm.preferences audible-bell false
+
+gsettings set org.gnome.desktop.wm.preferences visual-bell true
+
+gsettings set org.gnome.desktop.wm.preferences visual-bell-type frame-flash
+
+# Highlight the mouse cursor when you press Ctrl
+gsettings reset org.gnome.desktop.interface locate-pointer
+
+# Change the max screencast duration
+gsettings set org.gnome.settings-daemon.plugins.media-keys max-screencast-length 600
+
+# Old key :
+GSETTINGS_BACKEND=dconf gsettings set org.gnome.shell.overrides button-layout ":minimize,maximize,close"
+
+# New key :
+gsettings set org.gnome.desktop.wm.preferences button-layout 'appmenu:minimize,maximize,close'
+
+dconf read /org/gnome/shell/enabled-extensions # you can write also...
+--------------------------------------------------------------------------------
+
+Additional tags : gnome3, tweak

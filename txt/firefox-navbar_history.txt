@@ -1,0 +1,16 @@
+firefox - no navigation bar history
+===================================
+
+In the navigation (URL) bar, type `about:config`
+
+Set :
+
+--------------------------------------------------------------------------------
+browser.urlbar.maxRichResult 0
+places.frecency.bookmarkVisitBonus 0
+places.frecency.unvisitedBookmarkBonus 0
+--------------------------------------------------------------------------------
+
+
+
+

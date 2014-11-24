@@ -1,0 +1,55 @@
+linux - compile and install a third part driver
+===============================================
+
+1° `wget http://.../driver-a.b.c.tgz`
+
+2° Install the c compiler
+
+`apt-get -y install gcc make`
+
+3° Install kernel headers
+
+Check the active kernel :
+
+[source,sh]
+-----------------------------------------------------------------------------
+uname -a
+uname -r
+ls /boot/vmlinuz*
+-----------------------------------------------------------------------------
+
+Install the appropriate headers :
+
+[source,sh]
+-----------------------------------------------------------------------------
+apt-cache search linux-headers
+
+apt-get install linux-headers-x.y.z-t-arch
+-----------------------------------------------------------------------------
+
+
+4° `tar xvzf driver-a.b.c.tgz`
+
+5° `cd driver-a.b.c/src`
+
+(the folder where there is a Makefile)
+
+6° Check the doc
+
+-----------------------------------------------------------------------------
+less README
+
+less INSTALL
+-----------------------------------------------------------------------------
+
+
+7° `make`
+
+8° `make install`
+
+(will copy `.ko` files in `/lib/modules/$(uname -r)/kernel/drivers/.../` )
+
+9° `depmod`
+
+10° `modprobe drivername`
+

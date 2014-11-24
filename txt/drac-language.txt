@@ -1,0 +1,29 @@
+DRAC - localized version
+========================
+
+Extract from
+
+http://stuff.mit.edu/afs/athena/dept/cron/documentation/dell-server-admin/en/DRAC_5/racugc3.htm
+
+"Viewing Localized Versions of the Web-Based Interface Windows"
+
+To view a localized version of the DRAC 5 Web-based interface in Internet
+Explorer,
+
+* click the Tools menu and select Internet Options;
+
+* in the Internet Options window, click Languages;
+
+* in the Language Preference window, click Add;
+
+* in the Add Language window, select a supported language;
+
+(to select more than one language, press <Ctrl>)
+
+* select your preferred language and click Move Up to move the language to the top of the list;
+
+* click OK;
+
+* in the Language Preference window, click OK.
+
+Additional tags : dell, english

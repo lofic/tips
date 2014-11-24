@@ -1,0 +1,373 @@
+= Troubleshooting RHEL - summary by topics
+
+== Searching for information
+
+-----------------------------------------------------------------------------
+find /opt/puppetlabs/puppet/cache/clientbucket/ -mtime -1 -type f -name 'paths' -exec cat  {} \;
+
+yum -y install mlocate; updatedb; locate foo.txt
+
+less /usr/share/doc/initscripts-*/sysconfig.txt
+
+# A classic search pattern (and yes, you could use pidof or pgrep for this purpose):
+ps aux | awk '/sshd[\t ]+-D/ && !/awk/ {print $2}'
+
+-----------------------------------------------------------------------------
+
+== Logs
+
+-----------------------------------------------------------------------------
+find /var/log/
+tail -f /var/log/messages
+less /etc/rsyslog.conf
+find /etc/rsyslog.d/
+-----------------------------------------------------------------------------
+
+== Hardware
+
+-----------------------------------------------------------------------------
+lscpu
+lsblk
+lsblk --fs
+blkid
+lsusb   # pkg name = usbutils
+lshal --tree
+dmidecode
+x86info # pkg name = x86info
+
+lsmod
+modinfo xfs
+rmmod pcspkr
+
+find /etc/udev/rules.d/
+
+egrep 'physical id|core id|cpu cores|siblings' /proc/cpuinfo | sort -u
+LANG=c lscpu | egrep '^Core\(|^Thread\(|^CPU\(|Socket'
+
+inxi -G # (repo EPEL)
+inxi -b
+
+lspci   # pkg name = pciutils
+lspci -v
+lspci -vvv
+lspci -k # with kernel driver in use
+
+lshw
+
+dmesg -T
+-----------------------------------------------------------------------------
+
+
+== Filesystems
+
+-----------------------------------------------------------------------------
+cat /etc/fstab
+
+mount
+
+df -hP
+df -iP # inodes
+
+lsattr
+getfacl
+
+du -h -d1 # --max-depth=1
+
+tree
+
+# ext4
+dumpe2fs -h /dev/sdx
+LANG=c dumpe2fs /dev/sdx | grep -i superblock
+LANG=c dumpe2fs -h /dev/sdx | grep -i inode
+
+resize2fs /dev/sdx
+fsck /dev/sdk # WARNING : ON AN UNMOUNTED FS
+
+# xfs
+xfs_info /dev/sdx
+xfs_growfs /dev/sdx
+umount /mnt/point; xfs_repair /mnt/point
+
+xfs_db -c frag -r /dev/sdx # Check fragmentation rate
+man xfs_fsr                # Defragment
+
+# File recovery :
+yum -y install scalpel
+less /etc/scalpel.conf
+scalpel -h
+-----------------------------------------------------------------------------
+
+
+== Storage
+
+-----------------------------------------------------------------------------
+lsblk
+
+fdisk -l
+
+yum -y install sg3_utils
+rescan-scsi-bus.sh
+scsi-rescan
+
+find /sys/class/scsi_host/ -regex '.*host[0-9]+$' \
+  | while read folder; do echo '- - -' > $folder/scan; done
+find /sys/block/ -name 'sd*' | while read folder; do \
+  echo 1 > $folder/device/rescan; done
+-----------------------------------------------------------------------------
+
+== LVM
+
+-----------------------------------------------------------------------------
+pvs; vgs; lvs
+pvdisplay -v
+vgdisplay -v
+lvdisplay -v
+less /etc/lvm/lvm.conf
+
+vgscan
+
+vgcfgbackup --help
+find /etc/lvm/backup/
+-----------------------------------------------------------------------------
+
+
+== Network
+
+-----------------------------------------------------------------------------
+ping
+host foo.example.com # pkg name = bind-utils
+dig foo.example.com
+traceroute foo.example.com # pkg name = traceroute
+ip a
+ip r
+ip l
+cat /etc/nsswitch.conf
+cat /etc/resolv.conf
+cat /etc/sysconfig/network-scripts/ifcfg-*
+less /usr/share/doc/initscripts-*/sysconfig.txt
+ipcalc -bmnp 1.1.1.0/8
+
+cat /etc/sysconfig/network
+
+hostnamectl status # el7
+cat /etc/hostname  # el7
+
+ss -plantu # in the server
+nmap       # from the outside
+
+tcpdump -ttt -i eth0 udp port 2049
+tcpdump -vvv -i any port 80 # Flags [S] = syn, [S.] = syn-ack, [.] = ack, [R] = rst, [F]=fin(ish), etc.
+# Connection establishment : syn, syn-ack, ack
+tcpdump -vvv -i any -c 100 -A 'port 80 and host 192.168.0.16'
+tcpdump -i eth0 host 10.151.2.201 and 10.151.2.202
+tcpdump -i eth0 not port 22
+
+curl --head http://foo.example.com
+
+iftop
+-----------------------------------------------------------------------------
+
+
+== Firewalling
+
+-----------------------------------------------------------------------------
+iptables -L -nv
+
+cat /etc/sysconfig/iptables # el6
+
+# el7 with firewalld :
+firewall-cmd --state
+firewall-cmd --get-active-zones
+firewall-cmd --zone=public --list-all
+firewall-cmd --zone=public --list-services
+firewall-cmd --zone=public --list-ports
+find /etc/firewalld/zones/
+-----------------------------------------------------------------------------
+
+
+== Processes and applications
+
+-----------------------------------------------------------------------------
+ps aux
+pstree
+top
+iotop # pkg name = iotop
+
+systemd-cgls  # el7
+systemd-cgtop # el7
+
+pidof
+pgrep
+
+lsof
+fuser
+
+strace
+strace -e open ls
+-----------------------------------------------------------------------------
+
+Systemtap
+
+== Kernel
+
+-----------------------------------------------------------------------------
+uname -a
+sysctl -a
+less /etc/sysctl.conf
+find /etc/sysctl.d/
+sysctl vm.swappiness
+sysctl vm.drop_caches
+sysctl net.ipv4.ip_forward
+-----------------------------------------------------------------------------
+
+
+== Packages (rpm)
+
+-----------------------------------------------------------------------------
+yum history
+yum history summary
+tail /var/log/yum.log
+rpm -qa --queryformat '%{installtime} %{name}-%{version}-%{release} %{installtime:date}\n' | sort -n
+rpm -Va
+rpm -Va --nofiles --nodigest
+
+db_verify /var/lib/rpm/Packages
+rpm -v --rebuilddb
+
+yum provides */bin/host
+
+yum clean all && yum makecache fast
+yum check-update
+yum check
+
+yum-complete-transaction
+
+yum -y install yum-utils
+package-cleanup --help
+package-cleanup --problems
+package-cleanup --dupes
+package-cleanup --cleandupes
+-----------------------------------------------------------------------------
+
+See also : https://wpguru.co.uk/2017/01/how-to-fix-duplicate-packages-in-yum/
+
+== Services
+
+-----------------------------------------------------------------------------
+# el6 :
+chkconfig --list
+service httpd status
+find /etc/init.d/
+runlevel
+grep default /etc/inittab
+find /etc/rc$(runlevel | awk '{print $2}').d/
+
+
+# el7 :
+systemctl list-unit-files --type=service
+systemctl is-enabled httpd
+systemctl is-active httpd
+systemctl status httpd
+
+journalctl -xe -u httpd.service
+journalctl -xe -u nginx.service --since today
+
+ls /usr/lib/systemd/system/*.service
+ls /etc/systemd/system/*.service
+find /etc/systemd/system/*.service.d/
+
+systemctl get-default
+
+ls /usr/lib/systemd/system/multi-user.target.wants/
+ls /etc/systemd/system/multi-user.target.wants/
+
+systemctl list-dependencies sshd.service
+systemctl list-dependencies --before multi-user.target
+-----------------------------------------------------------------------------
+
+
+== Id. and auth. management
+
+-----------------------------------------------------------------------------
+last
+LANG=c lastlog | grep -vi never
+
+less /etc/nsswitch.conf
+cat /etc/sysconfig/authconfig
+authconfig-tui
+
+getent passwd
+getent group
+
+cat /etc/pam.d/*
+-----------------------------------------------------------------------------
+
+== Sessions
+
+-----------------------------------------------------------------------------
+cat /etc/security/limits.conf
+cat /etc/profile
+cat /etc/profile.d/*.sh
+-----------------------------------------------------------------------------
+
+
+== Security
+
+------------------------------------------------------------------------------
+less /var/log/secure
+------------------------------------------------------------------------------
+
+Auditd
+
+------------------------------------------------------------------------------
+auditctl -s
+auditctl -l
+less /var/log/audit/audit.log
+less /etc/audit/rules.d/audit.rules
+auditctl -e 2 # lock the rules : immutability
+------------------------------------------------------------------------------
+
+
+== Sudoers
+
+-----------------------------------------------------------------------------
+less /etc/sudoers
+find /etc/sudoers.d/
+less /var/log/secure
+sudoreplay -l fromdate "last week" user bob # with LOG_INPUT
+-----------------------------------------------------------------------------
+
+== SE Linux
+
+-----------------------------------------------------------------------------
+getenforce
+yum -y install setroubleshoot-server
+/sbin/service auditd restart
+tail /var/log/audit/audit.log
+tail /var/log/messages
+sealert -a /var/log/audit/audit.log
+-----------------------------------------------------------------------------
+
+== Boot
+
+== SSL
+
+See :
+
+* openssl-troubleshoot
+* openssl-trust_a_ca
+
+== Puppet
+
+-----------------------------------------------------------------------------
+cat $(puppet agent --configprint classfile)
+cat $(puppet agent --configprint resourcefile)
+find /opt/puppetlabs/puppet/cache/clientbucket/ -mtime -1 -type f -name 'paths' -exec cat  {} \;
+grep puppet-agent /var/log/messages
+-----------------------------------------------------------------------------
+
+See also : puppet-debug
+
+== Performance
+
+See : linux-perf_audit

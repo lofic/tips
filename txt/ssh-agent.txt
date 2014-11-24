@@ -1,0 +1,18 @@
+ssh agent - start automatically
+===============================
+
+For instance in WSL2 where you don't have one by default.
+
+Add in `~/.bashrc` :
+
+-----------------------------------------------------------------------------
+test -d $HOME/.tmp || mkdir -p $HOME/.tmp
+satest=$(ps -ef | awk '/ssh-agent/ && !/awk/ {print $2}')
+if [ -z "$satest" ]; then
+    rm -f $HOME/.tmp/agent.sh &>/dev/null
+    ssh-agent > $HOME/.tmp/agent.sh
+fi
+source $HOME/.tmp/agent.sh &>/dev/null
+-----------------------------------------------------------------------------
+
+Additional tags : wsl, wsl2, ssh-agent

@@ -1,0 +1,9 @@
+yum - display variables
+=======================
+
+[source, sh]
+-----------------------------------------------------------------------------
+python -c 'import yum, pprint; yb = yum.YumBase(); pprint.pprint(yb.conf.yumvar, width=1)'
+
+yum version nogroups # el6+
+-----------------------------------------------------------------------------

@@ -1,0 +1,48 @@
+openssl - troubleshoot
+======================
+
+Display the information on a cert. or CA cert. :
+
+-----------------------------------------------------------------------------
+openssl x509 -in mycert.pem -noout -text
+-----------------------------------------------------------------------------
+
+Verify a cert with the CA :
+
+------------------------------------------------------------------------------
+openssl verify -verbose -CAfile cacert.pem cert.pem
+-----------------------------------------------------------------------------
+
+Verify the match between a cert and a (rsa) key
+
+-----------------------------------------------------------------------------
+openssl rsa  -noout -modulus -in key.pem
+openssl x509 -noout -modulus -in cert.pem
+# Should match
+-----------------------------------------------------------------------------
+
+Check client + server + ca certs : on the server, execute the following command
+
+-----------------------------------------------------------------------------
+openssl s_server -accept 8443 -cert server/cert.pem -key server/key.pem \
+  -CAfile ca/cacert.pem
+-----------------------------------------------------------------------------
+
+On a client, execute
+
+-----------------------------------------------------------------------------
+openssl s_client -connect server.example.com:8443 -cert client/cert.pem \
+  -key client/key.pem -CAfile ca/cacert.pem
+-----------------------------------------------------------------------------
+
+Test a connection to the service with SSL :
+
+-----------------------------------------------------------------------------
+openssl s_client -connect server.example.com:<port> -cert client/cert.pem \
+  -key client/key.pem -CAfile ca/cacert.pem
+-----------------------------------------------------------------------------
+
+
+(from : https://www.rabbitmq.com/troubleshooting-ssl.html)
+
+Additional tags : ssl, certificate, authority, ca, cert

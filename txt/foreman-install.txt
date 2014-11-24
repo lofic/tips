@@ -1,0 +1,151 @@
+= Foreman - install with Puppet masters on smart proxies
+
+== Architecture
+
+* the Foreman server : Foreman UI+ENC, and smart proxy with TFTP, Puppet (master) and Puppet CA
+(we won't use the Puppet master, only the Puppet CA)
+
+The Foreman server could also be used to set and edit the puppet class
+parameters (with the smart variables) but we will use hiera for this instead.
+
+Because hiera is more flexible.
+
+* a smart proxy with Puppet (master)
+
+For scalability we can add other Puppet master hosts in the future.
+The Puppet masters will all have the same Puppet CA (set on the Foreman server)
+
+
+----------------------------------------------------------------------------------------------
+
+                                         +--------------+    - Web UI
+       +------------------------------>  | The Foreman  |    - External Node Classifier
+       |             +---------------->  |              |    - Puppet Certificate Authority
+       |             |                   +--------------+                               ^
+       |             |                           ^                                      |
+       | Smart Proxy |               Smart Proxy | - Get ENC                            |
+       |             |                           | - Push reports                       |
+       |             |                   +--------------+                               |
+       |             |                   | Puppet Master| - Compile node    - Request & |
+(Puppet Master  (Puppet Master           |              |   catalogs          check     |
+     Ter)           Bis)  ^              +--------------+                     certif.   |
+                          |                     ^    ^                                  |
+                          +----+                |    |                                  |
+                               |                |    +-----------+                      |
+                               |                |                | - Get catalog        |
+                               |                |                |                      |
+                        +------------+    +------------+    +------------+              |
+                        | Node with  |    | Node with  |    | Node with  |              |
+                        | Pup. agent |    | Pup. agent |    | Pup. agent | -------------+
+                        +------------+    +------------+    +------------+
+
+----------------------------------------------------------------------------------------------
+
+For other architecture diagrams, see :
+
+https://docs.puppetlabs.com/learning/agent_master_basic.html#what-do-agents-do-and-what-do-masters-do
+
+http://deviantony.files.wordpress.com/2014/08/puppet-foreman-architecture-v2-generic-new-page-1.png
+
+
+== Install the main Foreman server
+
+Provides some repos : EPEL, RH or Centos Software collections, Foreman and
+Foreman plugins.
+
+Install and start puppet-server
+
+Do a puppet agent --test on the node
+
+Then :
+
+-----------------------------------------------------------------------------
+yum -y install foreman-installer
+foreman-installer --foreman-configure-epel-repo=false
+-----------------------------------------------------------------------------
+
+Then go to https://the_foreman_hostname
+
+Initial credentials are provided in the installation summary of
+`foreman-installer`
+
+In the UI you must configure the first proxy with the foreman host itself
+
+Cf the screencast http://theforeman.org/media.html -> Quick start installation
+
+Disable Foreman's parameterised ENC output if you're using hiera exclusively
+
+Administer > Settings > Puppet
+
+Enable_Smart_Variables_in_ENC -> false
+
+Parametrized_Classes_in_ENC -> false
+
+
+
+== Install the smart proxy
+
+On the future Puppet master host :
+
+-----------------------------------------------------------------------------
+# Version for Foreman 1.6
+foreman-installer \
+  --no-enable-foreman \
+  --no-enable-foreman-cli \
+  --no-enable-foreman-plugin-bootdisk \
+  --no-enable-foreman-plugin-setup \
+  --enable-puppet \
+  --puppet-server-ca=false \
+  --puppet-server-foreman-url=https://<the foreman server hostname> \
+  --enable-foreman-proxy \
+  --foreman-proxy-puppetca=false \
+  --foreman-proxy-tftp=false \
+  --foreman-proxy-foreman-base-url=https://<the foreman server hostname> \
+  --foreman-proxy-trusted-hosts=<the foreman server hostname> \
+  --foreman-proxy-oauth-consumer-key=<consumer key from the Foreman server> \
+  --foreman-proxy-oauth-consumer-secret=<consumer secret from the foreman server>
+-----------------------------------------------------------------------------
+
+Get the consumer key and secret from the Foreman server WebUI, in
+Administer -> Settings -> Auth -> oauth_consumer_key & oauth_consumer_secret
+
+Or `grep oauth_consumer /etc/foreman/settings.yaml` on the Foreman server.
+
+More information here :
+
+http://theforeman.org/manuals/1.6/index.html#3.2.3InstallationScenarios
+
+Look in sections :
+
+* Setting up Foreman with external Puppet masters
+* Standalone Puppet master
+
+When the Puppet master is deployed, you need to set or replace the CA with the
+CA from the Foreman Server and generate a certificate for the (new) Puppet
+master.
+
+Follow instructions from section :
+
+* SSL certificate authority setup
+
+On every agent node, you must set the ca_server setting in puppet.conf
+(in the [main] configuration block) to the hostname of the server
+acting as the certificate authority.
+
+* `ca_server` will be the Foreman server
+* `server` will be a/the Puppet master
+
+Manual run on a node with the puppet agent :
+
+-----------------------------------------------------------------------------
+puppet agent --test --server <puppet master> --ca_server <the foreman>
+-----------------------------------------------------------------------------
+
+Also check that `ca_server` is set correctly in the `puppet.conf` of the Puppet
+master.
+
+Reference :
+
+https://docs.puppetlabs.com/guides/scaling_multiple_masters.html#centralize-the-certificate-authority
+
+

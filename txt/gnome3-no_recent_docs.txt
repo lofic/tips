@@ -1,0 +1,11 @@
+gnome 3 - no recent documents
+=============================
+
+[source, sh]
+--------------------------------------------------------------------------------
+rm -f ~/.local/share/recently-used.xbel 2>/dev/null
+touch ~/.local/share/recently-used.xbel 2>/dev/null
+sudo chattr +i ~/.local/share/recently-used.xbel
+--------------------------------------------------------------------------------
+
+Additional tags : gnome3, tweak, tweaks

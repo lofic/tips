@@ -1,0 +1,12 @@
+awk - case insensitive search
+=============================
+
+Example :
+--------------------------------------------------------------------------------
+rpm -qa | grep -i 'xml'
+rpm -qa | awk 'tolower($0) ~ /xml/'
+rpm -qa | awk 'tolower($0) ~ /xml/ { print }'
+rpm -qa | gawk 'BEGIN {IGNORECASE=1};$0~/xml/'
+rpm -qa | gawk 'BEGIN {IGNORECASE=1};$0~/xml/ { print }'
+--------------------------------------------------------------------------------
+

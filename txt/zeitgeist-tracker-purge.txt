@@ -1,0 +1,46 @@
+zeitgeist and tracker - disable
+===============================
+
+Zeitgeist is a service which logs user activities and events.
+
+This will purge the activity history, but won't remove the daemon :
+
+-----------------------------------------------------------------------------
+zeitgeist-daemon --quit
+killall zeitgeist-daemon
+killall zeitgeist-datahub
+find ~/.local/share/zeitgeist/ -type f -exec shred {} \;
+rm -rf ~/.local/share/zeitgeist/*
+-----------------------------------------------------------------------------
+
+You can check the activity history with :
+
+-----------------------------------------------------------------------------
+apt install -y zeitgeist-explorer
+zeitgeist-explorer
+gnome-activity-journal
+activity-log-manager
+-----------------------------------------------------------------------------
+
+Check also the activity for Tracker with
+
+-----------------------------------------------------------------------------
+gsettings set org.freedesktop.Tracker.Miner.Files crawling-interval -2
+gsettings set org.freedesktop.Tracker.Miner.Files enable-monitors false
+tracker-preferences
+# Purge with :
+tracker-control -r
+tracker-control -S
+-----------------------------------------------------------------------------
+
+tracker-preferences is not available on recent Debian and Ubuntu versions.
+
+Install `dconf-editor`, run it, browse to org > freedesktop > Tracker > Miner > Files
+
+See also :
+
+------------------------------------------------------------------------------
+gsettings list-recursively org.freedesktop.Tracker.Miner.Files
+------------------------------------------------------------------------------
+
+Additional tags : tracker, track, tracking

@@ -1,0 +1,24 @@
+gnome 3 - make the power button interactive
+===========================================
+
+Cf https://wiki.archlinux.org/index.php/GNOME_3#GDM_Customization
+
+[source, sh]
+--------------------------------------------------------------------------------
+cat<<'EOF'>/tmp/pwbutton.sh
+xhost +SI:localuser:gdm
+chmod o+w /var/lib/gdm/.config/dconf
+su - gdm -s /bin/bash --command='
+  for line in `dbus-launch`; do export "$line"; done;
+  /usr/lib/dconf/dconf-service &
+  GSETTINGS_BACKEND=dconf gsettings set org.gnome.settings-daemon.plugins.power button-power "interactive"
+  GSETTINGS_BACKEND=dconf gsettings set org.gnome.settings-daemon.plugins.power button-hibernate "interactive"
+  gsettings list-recursively org.gnome.settings-daemon.plugins.power | grep button' 2> /dev/null
+chmod o-w /var/lib/gdm/.config/dconf
+xhost -SI:localuser:gdm
+EOF
+chmod +x /tmp/pwbutton.sh
+sudo /tmp/pwbutton.sh
+--------------------------------------------------------------------------------
+
+Additional tags : gnome3, tweak, tweaks

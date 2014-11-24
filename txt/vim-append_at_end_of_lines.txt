@@ -1,0 +1,17 @@
+vim - append at end of lines
+============================
+
+`C-v` (Visual Bloc) `$ A*`
+
+or
+
+`C-v :%norm A*`
+
+
+
+`%` = for every line
+
+`norm` = type the following commands
+
+`A*` = append '*' to the end of current line
+

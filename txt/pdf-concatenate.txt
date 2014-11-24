@@ -1,0 +1,38 @@
+pdf - concatenate documents
+===========================
+
+With pdftk
+----------
+
+--------------------------------------------------------------------------------
+sudo apt-get install pdftk
+pdftk file1.pdf file2.pdf file3.pdf cat output newfile.pdf
+--------------------------------------------------------------------------------
+
+With gs
+-------
+
+--------------------------------------------------------------------------------
+gs -sPAPERSIZE=a4 -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite \
+   -sOutputFile=<outfile> <infile> <infile> ...
+--------------------------------------------------------------------------------
+
+With pdflatex
+-------------
+
+--------------------------------------------------------------------------------
+%\documentclass[landscape]{article}
+\documentclass{article}
+
+\usepackage{pdfpages}
+
+\begin{document}
+
+\includepdf[pages=-]{doc1.pdf}
+\includepdf[pages=-]{doc2.pdf}
+\includepdf[pages=-]{doc3.pdf}
+
+\end{document}
+--------------------------------------------------------------------------------
+
+Additional tags : merge, join

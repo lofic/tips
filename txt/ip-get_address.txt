@@ -1,0 +1,44 @@
+IP - get address
+================
+
+If you know the interface name :
+
+--------------------------------------------------------------------------------
+/sbin/ifconfig eth0 | awk '/inet ad/ {sub(/[[:alpha:]]*:/,"");print $2}'
+
+ip a s eth0 | awk '/inet / {sub(/\/[[:digit:]]*/,"");print $2}'
+
+python -c 'import netifaces as n;print n.ifaddresses("eth0")[n.AF_INET][0]["addr"]'
+--------------------------------------------------------------------------------
+
+If the hostname and the name resolution are set :
+
+--------------------------------------------------------------------------------
+python -c 'import socket; print socket.gethostbyname(socket.gethostname())'
+
+ruby -r socket -e 'puts IPSocket.getaddress(Socket.gethostname)'
+--------------------------------------------------------------------------------
+
+Else (in ruby) :
+
+[source, ruby]
+--------------------------------------------------------------------------------
+require 'socket'
+
+def local_ip
+  # turn off reverse DNS resolution temporarily :
+  orig = Socket.do_not_reverse_lookup
+  Socket.do_not_reverse_lookup = true
+  # this does NOT make a connection but figures out
+  # what interface (and therefore IP address) it should bind to
+  UDPSocket.open {|s| s.connect('1.2.3.4', 1); s.addr.last }
+ensure
+  Socket.do_not_reverse_lookup = orig
+end
+
+puts local_ip
+--------------------------------------------------------------------------------
+
+(adapted from : http://coderrr.wordpress.com/2008/05/28/get-your-local-ip-address/)
+
+

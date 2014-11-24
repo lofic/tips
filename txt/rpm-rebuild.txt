@@ -1,0 +1,23 @@
+rpm - build or rebuild
+======================
+
+-----------------------------------------------------------------------------
+rpmbuild --rebuild the_package.src.rpm
+
+# or if you need to edit the spec file :
+
+rpm -ivh the_package.src.rpm
+cd $(rpm --eval %_topdir)
+rpmbuild -bb SPECS/the_package.spec
+-----------------------------------------------------------------------------
+
+Build with SCL (example : a ruby gem):
+
+-----------------------------------------------------------------------------
+yum -y install centos-release-SCL
+yum -y install scl-utils-build ruby193 ruby193-rubygems-devel \
+ruby193-rubygem-bundler ruby193-rubygem-rake
+rpmbuild -ba rubygem-foo.spec --define 'scl ruby193'
+-----------------------------------------------------------------------------
+
+Additional tags : scl, rhscl, software, collections

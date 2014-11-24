@@ -1,0 +1,32 @@
+ruby - recursive globbing with all files and subdirs
+====================================================
+
+[source, ruby]
+--------------------------------------------------------------------------------
+Dir['**/*']
+Dir.glob('**/*')
+--------------------------------------------------------------------------------
+
+Note : the list above contains folder names but not hidden files. This will give
+also hidden files and folders :
+
+[source, ruby]
+--------------------------------------------------------------------------------
+require 'find'
+Find.find('.') { |f| puts f }
+--------------------------------------------------------------------------------
+
+Note : symbolic links included but not followed.
+
+
+Search for specific extensions :
+
+[source, ruby]
+--------------------------------------------------------------------------------
+Dir['**/*.{jpg,JPG}']
+Dir.glob('**/*.{jpg,JPG}')
+--------------------------------------------------------------------------------
+
+
+Additional tags : glob, subdirectory, subdirectories, directory, directories,
+subfolder, subfolders, folder, folders, subdir

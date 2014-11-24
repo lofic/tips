@@ -1,0 +1,235 @@
+= Guide de survim
+
+:ascii-ids:
+:iconsdir: /usr/share/asciidoc/icons
+:imagesdir: ./images
+
+
+== Notation
+
+-----------------------------------------------------------------------------
+C-a == Ctrl-a
+M-a == Alt-a
+-----------------------------------------------------------------------------
+
+== .vimrc
+
+Sur Linux : `~/.vimrc`
+
+Sur Windows : `%UserProfile%\_vimrc`
+
+Exemple minimaliste :
+
+-----------------------------------------------------------------------------
+set nocompatible
+set ts=4 sts=4 sw=4 et
+set hlsearch
+set ff=unix
+let mapleader=","
+nnoremap <leader>p :set paste<cr>i
+" faster escape - type it fast
+imap ;; <Esc>"
+-----------------------------------------------------------------------------
+
+
+== Exit rapide
+
+`ZZ` (enregistre et quitte)
+
+`ZQ` (quitte sans enregistrer)
+
+== Visual block, visual line
+
+`C-v` "visual block"
+
+`V` (Shift-v) "visual line"
+
+Exemple : commenter un paragraphe
+
+-----------------------------------------------------------------------------
+vip C-v I # <Echap>
+-----------------------------------------------------------------------------
+
+
+== Déplacements dans le document
+
+Cf https://raw.githubusercontent.com/LevelbossMike/vim_shortcut_wallpaper/master/vim-shortcuts-dark_2560x1600.png
+
+Retenir en particulier :
+
+`C-b` "back" 1 page
+
+`C-u` "up" 1/2 page
+
+`C-d` "down" 1/2 page
+
+`C-f` "forward" 1 page
+
+Recentrer sur la ligne du curseur actif : zz
+
+Sauts (jumps) :
+
+`}` paragraphe suivant
+
+`%` jump from open/close
+
+== Sélections
+
+Cf http://lofic.github.io/tips/vim-motions.html
+
+Exemple : indenter un paragraphe
+
+-----------------------------------------------------------------------------
+vip>
+-----------------------------------------------------------------------------
+
+== Complétion
+
+De mots clefs : `C-n`
+
+De noms de fichiers : `C-x C-f`
+
+== Recherches / remplacement
+
+`/key` recherche "key"
+
+`%s/foo/bar/g` remplace globalement foo par bar
+
+Peut s'appliquer sur la sélection active (sélectionner, puis ":")
+
+== Registres
+
+`"ay` : "yank" (copie de la sélection) dans le registre a
+
+`"ap` : "paste" depuis le registre a
+
+`"zy` : "yank" (copie de la sélection) dans le registre z
+
+Registres avec l'historique des dernières copies : "0 "1 etc.
+
+== Correction orthographique
+
+https://blog.fedora-fr.org/metal3d/post/Correction-orthographique-et-grammaticale-avec-Vim
+
+`z=` spelling suggestions
+
+`]s` move your cursor to the next misspelled word
+
+`[s` move your cursor to the previous misspelled word
+
+
+== Quelques plugins pour démarrer
+
+Fugitive : intégration de vim et git
+
+minibufexpl : "Elegant buffer explorer"
+
+pathogen : "makes it super easy to install plugins and runtime files in their own private directories."
+
+Surround : "quoting/parenthesizing made simple"
+
+Autres plugins très utilisés : ack, airline, ctrlp, easytags, nerdtree, snipmate, syntastic
+
+== Screencasts pour aller plus loin
+
+http://vimcasts.org/episodes/
+
+== Exercice 1
+
+A partir du texte ci-dessous,
+
+* remplacer Window par Pingouin
+* remplacer toutes les occurences de window(s) par pingouin(s)
+* inverser les lignes 8 et 9 (en 3 lettres de commandes)
+* supprimer le bloc carré de "X" des lignes 11 à 15 (Mode Visual Block )
+* en utilisant le mode de sélection visual, copier/coller "menacés de disparition" de la ligne 20 à la fin des lignes 21 et 22
+* supprimer les 15 lignes de la ligne 25 à la ligne 39 (en 4 lettres de commande)
+* rechercher tous les mots pingouins du texte
+* si disponible : vérifier lorthographe (setlocal spell spelllang=fr)
+* sauvegarder et quitter
+
+-----------------------------------------------------------------------------
+Window, nom courant doiseaux marins proches des guillemots et des macareux.
+Le petit window, ou window torda, est un oiseau nageur dune quarantaine de
+centimètres de longueur.
+Son dos est noir, son ventre blanc. Sa queue et ses ailes sont courtes et sa
+démarche est maladroite.
+En revanche, cest un excellent nageur et plongeur, et comme le manchot il
+utilise ses ailes pour nager sous leau.
+Atlantique, migrant lhiver vers le sud, parfois jusquau cap Hatteras
+Le window passe la plus grande partie de lannée au large du nord de locéan
+(Caroline-du-Nord, États-Unis).
+Lété, il niche sur les saillies XXXXXXXXXXXXXXX rocheuses de la côte nord-atlantique, de
+Terre-Neuve et du Groenland à la XXXXXXXXXXXXXXX Norvège, puis il retourne au meme lieu de
+nidification chaque année pour poXXXXXXXXXXXXXXXndre un ou deux oeufs.
+Le grand window, aujourdhui diXXXXXXXXXXXXXXXsparu, était un oiseau de la taille dune oie.
+Il avait perdu la faculté de voleXXXXXXXXXXXXXXXr et était donc devenu une proie facile à
+chasser pour sa peau et son huile.
+Il disparut complètemnt vers 1850. Parmi cette famille, citons également
+les alques, les guillemots et les macareux.
+Les petits windows sont menacés de disparition.
+Les macareux sont également .
+Les guillemots sont aussi .
+Les windows sont proches des mouettes et des échassiers.
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+Les windows font partie de la famille des Alcidés, de lordre des
+Charadriiformes.
+Ce nom sapplique plus particulièrement aux oiseaux du genre Alca.
+Le petit window, ou window torda, a pour nom despèce A. torda et le grand
+window Pinguinus impennis.
+-----------------------------------------------------------------------------
+
+
+== Exercice 2
+
+Objectif : obtenir
+
+-----------------------------------------------------------------------------
+maliste = [ 'pim', 'pam', 'poum' ]
+-----------------------------------------------------------------------------
+
+
+A partir du texte ci-dessous.
+
+-----------------------------------------------------------------------------
+pim
+pam
+poum
+-----------------------------------------------------------------------------
+
+
+Correction :
+
+-----------------------------------------------------------------------------
+vip : visual in paragraph
+Ctrl-v : mode visual block
+I : insertion en début de ligne
+Ajouter le guillemet simple puis Echap
+gv : ancienne sélection
+$ : sélection jusqu'à la fin des lignes
+A : append en fin de ligne
+ajouter le guillemet et la virgule de séparation puis Echap
+vip : visual in paragraph
+J : join lines
+$C ] : remplacement de la virgule en trop par le crochet fermant
+I : insertion en début de ligne
+Ajouter le texte : maliste = [
+-----------------------------------------------------------------------------
+
+Note 1 : avec le plugin 'surround' on peut simplifier.
+
+Note 2 : on peut aussi ajouter en fin de lignes sélectionnées avec `:%norm A*`
+
+`%` = for every line
+
+`norm` = type the following commands
+
+`A*` = append "*" to the end of current line

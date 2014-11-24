@@ -1,0 +1,7 @@
+gnome 3 - tiling
+================
+
+Tiling can be done using Super+Left, Super+Right, Super+Up too
+
+Additional tags : gnome3, tile
+

@@ -1,0 +1,19 @@
+ascii art - various banners
+===========================
+
+--------------------------------------------------------------------------------
+banner -w 40 "test"
+
+figlet "test"
+figlet -l lean "test"
+
+cowsay -l
+cowsay -f kiss "test"
+cowsay -f tux "test"
+
+figlet -f slant "test" | cowsay -n  -f tux
+
+boxes -l | less
+echo "test" | boxes -d peek
+echo "test" | boxes -d parchment
+--------------------------------------------------------------------------------

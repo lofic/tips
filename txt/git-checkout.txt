@@ -1,0 +1,12 @@
+git - checkout
+==============
+
+Specific checkout :
+
+-----------------------------------------------------------------------------
+git checkout gh-pages
+# I am in gh-pages
+# Get every *.html file in the folder named html of the master branch :
+git checkout master -- html/*.html
+-----------------------------------------------------------------------------
+

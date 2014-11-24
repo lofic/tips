@@ -1,0 +1,17 @@
+screencast - howto
+==================
+
+You can start/stop recording your Gnome 3 Desktop by pressing
+
+--------------------------------------------------------------------------------
+<Ctrl>+<Shift>+<Alt>+<r>
+--------------------------------------------------------------------------------
+
+Or in a console :
+
+--------------------------------------------------------------------------------
+ffmpeg -f x11grab -s 1024x768 -i :0.0+0,0 -vcodec libvpx -y -r 25 -s 1024x768 \
+ "grabout.webm" &>/dev/null
+--------------------------------------------------------------------------------
+
+You can generate the apropriate command line with a helper like `screencastor`

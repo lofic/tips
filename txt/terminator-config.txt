@@ -1,0 +1,42 @@
+terminator - customize
+======================
+
+== Raccourcis
+
+Restaurer le comportement attendu de terminator avec Ctrl+Shift+e :
+
+Lancer `ibus-setup`, onglet Émoticône, supprimer ou modifier le raccourci 'Emoji
+annotation'
+
+== Configuration personnelle
+
+-------------------------------------------------------------------------------
+mkdir ~/.config/terminator
+
+cat<<EOF>~/.config/terminator/config
+[global_config]
+  borderless = True
+  title_hide_sizetext = True
+  title_transmit_bg_color = "#69a2b1"
+  window_state = fullscreen
+[keybindings]
+[layouts]
+  [[default]]
+    [[[child1]]]
+      parent = window0
+      type = Terminal
+    [[[window0]]]
+      parent = ""
+      type = Window
+[plugins]
+[profiles]
+  [[default]]
+    cursor_color = "#ffffff"
+    font = Monospace 12
+    foreground_color = "#ffffff"
+    scrollback_lines = 2028
+    use_system_font = False
+    use_theme_colors = True
+EOF
+-------------------------------------------------------------------------------
+

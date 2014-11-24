@@ -1,0 +1,8 @@
+KDE - composition
+=================
+
+Composition can be disabled, for example for energy saving when the battery is
+low.
+
+To reactivate composition : '<MAJ><ALT><F12>'
+

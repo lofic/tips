@@ -1,0 +1,12 @@
+vim - vimdir
+============
+
+System-wide `.vim` folder : `/usr/share/vim/vimfiles` (el6)
+
+Check the list with :
+
+--------------------------------------------------------------------------------
+:set runtimepath?
+--------------------------------------------------------------------------------
+
+Additional tag : vi

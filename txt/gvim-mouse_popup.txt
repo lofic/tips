@@ -1,0 +1,10 @@
+gvim - mouse popup
+==================
+
+Convenient for Tools -> Spelling -> Suggest corrections
+
+--------------------------------------------------------------------------------
+set mousemodel=popup
+--------------------------------------------------------------------------------
+
+Additional tags : vim, vi

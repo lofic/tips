@@ -1,0 +1,10 @@
+mutt - delete all messages
+==========================
+
+Just hold shift while pressing D, ~ (tilde), and A to select everything:
+
+-----------------------------------------------------------------------------
+D~A
+-----------------------------------------------------------------------------
+
+Additional tag : mail

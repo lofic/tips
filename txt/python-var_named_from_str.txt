@@ -1,0 +1,19 @@
+python - create variables named from strings
+============================================
+
+Note : you should AVOID THIS. Use dicts.
+
+[source, python]
+--------------------------------------------------------------------------------
+class genvar:
+    def __init__(self, key, value):
+        setattr(self, key, value)
+
+g=genvar('myvar','Louis was here')
+
+vars()['myvar']='Louis was here'
+
+print g.myvar
+print myvar
+--------------------------------------------------------------------------------
+

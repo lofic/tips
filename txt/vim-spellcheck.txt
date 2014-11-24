@@ -1,0 +1,12 @@
+vim - spellcheck
+================
+
+https://blog.fedora-fr.org/metal3d/post/Correction-orthographique-et-grammaticale-avec-Vim
+
+`z=` spelling suggestions
+
+`]s` move your cursor to the next misspelled word
+
+`[s` move your cursor to the previous misspelled word
+
+Additional tags : orthographe, correction

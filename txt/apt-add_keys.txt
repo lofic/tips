@@ -1,0 +1,15 @@
+apt - add keys
+==============
+
+Examples :
+
+--------------------------------------------------------------------------------
+gpg --keyserver hkp://wwwkeys.eu.pgp.net --recv-keys 2D230C5F
+gpg --armor --export 2D230C5F | apt-key add -
+
+gpg --keyserver hkp://wwwkeys.eu.pgp.net --recv-keys 1F41B907
+gpg --armor --export 1F41B907 | apt-key add -
+
+gpg --keyserver hkp://wwwkeys.eu.pgp.net --recv-keys 16BA136C
+gpg --armor --export 16BA136C | apt-key add -
+--------------------------------------------------------------------------------

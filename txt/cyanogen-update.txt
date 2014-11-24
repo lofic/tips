@@ -1,0 +1,45 @@
+lineageos - update
+==================
+
+Tested ATOW with :
+
+* lineage-13.0-20171231-nightly-maguro-signed.zip
+* open_gapps-arm-6.0-pico-20171230.zip
+
+Example :
+
+-----------------------------------------------------------------------------
+sudo apt-get -y install android-tools-adb
+
+# get previously downloaded firmware
+adb pull /sdcard/cmupdater/lineage-13.0-20171231-nightly-maguro-signed.zip .
+
+# Reboot in recovery mode
+adb reboot recovery
+
+# Boot menu : choose Install zip from sideload
+adb sideload lineage-13.0-20171231-nightly-maguro-signed.zip
+-----------------------------------------------------------------------------
+
+Before rebooting :
+
+* wipe cache partition
+* advanced -> wipe dalvik cache
+
+Google apps should be installed via recovery immediately after installing
+LineageOS. Exact steps vary, but the process is similar to that of installing
+LineageOS.
+
+After installing LineageOS, choose "install zip" or "Apply update" in recovery,
+and navigate to the zipfile loaded earlier.
+Reboot to system (i.e. LineageOS).
+
+-----------------------------------------------------------------------------
+# In recovery mode, Boot menu : choose Install zip from sideload
+adb sideload open_gapps-arm-6.0-pico-20171230.zip
+-----------------------------------------------------------------------------
+
+Important: if you reboot into LineageOS before installing Google apps, you must
+factory reset and then install them, otherwise expect crashes.
+
+Additional tag : android, lineageos, lineageOS

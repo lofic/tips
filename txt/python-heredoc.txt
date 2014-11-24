@@ -1,0 +1,13 @@
+python - heredoc or multiline string
+====================================
+
+[source, python]
+--------------------------------------------------------------------------------
+text="""{name}
+was
+{place}"""
+
+print(text.format(name='Louis', place='here'))
+--------------------------------------------------------------------------------
+
+Additional tag : heredocument

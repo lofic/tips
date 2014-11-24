@@ -1,0 +1,7 @@
+top - sort processes
+====================
+
+Sort by CPU usage : `P`
+
+Sort bu Memory usage : `M`
+

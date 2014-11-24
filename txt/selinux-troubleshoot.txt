@@ -1,0 +1,13 @@
+SELinux - troubleshoot
+======================
+
+--------------------------------------------------------------------------------
+yum -y install setroubleshoot-server
+setenforce Permissive
+/sbin/service auditd restart
+tail /var/log/audit.log
+tail /var/log/messages
+sealert -a /var/log/audit/audit.log
+--------------------------------------------------------------------------------
+
+Additional tags : audit, troubleshooting, selinux

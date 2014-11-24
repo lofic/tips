@@ -1,0 +1,12 @@
+emacs - install
+===============
+
+--------------------------------------------------------------------------------
+emver=23
+apt-get remove --purge emacs$emver emacs$emver-common emacs$emver-el \
+                       emacsen-common emacs$emver-bin-common
+apt-get install emacs$emver emacs$emver-common emacs$emver-el emacsen-common \
+                emacs$emver-bin-common
+apt-get install --reinstall dictionaries-common
+apt-get install auctex
+--------------------------------------------------------------------------------

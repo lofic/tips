@@ -1,0 +1,48 @@
+gnome 3 - custom shortcuts
+==========================
+
+With a standard user :
+
+[source, sh]
+-----------------------------------------------------------------------------
+s='org.gnome.settings-daemon.plugins.media-keys' # schema
+p='/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings' # path
+c='custom'
+
+gsettings set $s custom-keybindings \
+  "['$p/${c}0/','$p/${c}1/','$p/${c}2/', '$p/${c}3/', '$p/${c}4/', '$p/${c}5/', '$p/${c}6/', '$p/${c}7/']"
+
+gsettings set ${s}.${c}-keybinding:${p}/${c}0/ binding '<Primary><Alt>v'
+gsettings set ${s}.${c}-keybinding:${p}/${c}0/ command 'gvim'
+gsettings set ${s}.${c}-keybinding:${p}/${c}0/ name    'Graphical Vim'
+
+gsettings set ${s}.${c}-keybinding:${p}/${c}1/ binding '<Primary><Alt>t'
+gsettings set ${s}.${c}-keybinding:${p}/${c}1/ command 'gnome-terminal --tab --tab'
+gsettings set ${s}.${c}-keybinding:${p}/${c}1/ name    'Terminal'
+
+gsettings set ${s}.${c}-keybinding:${p}/${c}2/ binding '<Primary><Alt>e'
+gsettings set ${s}.${c}-keybinding:${p}/${c}2/ command 'terminator -m -f -b'
+gsettings set ${s}.${c}-keybinding:${p}/${c}2/ name    'Terminator'
+
+gsettings set ${s}.${c}-keybinding:${p}/${c}3/ binding '<Primary><Alt>f'
+gsettings set ${s}.${c}-keybinding:${p}/${c}3/ command 'firefox'
+gsettings set ${s}.${c}-keybinding:${p}/${c}3/ name    'Firefox'
+
+gsettings set ${s}.${c}-keybinding:${p}/${c}4/ binding '<Primary><Alt>g'
+gsettings set ${s}.${c}-keybinding:${p}/${c}4/ command 'chromium'
+gsettings set ${s}.${c}-keybinding:${p}/${c}4/ name    'Chrome'
+
+gsettings set ${s}.${c}-keybinding:${p}/${c}5/ binding '<Super>v'
+gsettings set ${s}.${c}-keybinding:${p}/${c}5/ command 'wmctrl -a "GVIM"'
+gsettings set ${s}.${c}-keybinding:${p}/${c}5/ name    'Switch to Graphical Vim'
+
+gsettings set ${s}.${c}-keybinding:${p}/${c}6/ binding '<Super>f'
+gsettings set ${s}.${c}-keybinding:${p}/${c}6/ command 'wmctrl -a "Mozilla Firefox"'
+gsettings set ${s}.${c}-keybinding:${p}/${c}6/ name    'Switch to Firefox'
+
+gsettings set ${s}.${c}-keybinding:${p}/${c}7/ binding '<Super>g'
+gsettings set ${s}.${c}-keybinding:${p}/${c}7/ command 'wmctrl -a "Chromium"'
+gsettings set ${s}.${c}-keybinding:${p}/${c}7/ name    'Switch to Chrome'
+-----------------------------------------------------------------------------
+
+Additional tags : gnome3, tweak

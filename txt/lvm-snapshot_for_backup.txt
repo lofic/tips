@@ -1,0 +1,37 @@
+lvm - snaphot for backups
+=========================
+
+-----------------------------------------------------------------------------
+# Create a LV
+lvcreate -n test -L+100M vg0
+
+# Mount a volume
+mkfs.ext4 /dev/vg0/test
+mkdir -p /mnt/test
+mount /dev/vg0/test /mnt/test
+echo '<your name here> was here.' > /mnt/test/probe1.txt
+
+# Snapshot of the LV
+lvcreate -s -n testsnap -L +50M /dev/vg0/test
+lvs
+
+# Mount the snapshot
+mkdir -p /mnt/testsnap
+mount -o ro /dev/vg0/testsnap /mnt/testsnap
+
+echo '<your name here> was here.' > /mnt/test/probe2.txt
+
+ls /mnt/test         # -> probe1.txt probe2.txt
+ls /mnt/testsnap/    # -> probe1.txt
+
+# We can use the snapshot for consistent backups
+# while the original volume is available and in use
+
+# Umount and delete the snapshot
+umount /mnt/testsnap/
+lvremove /dev/vg0/testsnap
+-----------------------------------------------------------------------------
+
+Additional tags : lvm, backup, lab, snapshot
+
+

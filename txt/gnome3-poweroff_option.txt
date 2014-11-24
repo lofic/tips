@@ -1,0 +1,26 @@
+gnome 3 - power off option in menu
+==================================
+
+This is `gnome-shell-extensions-alternative-status-menu`
+
+With Ubuntu 12.04 :
+
+--------------------------------------------------------------------------------
+cat<<EOF>/tmp/gsext.sh
+sudo add-apt-repository -y ppa:upubuntu-com/gnome3
+sudo apt-get update
+
+sudo apt-get -y install gnome-shell-extensions
+EOF
+
+chmod +x /tmp/gsext.sh
+/tmp/gsext.sh
+--------------------------------------------------------------------------------
+
+Now, type `<Alt><F2>`
+
+At the prompt, just type :
+
+`r<Enter>`
+
+Additional tags : gnome3, tweak, tweaks

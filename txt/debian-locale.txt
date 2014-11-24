@@ -1,0 +1,11 @@
+Debian 10 - French locale
+=========================
+
+-----------------------------------------------------------------------------
+sudo apt -y install locales
+sed -i  's/^#[\t ]\(en_US.UTF-8 UTF-8\)/\1/' /etc/locale.gen
+sed -i  's/^#[\t ]\(fr_FR.UTF-8 UTF-8\)/\1/' /etc/locale.gen
+locale-gen
+-----------------------------------------------------------------------------
+
+Additional tags : french, utf8, locales, lang

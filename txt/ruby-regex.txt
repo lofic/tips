@@ -1,0 +1,11 @@
+ruby - examples of regex search
+===============================
+
+Additional tag : regexp
+
+[source, ruby]
+--------------------------------------------------------------------------------
+File.read('/etc/resolv.conf').scan(/[ \t]*nameserver[ \t]+(\d+\.\d+\.\d+\.\d+)/).flatten
+
+%x[/sbin/ifconfig].scan(/inet ad.*?:(\d+\.\d+\.\d+\.\d+)/).flatten
+--------------------------------------------------------------------------------

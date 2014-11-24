@@ -1,0 +1,18 @@
+bash - shortcuts
+================
+
+If you don't have the default bindings (ex: some packages of bash on AIX), you
+can set some bindable readline commands.
+
+Put this in your `~/.inputrc` :
+
+--------------------------------------------------------------------------------
+C-a: beginning-of-line
+C-e: end-of-line
+C-l: clear-screen
+--------------------------------------------------------------------------------
+
+Search for 'Readline Command Names' in the bash manual for an extended list of
+readline commands and bindings.
+
+Additional tag : shortcut

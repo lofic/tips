@@ -1,0 +1,14 @@
+apt - fix badsig GPG Error
+==========================
+
+--------------------------------------------------------------------------------
+apt-get clean
+cd /var/lib/apt
+mv /var/lib/apt/lists /var/lib/apt/lists.old
+mkdir -p /var/lib/apt/lists/partial
+apt-get clean
+apt-get update
+rm -rf /var/lib/apt/lists.old
+--------------------------------------------------------------------------------
+
+Additional tags : bad, signature

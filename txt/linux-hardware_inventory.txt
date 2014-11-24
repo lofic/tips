@@ -1,0 +1,19 @@
+linux - hardware inventory
+==========================
+
+[source,sh]
+-----------------------------------------------------------------------------
+# Bus
+lspci
+lsusb
+
+# memory
+free -m
+
+# processors
+egrep 'model name|physical id|cores|siblings' /proc/cpuinfo
+
+# Drives
+fdisk -l
+-----------------------------------------------------------------------------
+

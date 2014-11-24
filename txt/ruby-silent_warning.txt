@@ -1,0 +1,20 @@
+ruby - temporary silent warning
+===============================
+
+[source, ruby]
+--------------------------------------------------------------------------------
+module Kernel
+    def with_warnings_suppressed
+        saved_verbosity = $-v
+        $-v = nil
+    yield
+    ensure
+        $-v = saved_verbosity
+    end
+end
+
+with_warnings_suppressed do
+    whatever()
+end
+---------------------------------------------------------------------------------
+

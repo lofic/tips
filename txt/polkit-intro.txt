@@ -1,0 +1,84 @@
+polkit - intro
+==============
+
+List the actions
+
+-----------------------------------------------------------------------------
+pkaction | grep Network
+-----------------------------------------------------------------------------
+
+
+Default parameters
+
+-----------------------------------------------------------------------------
+egrep -v 'description xml|message xml' /usr/share/polkit-1/actions/org.freedesktop.NetworkManager.policy
+-----------------------------------------------------------------------------
+
+
+Check the permissions (no output message : OK) :
+
+-----------------------------------------------------------------------------
+pkcheck --action-id org.freedesktop.NetworkManager.enable-disable-wifi -p $(pidof gnome-session) -u
+-----------------------------------------------------------------------------
+
+
+Modify some permissions (example 1) :
+
+-----------------------------------------------------------------------------
+cat<<'EOF'>/etc/polkit-1/rules.d/99-custom-demo.rules
+polkit.addRule(function(action, subject) {
+    if (action.id == "org.freedesktop.NetworkManager.enable-disable-wifi") {
+        return "no";
+    }
+});
+EOF
+-----------------------------------------------------------------------------
+
+Cf :
+
+* https://www.freedesktop.org/software/polkit/docs/latest/polkit.8.html
+
+* man 8 polkit
+
+
+Modify some permissions (example 2) :
+
+-----------------------------------------------------------------------------
+cat<<'EOF'>/etc/polkit-1/rules.d/99-custom-demo.rules
+polkit.addRule(function(action, subject) {
+    if (action.id == "org.freedesktop.NetworkManager.enable-disable-wifi") {
+        return "auth_admin";
+    }
+});
+EOF
+-----------------------------------------------------------------------------
+
+
+Modify some permissions (example 3) :
+
+-----------------------------------------------------------------------------
+cat<<'EOF'>/var/lib/polkit-1/localauthority/50-local.d/99-custom-demo.pkla
+[Wifi on off]
+Identity=unix-user:coilliotl;
+Action=org.freedesktop.NetworkManager.enable-disable-wifi
+ResultAny=yes
+ResultInactive=yes
+ResultActive=yes
+EOF
+-----------------------------------------------------------------------------
+
+
+Interesting links :
+
+https://docs.fedoraproject.org/en-US/Fedora/20/html/Networking_Guide/sec-System-wide_and_Private_Connection_Profiles.html
+
+https://fedoraproject.org/wiki/Features/NetworkManagerSystemConnections
+
+https://www.freedesktop.org/software/polkit/docs/latest/polkit.8.html
+
+http://blog.m8t.in/2011/05/changing-policykit-settings-per-user.html
+
+https://lauri.võsandi.com/cfgmgmt/polkit.html
+
+https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/Desktop_Migration_and_Administration_Guide/policykit.html
+

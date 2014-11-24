@@ -1,0 +1,19 @@
+python - recursive globbing with all files and subdirs
+======================================================
+
+[source, python]
+--------------------------------------------------------------------------------
+import os
+basedir='.'
+for root, dirs, files in os.walk(basedir):
+    print root # <- if you need the folders in the list
+    for fn in files:
+        absfn = os.path.join(root, fn)
+        zfn = absfn[len(basedir)+len(os.sep):]
+        print absfn
+--------------------------------------------------------------------------------
+
+Note : symbolic not links included.
+
+Additional tags : glob, subdirectory, subdirectories, directory, directories,
+subfolder, subfolders, folder, folders, subdir

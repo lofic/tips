@@ -1,0 +1,89 @@
+NFS - basic server
+==================
+
+== NFS v.4 on RHEL 7
+
+Basic, without Kerberos auth.
+
+-----------------------------------------------------------------------------
+yum -y install nfs-utils
+firewall-cmd --add-service=nfs --permanent
+firewall-cmd --add-service=nfs
+echo '/share 10.0.1.79(rw,sync,no_root_squash) 10.0.1.80(rw,sync,no_root_squash)' >> /etc/exports
+systemctl start rpcbind
+systemctl enable rpcbind
+systemctl start nfs
+systemctl enable nfs
+exportfs -a
+showmount -e
+-----------------------------------------------------------------------------
+
+
+== NFS v.3 on RHEL 6.
+
+Warning : NFS v3 traffic is NOT encrypted. Use NFS v4 for encryption.
+
+At least you should consider using a VLAN and firewall filter rules.
+
+Install the packages.
+
+[source, sh]
+-----------------------------------------------------------------------------
+yum -y install nfs-utils
+-----------------------------------------------------------------------------
+
+Configure a share
+
+[source, sh]
+-----------------------------------------------------------------------------
+mkdir /share
+chmod 777 /share
+echo '/share 1.1.1.2(rw) 1.1.1.3(rw)' >> /etc/exports
+-----------------------------------------------------------------------------
+
+Force ports.
+
+[source, sh]
+-----------------------------------------------------------------------------
+cat >> /etc/sysconfig/nfs << 'EOF'
+MOUNTD_PORT="888"
+STATD_PORT="889"
+RQUOTAD_PORT="890"
+LOCKD_TCPPORT="891"
+LOCKD_UDPPORT="891"
+EOF
+-----------------------------------------------------------------------------
+
+Open the firewall ports.
+
+Add rules in `/etc/sysconfig/iptables`, in first position.
+
+-----------------------------------------------------------------------------
+-A INPUT -p tcp -m tcp -m state --state NEW --dport 111   -j ACCEPT
+-A INPUT -p udp -m udp -m state --state NEW --dport 111   -j ACCEPT
+-A INPUT -p tcp -m tcp -m state --state NEW --dport 2049  -j ACCEPT
+-A INPUT -p udp -m udp -m state --state NEW --dport 2049  -j ACCEPT
+-A INPUT -p tcp -m tcp -m state --state NEW --dport 888:891 -j ACCEPT
+-A INPUT -p udp -m udp -m state --state NEW --dport 888:891 -j ACCEPT
+-----------------------------------------------------------------------------
+
+Enable and start the services.
+
+[source, sh]
+-----------------------------------------------------------------------------
+/sbin/service iptables restart
+/sbin/service rpcbind restart
+/sbin/chkconfig rpcbind on
+/sbin/service nfs start
+/sbin/chkconfig nfs on
+-----------------------------------------------------------------------------
+
+Check :
+
+[source, sh]
+-----------------------------------------------------------------------------
+exportfs
+showmount -e
+-----------------------------------------------------------------------------
+
+Additional tag : nfs

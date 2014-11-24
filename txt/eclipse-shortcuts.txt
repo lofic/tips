@@ -1,0 +1,13 @@
+eclipse - shortcuts
+===================
+
+--------------------------------------------------------------------------------
+<Shift>+<Ctrl>+<Up>   - Go to previous function, method or class
+<Shift>+<Ctrl>+<Down> - Go to next function, method or class
+<Ctrl>+</>            - Toggle comment
+<Ctrl>+<f>            - Search for text in source
+<Ctrl>+<k>            - Find again
+<Ctrl>+<s>            - Save
+--------------------------------------------------------------------------------
+
+Additional tag : shortcut

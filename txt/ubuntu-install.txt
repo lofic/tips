@@ -1,0 +1,124 @@
+ubuntu - installation
+=====================
+
+This is my installation of Ubuntu 12.04 LTS Precise Pangolin.
+
+Begin with a standard installation using `ubuntu-12.04-desktop-amd64.iso`
+
+Check : install third party software
+
+Custom partitioning.
+
+Then in the OS :
+
+[source, sh]
+--------------------------------------------------------------------------------
+# Gnome 3
+apt-get -y install gnome-session-fallback gconf-editor gnome-tweak-tool synaptic
+apt-get -y install gnome gnome-shell nautilus-open-terminal
+# then switch to Gnome
+
+# Tweaks
+sudo add-apt-repository -y ppa:tualatrix/ppa
+sudo apt-get update
+sudo apt-get -y install ubuntu-tweak
+sudo add-apt-repository -y ppa:webupd8team/jupiter
+sudo apt-get update
+sudo apt-get -y install jupiter
+
+# Text editor
+apt-get -y install vim vim-gtk exuberant-ctags
+
+# Dev
+apt-get -y install git-core gitk
+apt-get -y install pylint pyflakes pep8 python-virtualenv
+apt-get -y install ruby rbenv rubygems
+# cd /tmp
+# git clone git://github.com/sstephenson/ruby-build.git
+# cd ruby-build
+# sudo ./install.sh
+# cd -
+
+# Network
+apt-get -y install pump python-netifaces nmap
+
+# Web browsers
+apt-get -y install firefox flashplugin-installer
+apt-get -y install chromium-browser chromium-codecs-ffmpeg-extra
+add-apt-repository -y ppa:ubuntu-mozilla-security/ppa
+apt-get update
+apt-get -y upgrade
+
+# FTP clients
+apt-get -y install filezilla lftp
+
+# Security
+apt-get -y install enigmail
+
+# Password manager
+apt-get -y install cpm
+
+# Infographie
+apt-get -y install inkscape geeqie
+# Gimp 2.8
+add-apt-repository -y ppa:otto-kesselgulasch/gimp
+apt-get -y update
+apt-get -y install gimp
+
+# Instant messaging
+apt-get -y install pidgin xchat
+
+# Test display (glxgears...)
+apt-get -y install mesa-utils gtkperf
+
+# For Adobe Air
+#apt-get -y install ia32-libs
+
+# System
+apt-get -y install rcconf createrepo lvm2 tree cryptsetup mc
+
+# Remote connections and desktops
+apt-get -y install remmina freerdp openssh-server
+
+# Video
+apt-get -y install ubuntu-restricted-extras mplayer xine-ui transcode-utils
+/usr/share/doc/libdvdread4/install-css.sh
+
+# Autofs
+#apt-get -y install autofs
+
+# CD rip
+apt-get -y install lame asunder
+
+# Music player
+apt-get -y install clementine # browse your music by folder !
+
+# html5 video
+apt-get -y install ffmpeg x264 yasm libvpx1 transmageddon
+apt-get -y install gstreamer0.10-ffmpeg gstreamer0.10-plugins-good gstreamer0.10-plugins-bad
+
+# Content indexer
+apt-get -y install recoll aspell-fr
+
+# Structured text and markups
+#apt-get -y install asciidoc source-highlight texlive-lang-french
+#apt-get -y install libboost-regex-dev
+#apt-get -y install pandoc
+#apt-get -y install python-pygments
+#grep -B1 pygments /etc/asciidoc/asciidoc.conf
+#apt-get -y install markdown
+
+# KVM virtualization
+apt-get -y install kvm
+apt-get -y install libvirt-bin virtinst
+apt-get -y install uml-utilities # (pour tunctl)
+apt-get -y install virt-manager
+
+# pdf reader : evince
+# torrent client : /usr/bin/transmission-gtk
+# CD burn : brasero
+# image viewer : eog
+
+# Misc.
+apt-get -y install recode
+--------------------------------------------------------------------------------

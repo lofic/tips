@@ -1,0 +1,9 @@
+windows - firewall
+==================
+
+off and on :
+
+--------------------------------------------------------------------------------
+netsh advfirewall set allprofiles state off
+netsh advfirewall set allprofiles state on
+--------------------------------------------------------------------------------

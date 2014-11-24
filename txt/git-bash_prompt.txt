@@ -1,0 +1,18 @@
+git - bash prompt
+=================
+
+My custom configuration in ~/.bashrc :
+
+------------------------------------------------------------------------------
+GIT_PROMPT_START='[\u@\h \W]'
+GIT_PROMPT_END='\$ '
+GIT_PROMPT_THEME=Single_line
+source ~/.bash-git-prompt/gitprompt.sh
+------------------------------------------------------------------------------
+
+To use with magicmonty / bash-git-prompt :
+
+------------------------------------------------------------------------------
+git clone https://github.com/magicmonty/bash-git-prompt.git ~/.bash-git-prompt
+------------------------------------------------------------------------------
+

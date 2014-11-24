@@ -1,0 +1,61 @@
+Postgres server - quick and dirty setup
+=======================================
+
+For Postgres 9.6 on Centos 7
+
+[source, sh]
+-----------------------------------------------------------------------------
+sudo rpm -ivh \
+https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-7-x86_64/pgdg-centos96-9.6-3.noarch.rpm
+
+sudo yum -y install postgresql96-server postgresql96-contrib postgresql96-devel
+
+sudo /usr/pgsql-9.6/bin/postgresql96-setup initdb
+
+sudo systemctl start postgresql-9.6.service
+
+sudo systemctl status postgresql-9.6.service
+
+sudo systemctl enable postgresql-9.6.service
+
+sudo systemctl is-enabled postgresql-9.6.service
+
+# Post configuration
+
+sudo yum -y install augeas vim
+
+sudo augtool -s "set /files/var/lib/pgsql/9.6/data/postgresql.conf/listen_addresses '*'"
+
+sudo systemctl restart postgresql-9.6.service
+
+ss -plantu | awk '/LISTEN/ && /5432/'
+
+cat<<'EOF'>/tmp/addhbarule.txt
+defvar pghba /files/var/lib/pgsql/9.6/data/pg_hba.conf
+insert 01 before $pghba/1
+set $pghba/01/type host
+set $pghba/01/database all
+set $pghba/01/user bob
+set $pghba/01/address 10.0.1.0/24
+set $pghba/01/method md5
+save
+EOF
+
+sudo augtool < /tmp/addhbarule.txt
+
+cd /
+
+sudo -u postgres createuser -d -r -s bob -w
+
+sudo -u postgres psql -c "ALTER USER bob WITH PASSWORD 'plokiploki';"
+
+sudo systemctl reload postgresql-9.6.service
+-----------------------------------------------------------------------------
+
+
+Test with :
+
+[source, sh]
+-----------------------------------------------------------------------------
+psql -U bob -W -h $(hostname -s) postgres -c '\l'
+-----------------------------------------------------------------------------

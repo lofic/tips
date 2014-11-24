@@ -1,0 +1,8 @@
+gnome 3 - disable the visual keyboard in the unlock screen
+==========================================================
+
+--------------------------------------------------------------------------------
+gsettings set org.gnome.desktop.screensaver embedded-keyboard-enabled false
+--------------------------------------------------------------------------------
+
+Additional tags : gnome3, tweak, tweaks

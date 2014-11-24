@@ -1,0 +1,17 @@
+puppet - syntax and style guide compliance
+==========================================
+
+Syntax checking
+
+--------------------------------------------------------------------------------
+puppet parser validate yourmanifest.pp
+--------------------------------------------------------------------------------
+
+Style guide compliance
+
+-----------------------------------------------------------------------------
+gem install puppet-lint
+puppet-lint --with-filename yourmodulepath
+-----------------------------------------------------------------------------
+
+Additional tags : syntax, style, lint

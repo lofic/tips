@@ -1,0 +1,12 @@
+Windows - banalize a system
+===========================
+
+Use case : before making a VM template
+
+-----------------------------------------------------------------------------
+sysprep.exe /generalize /oobe /shutdown
+-----------------------------------------------------------------------------
+
+Command available in `windows\system32\sysprep`
+
+Additional tag : sysprep

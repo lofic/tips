@@ -1,0 +1,43 @@
+ubuntu - manual network configuration
+=====================================
+
+Disable Desktop Network Manager configuration :
+
+-----------------------------------------------------------------------------
+sudo stop network-manager
+echo "manual" | sudo tee /etc/init/network-manager.override
+-----------------------------------------------------------------------------
+
+Disable resolvconf auto DNS conf. service :
+
+-----------------------------------------------------------------------------
+cp /etc/resolv.conf /tmp/resolv.conf
+rm resolv.conf # delete the symlink to resolvconf
+mv /tmp/resolv.conf /etc/
+-----------------------------------------------------------------------------
+
+Example of manual configuration :
+
+`/etc/network/interfaces` :
+
+-----------------------------------------------------------------------------
+auto eth0
+iface eth0 inet static
+address 10.0.1.253
+netmask 255.255.255.0
+-----------------------------------------------------------------------------
+
+`/etc/resolv.conf` :
+
+-----------------------------------------------------------------------------
+search mylan.net
+nameserver 8.8.8.8
+-----------------------------------------------------------------------------
+
+Re-enable resolvconf auto DNS conf service (if you change your mind) :
+
+-----------------------------------------------------------------------------
+sudo dpkg-reconfigure resolvconf # answer YES to enable dynamic updates
+-----------------------------------------------------------------------------
+
+Additional tags : resolvconf, config

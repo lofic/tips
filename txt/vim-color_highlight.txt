@@ -1,0 +1,28 @@
+vim - color highlighting
+========================
+
+--------------------------------------------------------------------------------
+" Syntax group for item under cursor
+"nmap <C-e> :call SynStack()<CR>
+nmap <F12> :call SynStack()<CR>
+function! SynStack()
+  if !exists("*synstack")
+    return
+  endif
+  echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
+endfunction
+
+" color for item under cursor
+nmap <F11> :call <SID>SynColour()<CR>
+function! <SID>SynColour()
+    echo "guibg = ".synIDattr(synIDtrans( synID(line("."), col("."), 1) ), "bg#").", guifg = ".synIDattr(synIDtrans( synID(line("."), col("."), 1) ), "fg#")
+endfunction
+--------------------------------------------------------------------------------
+
+See also :
+
+--------------------------------------------------------------------------------
+:h highlight-groups
+--------------------------------------------------------------------------------
+
+Additional tags : vi, highlight

@@ -1,0 +1,58 @@
+ruby - examples of xml parsing
+==============================
+
+Given :
+
+[source, xml]
+--------------------------------------------------------------------------------
+<?xml version="1.0" encoding="UTF-8" ?>
+<FileZilla3>
+<Settings>
+    <!-- ... -->
+    <Setting name="Last local directory" type="string">/tmp</Setting>
+    <Setting name="Filelist directory sort" type="number">0</Setting>
+    <!-- ... -->
+    </Settings>
+</FileZilla3>
+--------------------------------------------------------------------------------
+
+We can search an element like this :
+
+[source, ruby]
+--------------------------------------------------------------------------------
+require 'rexml/document'
+File.open('filezilla.xml') {
+  |f| xdoc = REXML::Document.new(f)
+  puts xdoc.elements["//Setting[@name='Last local directory']"].text
+}
+--------------------------------------------------------------------------------
+
+We could also map this in arrays and hashes :
+
+[source, ruby]
+--------------------------------------------------------------------------------
+require 'xmlsimple'
+data = XmlSimple.xml_in('filezilla.xml',{'ForceArray'=>false})
+lastdir = data['Settings']['Setting'].each { |s| break s["content"]\
+                                        if s["name"] == "Last local directory" }
+puts lastdir
+
+puts
+
+require 'pp'
+pp data
+--------------------------------------------------------------------------------
+
+Result :
+
+[source, ruby]
+--------------------------------------------------------------------------------
+/tmp
+
+{"Settings"=>
+  {"Setting"=>
+    [{"name"=>"Last local directory", "type"=>"string", "content"=>"/tmp"},
+     {"name"=>"Filelist directory sort", "type"=>"number", "content"=>"0"}]}}
+--------------------------------------------------------------------------------
+
+Additional tag : parser

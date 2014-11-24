@@ -1,0 +1,8 @@
+tabs2spaces - expand
+====================
+
+--------------------------------------------------------------------------------
+expand the_file > the_file.expanded
+--------------------------------------------------------------------------------
+
+Additional tags : tab, tabs, space, spaces, character, characters

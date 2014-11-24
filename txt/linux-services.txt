@@ -1,0 +1,4 @@
+linux - services
+================
+
+SysV init (old distros) vs Upstart (Ubuntu) and Systemd (Fedora)

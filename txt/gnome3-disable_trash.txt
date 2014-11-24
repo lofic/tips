@@ -1,0 +1,17 @@
+gnome 3 - disable the trash
+===========================
+
+[source, sh]
+--------------------------------------------------------------------------------
+rm -rf ~/.local/share/Trash/*
+sudo chattr +i ~/.local/share/Trash/
+--------------------------------------------------------------------------------
+
+Then, to check if the trash is empty, install :
+
+https://extensions.gnome.org/extension/48/trash/
+
+You will see the icon of the trash in the status bar ONLY if the trash is not empty.
+
+Additional tags : gnome3, tweak, tweaks
+

@@ -1,0 +1,203 @@
+ruby - gruff installation
+=========================
+
+The Gruff Graphing Library is a project to make beautiful graphs with Ruby easily.
+
+It relies on ImageMagick and RMagick.
+
+Installation on Red Hat/Centos systems
+--------------------------------------
+
+The package `ImageMagick` is in the standard OS repository.
+
+The package `ruby-RMagick` is available on EPEL.
+
+[source, sh]
+--------------------------------------------------------------------------------
+yum -y install ImageMagick
+yum -y install ruby-RMagick # needs EPEL
+yum -y install liberation-fonts # RHEL 5
+yum -y install liberation-fonts-common liberation-sans-fonts # RHEL 6
+gem install gruff
+--------------------------------------------------------------------------------
+
+You can download the gem on link:http://www.rubygems.org[http://www.rubygems.org]
+
+Alternatively you can use a rpm package for gruff, `rubygem-gruff`, available on
+link:http://www.kermit.fr/custom/[http://www.kermit.fr/custom/]
+
+Use the font like this :
+
+[source, ruby]
+--------------------------------------------------------------------------------
+g = Gruff::Line.new()
+g.font = '/usr/share/fonts/liberation/LiberationSans-Regular.ttf'
+--------------------------------------------------------------------------------
+
+
+Installation on Windows
+-----------------------
+
+I followed the video tutorial link:http://www.youtube.com/watch?v=gEWAVlNCKhg[RMagick 2.13.1 Gem Install for Ruby 1.9.3 on Windows 7]
+
+Here is a summary with some extra details.
+
+Tested on Windows 2003 and Windows Seven.
+
+Download Ruby for Windows from link:http://www.rubyinstaller.org/downloads/[http://www.rubyinstaller.org/downloads/]
+
+Install in `c:\Ruby193` :
+
+* `rubyinstaller-1.9.3-p194.exe`
+
+During the installation, select 'Add Ruby executables to you PATH' and 'Associate .rb files with this Ruby installation'.
+
+
+Download Development Kit from link:http://www.rubyinstaller.org/downloads/[http://www.rubyinstaller.org/downloads/]
+
+* `DevKit-tdm-32-4.5.2-20111229-1559-sfx.exe`
+
+Check the installation procedure from link:https://github.com/oneclick/rubyinstaller/wiki/Development-Kit[https://github.com/oneclick/rubyinstaller/wiki/Development-Kit]
+
+Unzip in `C:\DevKit`
+
+Then at a command prompt :
+
+--------------------------------------------------------------------------------
+C:
+cd \DevKit
+ruby dk.rb init
+ruby dk.rb install
+--------------------------------------------------------------------------------
+
+Download MinGW from link:http://sourceforge.net/projects/mingw/files/[http://sourceforge.net/projects/mingw/files/]
+
+* `x86-mingw32-build-1.0-sh.tar.bz2`
+
+Install in `C:\MinGW`
+
+During the installation, select 'MinGW Developer Toolkit'.
+
+
+Add `C:\MinGW\bin;` at the beginning of the PATH environment variable.
+
+
+Download ImageMagick from link:http://imagemagick.org/script/binary-releases.php#windows[http://imagemagick.org/script/binary-releases.php#windows]
+
+Install in `C:\ImageMagick` :
+
+* `ImageMagick-6.7.9-4-Q16-windows-static.exe`
+
+AND
+
+* `ImageMagick-6.7.9-4-Q16-windows-dll.exe`
+
+During the installation, select 'Install development headers for C and C++'.
+
+
+Download the source code from link:http://www.imagemagick.org/script/download.php[http://www.imagemagick.org/script/download.php]
+
+* `ImageMagick-6.7.9-4.zip`
+
+Extract as `C:\ImageMagick\SourceCode`
+
+Get the `rmagick` gem from link:http://www.rubygems.org[http://www.rubygems.org]
+
+Build it in a command prompt :
+
+--------------------------------------------------------------------------------
+gem install rmagick-2.13.1.gem --platform=ruby -- "--with-opt-include=C:/ImageMagick/SourceCode" "--with-opt-lib=C:/ImageMagick"
+--------------------------------------------------------------------------------
+
+Get the `gruff` gem from link:http://www.rubygems.org[http://www.rubygems.org]
+
+Install it :
+
+--------------------------------------------------------------------------------
+gem install gruff-0.3.6.gem
+--------------------------------------------------------------------------------
+
+In your programs with Gruff 0.3.6, you get a "ZeroDivisionError".
+
+Patch with information from link:https://github.com/topfunky/gruff/issues/21[https://github.com/topfunky/gruff/issues/21]
+
+In `lib/gruff/base.rb` (`C:\Ruby193\lib\ruby\gems\1.9.1\gems\gruff-0.3.6\lib\gruff\base.rb`),
+
+replace :
+
+[source, ruby]
+--------------------------------------------------------------------------------
+     def label(value)
+       label = if (@spread.to_f % @marker_count.to_f == 0) || !@y_axis_increment.nil?
+--------------------------------------------------------------------------------
+
+With :
+
+[source, ruby]
+--------------------------------------------------------------------------------
+     def label(value)
+       label = if (@spread.to_f % (@marker_count.to_f==0 ? 1 : @marker_count.to_f) == 0) || !@y_axis_increment.nil?
+--------------------------------------------------------------------------------
+
+Or force `maker_count` just after instantiation :
+
+[source, ruby]
+--------------------------------------------------------------------------------
+g = Gruff::Line.new()
+g.marker_count = 10
+--------------------------------------------------------------------------------
+
+Monkey patch for displaying labels vertically
+---------------------------------------------
+
+For Gruff 0.3.6.
+
+Just add at the top of your program :
+
+[source, ruby]
+--------------------------------------------------------------------------------
+# Monkey patch for displaying labels vertically in Gruff 0.3.6
+
+class Gruff::Base
+    def draw_label(x_offset, index)
+          return if @hide_line_markers
+
+          if !@labels[index].nil? && @labels_seen[index].nil?
+            y_offset = @graph_bottom + LABEL_MARGIN
+
+            @d.fill = @font_color
+            @d.font = @font if @font
+            @d.stroke('transparent')
+            @d.rotation = 90 # patch
+            @d.text_align( LeftAlign ) # patch
+            @d.font_weight = NormalWeight
+            @d.pointsize = scale_fontsize(@marker_font_size)
+            @d.gravity = NorthWestGravity # patch
+            @d = @d.annotate_scaled(@base_image,
+                                    1.0, 1.0,
+                                    x_offset, y_offset,
+                                    @labels[index], @scale)
+            @d.rotation = -90 # patch
+            @labels_seen[index] = 1
+            debug { @d.line 0.0, y_offset, @raw_columns, y_offset }
+          end
+    end
+
+    def bmargin=(margin)
+        @bottom_margin = margin
+    end
+end
+--------------------------------------------------------------------------------
+
+You may need also to reduce the font size for the labels and adjust the margin :
+
+[source, ruby]
+--------------------------------------------------------------------------------
+g = Gruff::Line.new()
+g.marker_font_size = 11
+g.bmargin = 60          # check the method in the monkey patch above
+--------------------------------------------------------------------------------
+
+
+
+Additional tags : graph, chart, rmagick, imagemagick

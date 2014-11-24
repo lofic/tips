@@ -1,0 +1,17 @@
+firefox - keyword for a quick search
+====================================
+
+Right click on a search field -> Add a Keyword for this Search
+
+Example : `d` for DuckDuckGo search
+
+Use the keyword on the navigation (URL) bar
+
+Quick search keystroke :
+
+--------------------------------------------------------------------------------
+Ctrl-t Ctrl-l d [search criteria]
+--------------------------------------------------------------------------------
+
+
+

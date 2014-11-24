@@ -1,0 +1,105 @@
+iSCSI how to on Linux Red Hat
+=============================
+
+== RHEL 7
+
+=== Configure the target
+
+Let's assume that we want to share a disk = /dev/sdc
+
+Create a logical volume :
+
+[source, sh]
+-----------------------------------------------------------------------------
+pvcreate /dev/sdc
+vgcreate vgiscsi /dev/sdc
+lvcreate -n lviscsi -L+100G vgiscsi
+-----------------------------------------------------------------------------
+
+Now we have a logical volume named `/dev/vgiscsi/lviscsi`
+
+-----------------------------------------------------------------------------
+firewall-cmd --add-service=iscsi-target --permanent
+firewall-cmd --add-service=iscsi-target
+yum -y install targetcli
+systemctl enable target
+targetcli
+/> cd backstores/fileio
+/backstores/fileio> create disk01 /dev/vgiscsi/lviscsi
+/backstores/fileio> cd /iscsi
+/iscsi> create iqn.2017-04.example.lab:storage.target00
+/iscsi> cd iqn.2017-04.example.lab:storage.target00/tpg1/luns
+/iscsi/iqn.20...t00/tpg1/luns> create /backstores/fileio/disk01
+# ACL for initiators :
+/iscsi/iqn.20...t00/tpg1/luns> cd ../acls
+/iscsi/iqn.20...t00/tpg1/acls> create iqn.1998-01.com.vmware:esxlab1-55a41a99
+/iscsi/iqn.20...t00/tpg1/acls> create iqn.1998-01.com.vmware:esxlab2-788b99d8
+/iscsi/iqn.20...t00/tpg1/acls> ls
+-----------------------------------------------------------------------------
+
+
+== RHEL 6 and Centos 6
+
+=== Configure the target
+
+Let's assume that we want to share a disk = /dev/sdc
+
+Create a logical volume :
+
+[source, sh]
+-----------------------------------------------------------------------------
+pvcreate /dev/sdc
+vgcreate vgiscsi /dev/sdc
+lvcreate -n lviscsi -L+10G vgiscsi
+-----------------------------------------------------------------------------
+
+Now we have a logical volume named `/dev/vgiscsi/lviscsi`
+
+[source, sh]
+-----------------------------------------------------------------------------
+yum -y install scsi-target-utils
+yum -y install lvm2
+vim /etc/tgt/targets.conf
+-----------------------------------------------------------------------------
+
+Here is a basic configuration example to set in `targets.conf` :
+
+[source, sh]
+-----------------------------------------------------------------------------
+<target iqn.2013-04.com.example:server.target1>
+    backing-store /dev/vgiscsi/lviscsi
+    initiator-address 192.168.1.10
+    initiator-address 192.168.1.11
+</target>
+-----------------------------------------------------------------------------
+
+Then :
+
+[source, sh]
+-----------------------------------------------------------------------------
+/sbin/chkconfig tgtd on
+/sbin/service tgtd start
+tgtadm --lld iscsi --mode target --op show
+tgt-admin -s
+-----------------------------------------------------------------------------
+
+=== Configure the initiator
+
+[source, sh]
+-----------------------------------------------------------------------------
+yum -y install iscsi-initiator-utils
+grep lu_reset_timeout /etc/iscsi/iscsid.conf # set 10
+grep timeo.replace /etc/iscsi/iscsid.conf    # set 10
+/sbin/chkconfig iscsi on
+/sbin/service iscsi start
+iscsiadm -m discovery -t sendtargets -p <tgtip>
+iscsiadm -m node -T <tgtiqn> -p <tgtip> -l
+iscsiadm -m node
+ls /var/lib/iscsi/send_targets/
+-----------------------------------------------------------------------------
+
+You should now have a new /dev/sd<x> device available for mounting.
+
+Warning : if you set a mount mapping in `/etc/fstab` for persistence across
+reboots, use the `_netdev` option.
+

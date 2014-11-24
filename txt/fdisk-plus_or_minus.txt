@@ -1,0 +1,72 @@
+fdisk - output with plus or minus sign
+======================================
+
+Parfois, derrière les tailles indiquées par fdisk, nous avons constaté
+un plus ou un moins.
+
+Exemple:
+
+--------------------------------------------------------------------------------
+fdisk -l
+
+Disk /dev/hda: 40.0 GB, 40007761920 bytes
+240 heads, 63 sectors/track, 5168 cylinders
+Units = cylinders of 15120 * 512 = 7741440 bytes
+
+   Device Boot      Start         End      Blocks   Id  System
+/dev/hda1   *           1        1355    10243768+   7  HPFS/NTFS
+/dev/hda2            1356        5168    28826280    f  W95 Ext'd (LBA)
+/dev/hda5            1356        1872     3908488+  83  Linux
+/dev/hda6            1873        2001      975208+  82  Linux swap
+/dev/hda7            2002        3809    13668448+  83  Linux
+/dev/hda8            3810        5168    10274008+   b  W95 FAT32
+--------------------------------------------------------------------------------
+
+
+J'ai trouvé l'explication. Cela correspond à un arrondi.
+
+Un block fait 1024o, un secteur 512 ... soit 0,5 (arrondi
+à 1- ) block /secteur.
+
+Donc si on a un plus ou un moins, cela signifie qu'il y a un secteur en
+plus ou en moins par rapport au nombre de blocs.
+
+
+Ce que l'on vérifie bien en affichant les tailles en nombre de secteurs:
+
+--------------------------------------------------------------------------------
+sfdisk -l -uS
+
+Disk /dev/hda: 77520 cylinders, 16 heads, 63 sectors/track
+Warning: The partition table looks like it was made
+  for C/H/S=*/240/63 (instead of 77520/16/63).
+For this listing I'll assume that geometry.
+Units = sectors of 512 bytes, counting from 0
+
+   Device Boot    Start       End   #sectors  Id  System
+/dev/hda1   *        63  20487599   20487537   7  HPFS/NTFS
+/dev/hda2      20487600  78140159   57652560   f  W95 Ext'd (LBA)
+		start: (c,h,s) expected (1023,239,63) found (1023,0,1)
+/dev/hda3             0         -          0   0  Empty
+/dev/hda4             0         -          0   0  Empty
+/dev/hda5      20487663  28304639    7816977  83  Linux
+/dev/hda6      28304703  30255119    1950417  82  Linux swap
+/dev/hda7      30255183  57592079   27336897  83  Linux
+/dev/hda8      57592143  78140159   20548017   b  W95 FAT32
+--------------------------------------------------------------------------------
+
+Or, on a bien 20487537/2 = 10243768.5 -> 10243768+
+
+CQFD.
+
+Après, cela dépend du nombre de secteurs par blocs, paramètre que l'on
+peut configurer lors d'un formatage de partition.
+
+Si on manipule uniquement des gros fichiers, il vaut mieux spécifier de
+gros blocs, les accès seront plus rapides.
+
+Mais alors, de petits fichiers risquent de gacher de l'espace, car on ne
+peut pas utiliser un même bloc pour plusieurs fichiers.
+
+Il y a un juste équilibre à trouver.
+

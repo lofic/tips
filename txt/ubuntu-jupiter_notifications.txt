@@ -1,0 +1,10 @@
+ubuntu - disable annoying jupiter notifications
+===============================================
+
+Disable the notify-send notification 'Maximum Performance Mode'
+
+--------------------------------------------------------------------------------
+grep notify /usr/lib/jupiter/scripts/cpu-control
+--------------------------------------------------------------------------------
+
+

@@ -1,0 +1,18 @@
+linux - ID
+==========
+
+IP vs hostnames
+
+UID vs user name
+
+GID vs group name
+
+PID vs process name
+
+inodes
+
+file descriptors and file handles of the processes
+
+minor, major and handles for devices
+
+UUID for devices

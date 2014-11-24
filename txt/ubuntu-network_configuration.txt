@@ -1,0 +1,18 @@
+ubuntu - network configuration
+==============================
+
+* Automatic network configuration
+
+Service = `network-manager`
+
+Service = `resolvconf`
+
+Administration with `gnome-control-center network`
+
+* Manual system configuration (static IP or DHCP) :
+
+Service = `network`
+
+Configuration in `/etc/network/interfaces` and `/etc/resolv.conf`
+
+Additional tags : resolvconf, config

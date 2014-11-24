@@ -1,0 +1,154 @@
+augeas - examples
+=================
+
+== Use the context attribute of the augeas puppet type
+
+[source, ruby]
+-----------------------------------------------------------------------------
+augeas { 'sshd_config':
+    context  => '/files/etc/ssh/sshd_config',
+    changes  => [
+      'set PubkeyAuthentication yes',
+      'set AuthorizedKeysFile .ssh/authorized_keys',
+      'set PermitRootLogin no',
+      'set AllowTcpForwarding no',
+      'set X11Forwarding no',
+      ],
+    notify => Service[ 'sshd' ],
+}
+-----------------------------------------------------------------------------
+
+== Search for a specific key and update the value
+
+[source, ruby]
+-----------------------------------------------------------------------------
+$httpdconf='/etc/httpd/conf/httpd.conf'
+
+augeas { 'apache customization' :
+    incl    => $httpdconf,
+    lens    => 'Httpd.lns',
+    context => '/files/etc/httpd/conf/httpd.conf',
+    changes => [
+        'set directive[.="DocumentRoot"]/arg "/applis/httpd/html"',
+        'set directive[.="ServerTokens"]/arg "Prod"',
+        'set directive[.="ServerSignature"]/arg "Off"',
+        'set directive[.="DirectoryIndex"]/arg "index.html index.php"'
+      ],
+    require => Package[ 'httpd' ],
+    notify => Service[ 'httpd' ],
+}
+-----------------------------------------------------------------------------
+
+== xml
+
+Given the xml file /data/books.xml :
+
+[source, xml]
+-----------------------------------------------------------------------------
+<catalog>
+   <book id="bk101">
+      <author>Herman Melville</author>
+      <title>Moby-Dick</title>
+      <description genre='Psychological novel'>
+      The mental anguish and moral dilemmas of Raskolnikov, an impoverished
+      ex-student in Saint Petersburg who formulates a plan to kill an
+      unscrupulous pawnbroker for her money.
+      </description>
+   </book>
+   <book id="bk102">
+      <author>Miguel de Cervantes</author>
+      <title>Don Quixote</title>
+   </book>
+   <book id="bk103">
+      <author>J. R. R. Tolkien</author>
+      <title>Winnie-the-Pooh</title>
+      <description genre="Children's literature">
+      The adventures of a teddy bear called Winnie-the-Pooh and his friends.
+      </description>
+   </book>
+</catalog>
+-----------------------------------------------------------------------------
+
+Edit with augeas :
+
+[source, bash]
+-----------------------------------------------------------------------------
+augtool \
+    --noload --noautoload \
+    --root '/data' \
+    --transform 'xml.lns incl /books.xml' \
+    --echo
+
+defnode targetnode /files/books.xml/catalog/book[#attribute[id="bk102"]]/description
+
+set $targetnode/#attribute/genre 'Novel'
+set $targetnode/#text 'The adventures of a noble hidalgo who reads so many chivalric romances...'
+save
+
+print $targetnode/#text
+print $targetnode/#attribute/genre
+
+clear $targetnode
+
+quit
+-----------------------------------------------------------------------------
+
+With puppet :
+
+[source, ruby]
+-----------------------------------------------------------------------------
+$dqdescr = join([
+    'The adventures of a noble hidalgo who reads so many chivalric',
+    ' romances that he loses his sanity and decides to set out to revive',
+    ' chivalry, undo wrongs, and bring justice to the world, under the',
+    ' name Don Quixote de la Mancha.',
+], '')
+
+$dqid = 'bk102'
+
+augeas { 'Add descr. and genre for Don Quixote':
+    root    => '/data',
+    incl    => '/books.xml',
+    lens    => 'Xml.lns',
+    context => '/files/books.xml',
+    changes => [
+      "defnode targetnode catalog/book[#attribute[id=\"${dqid}\"]]/description ''",
+      'set $targetnode/#attribute/genre "Novel"',
+      "set \$targetnode/#text '${dqdescr}'",
+      'clear $targetnode',
+    ]
+}
+-----------------------------------------------------------------------------
+
+
+Xml file after the edition :
+
+[source, xml]
+-----------------------------------------------------------------------------
+<catalog>
+   <book id="bk101">
+      <author>Herman Melville</author>
+      <title>Moby-Dick</title>
+      <description genre='Psychological novel'>
+      The mental anguish and moral dilemmas of Raskolnikov, an impoverished
+      ex-student in Saint Petersburg who formulates a plan to kill an
+      unscrupulous pawnbroker for her money.
+      </description>
+   </book>
+   <book id="bk102">
+      <author>Miguel de Cervantes</author>
+      <title>Don Quixote</title>
+      <description genre="Novel">The adventures of a noble hidalgo who reads so
+      many chivalric romances...</description>
+   </book>
+   <book id="bk103">
+      <author>J. R. R. Tolkien</author>
+      <title>Winnie-the-Pooh</title>
+      <description genre="Children's literature">
+      The adventures of a teddy bear called Winnie-the-Pooh and his friends.
+      </description>
+   </book>
+</catalog>
+-----------------------------------------------------------------------------
+
+Additional tags : puppet, augtool

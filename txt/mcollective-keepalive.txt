@@ -1,0 +1,39 @@
+mcollective - keepalive
+=======================
+
+Useful for :
+
+* nodes behind firewalls closing connections after a while
+* brokers in failover mode behind a vIP
+* ...
+
+When they send nothing, the nodes don't see that the link in down. They don't reconnect.
+
+Recent versions of MCollective have a TCP keep alive, but this only kicks in after 2 hours of idle.
+
+Solution : deploy the following settings on all nodes.
+
+In `/etc/mcollective/server.cfg` :
+
+[source, ini]
+--------------------------------------------------------------------------------
+# Registration (can be used for keepalive)
+registerinterval = 300
+registration = Keepalive
+--------------------------------------------------------------------------------
+
+
+In `/usr/libexec/mcollective/mcollective/registration/keepalive.rb` :
+
+[source, ruby]
+--------------------------------------------------------------------------------
+module MCollective
+    module Registration
+        class Keepalive<Base
+            def body
+                'I am alive'
+            end
+        end
+    end
+end
+--------------------------------------------------------------------------------

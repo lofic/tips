@@ -1,0 +1,8 @@
+puppet - inspect a variable
+===========================
+
+------------------------------------------------------------------------------
+notice(inline_template("<%= @the_var.inspect %>"))
+file {'/tmp/inspect.txt': content => inline_template('<%= @the_var.to_yaml %>')}
+-----------------------------------------------------------------------------
+

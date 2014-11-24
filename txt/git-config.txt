@@ -1,0 +1,27 @@
+git - config
+============
+
+Example :
+
+-----------------------------------------------------------------------------
+git config --global alias.br    branch
+git config --global alias.ci    commit
+git config --global alias.co    checkout
+git config --global alias.mrg   merge
+git config --global alias.st    status
+
+git config --global core.editor 'vim -f'
+
+git config --global pager.branch false
+
+git config --global pull.rebase true
+git config --global push.default simple
+git config --global merge.ff true
+
+# the quotes are essential here :
+git config --global alias.pf 'push --force-with-lease'
+
+cat ~/.gitconfig
+-----------------------------------------------------------------------------
+
+Additional tags: .gitconfig

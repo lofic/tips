@@ -1,0 +1,38 @@
+IRC - use services
+==================
+
+Examples :
+
+-----------------------------------------------------------------------------
+/msg nickserv register <password> <email>
+
+/nick <nick>
+/msg nickserv identify <password>
+
+/msg nickserv set secure on
+
+/msg chanserv register #mychannel
+
+/msg operserv mode #mychannel +o louis
+
+/msg operserv mode #mychannel +nt
+/msg operserv mode #mychannel -i
+
+/msg botserv assign #mychannel ChanServ
+
+/msg operserv stats
+-----------------------------------------------------------------------------
+
+Regaining control of a nick :
+
+-----------------------------------------------------------------------------
+/msg nickserv ghost <nick> <password>
+/nick <nick>
+/msg nickserv identify <password>
+
+# If it's not enough :
+/msg nickserv recover <nick> <password>
+/msg nickserv release <nick> <password>
+-----------------------------------------------------------------------------
+
+

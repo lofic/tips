@@ -1,0 +1,84 @@
+Debian 7 - Installation
+=======================
+
+This is my installation of Debian 7 Wheezy.
+
+During the installation, at the tasksel step, check :
+
+* Desktop env.
+* SSH server
+* Laptop (if relevant !)
+
+Enable repos main contrib non-free; then
+
+-----------------------------------------------------------------------------
+# Update
+sudo apt-get update
+sudo apt-get -y upgrade
+
+# Radeon graphic card on HP Elitebook 8560p
+sudo apt-get -y install fglrx-control fglrx-driver
+sudo aticonfig --initial
+# for tuning:  gksudo amdcccle
+
+# Wireless network card on HP Elitebook 8560p
+sudo apt-get -y install firmware-iwlwifi wireless-tools
+# Configure the wifi with nm-connection-editor
+
+# Gnome
+sudo apt-get -y install gconf-editor
+
+# Text editor
+sudo apt-get -y install vim vim-gtk exuberant-ctags ack-grep ruby-dev
+
+# Development
+sudo apt-get install rake rbenv ruby-nokogiri
+
+# FTP clients
+apt-get -y install filezilla lftp
+
+# Console password manager
+sudo apt-get -y install cpm
+
+# Firefox
+sudo apt-get -y install pkg-mozilla-archive-keyring
+sudo echo 'deb http://mozilla.debian.net/ wheezy-backports iceweasel-release' > /etc/apt/sources.list.d/firefox.list
+sudo apt-get update
+sudo apt-get -y install -t wheezy-backports iceweasel
+
+# Instant messaging
+sudo apt-get -y install pidgin xchat
+
+# Multimedia
+sudo apt-get -y install mplayer
+sudo apt-get -y install flashplugin-nonfree
+
+# Infographie
+sudo apt-get -y install inkscape geeqie
+
+# Content indexer
+sudo apt-get -y install recoll aspell-fr
+
+# Structured text and markups
+#sudo apt-get -y install asciidoc source-highlight texlive-lang-french
+#sudo apt-get -y install python-pygments
+#sudo grep -B1 pygments /etc/asciidoc/asciidoc.conf
+#sudo apt-get -y install markdown
+
+# KVM virtualization
+sudo apt-get -y install kvm
+sudo apt-get -y install libvirt-bin virtinst
+sudo apt-get -y install uml-utilities # (for tunctl)
+sudo apt-get -y install virt-manager
+
+# Misc. tools
+sudo apt-get -y install rsync recode
+
+# Android
+sudo apt-get -y install gmtp
+
+# Check non free pkgs
+dpkg-query -W --showformat='${Package}\t${Section}\n' | grep -e non-free -e contrib
+sudo apt-get install vrms
+-----------------------------------------------------------------------------
+

@@ -1,0 +1,22 @@
+gitlab - disable gravatar
+=========================
+
+For environments with no internet access.
+
+In /var/opt/gitlab/gitlab-rails/etc/gitlab.yml :
+
+[source, yaml]
+-----------------------------------------------------------------------------
+gravatar:
+    enabled: false
+-----------------------------------------------------------------------------
+
+In /etc/gitlab/gitlab.rb :
+
+-----------------------------------------------------------------------------
+gitlab_rails['gravatar_enabled'] = false
+-----------------------------------------------------------------------------
+
+Then restart gitlab with gitlab-ctl
+
+

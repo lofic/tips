@@ -1,0 +1,13 @@
+git - better pull
+=================
+
+Usually :
+
+-----------------------------------------------------------------------------
+git config merge.defaultToUpstream true
+git fetch
+git merge --ff-only
+git pull --rebase
+-----------------------------------------------------------------------------
+
+Additional tags : fetch, merge

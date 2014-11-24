@@ -1,0 +1,51 @@
+Linux - banalize a system
+==========================
+
+Use case : before making a VM template
+
+[source,bash]
+-----------------------------------------------------------------------------
+test $EUID -eq 0 || { echo "Run this script as root"; exit 1; }
+
+package-cleanup --oldkernels --count=1
+
+logrotate -f /etc/logrotate.conf
+rm -f /var/log/*-???????? /var/log/*.gz
+rm -f /var/log/dmesg.old
+rm -rf /var/log/anaconda
+
+cat /dev/null > /var/log/audit/audit.log
+cat /dev/null > /var/log/wtmp
+cat /dev/null > /var/log/lastlog
+cat /dev/null > /var/log/grubby
+
+rm -rf /etc/ssh/*key*
+
+sed -i 's/HOSTNAME=.*$/HOSTNAME=localhost/g' /etc/sysconfig/network
+echo 'localhost' > /etc/hostname
+
+find /etc/sysconfig/network-scripts -name ifcfg-* | while read cfg;do
+  sed -i -e '/^HWADDR=/d' -e '/^UUID=/d' -e 's/^IPADDR=/#IPADDR=/g' $cfg
+done
+
+rm -f /etc/udev/rules.d/*-persistent-*.rules
+
+yum clean all
+
+rm -f /root/.bash_history
+
+touch /.unconfigured
+
+history -c
+-----------------------------------------------------------------------------
+
+For RHEL, add :
+
+-----------------------------------------------------------------------------
+subscription-manager remove --all
+subscription-manager unregister
+subscription-manager clean
+-----------------------------------------------------------------------------
+
+
+Additional tag : sysprep

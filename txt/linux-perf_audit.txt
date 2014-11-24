@@ -1,0 +1,171 @@
+Linux - performance audit
+=========================
+
+Voici les PRINCIPAUX compteurs que j'utilise:
+
+vmstat:
+
+-----------------------------------------------------------------------------
+      r (run queue length, number of processes waiting for run time)
+      b (number of process blocked and waiting on IO)
+      si (Amount of memory swapped in from disk/s)
+      so (Amount of memory swapped to disk/s)
+      cs (cswch/s, number of context switches per second)
+      us (% user CPU utilization)
+      sy (% kernel and interrupts CPU utilization)
+      wa (% CPU waiting on IO)
+      id (% CPU idle)
+-----------------------------------------------------------------------------
+
+
+iostat -x:
+
+-----------------------------------------------------------------------------
+      r/s (read requests/s)
+      w/s (write requests/s)
+      rkB/s (number of kilobytes read from the device per second)
+      wkB/s (number of kilobytes written to the device per second)
+      await (average wait time for I/O requests)
+      svctm (average service time for I/O requests)
+      %util (device saturation)
+-----------------------------------------------------------------------------
+
+
+sar:
+
+-----------------------------------------------------------------------------
+      -n DEV -> Network
+      rxbyt/s (bytes received/s)
+      txbyt/s (bytes transmitted/s)
+-----------------------------------------------------------------------------
+
+Généralement je graphe ça dans graphite (http://graphite.wikidot.com/screen-shots)
+
+On commence par l'audit mémoire. En effet s'il y a un problème mémoire ça
+se répercute sur les disques (stress) et sur les CPU (IOwait), donc il faut
+regarder si l'origine est un problème mémoire.
+
+Compteurs si et so de vmstat (en ko/s). A partir de 3 chiffres de façon
+soutenue, c'est mauvais.
+
+Quelques centaines de ko/s ça parait peu comme bande passante mais le problème
+du swap ce n'est pas la bande passante, c'est le stress I/O. Il se produit de
+multiples petits I/O en swap in et out qui peuvent effondrer un disque.
+A corréler avec %util de iostat -x
+
+Si il y a du si et so : comparer avec les compteurs bi et bo, généralement on
+voit que l'activité disque est phagocytée par le swap.
+
+Puis je regarde l'activité CPU, avec vmstat.
+
+Colonne r (runq). Nombre de processus en attente de traitement.
+Au delà de 2 fois le nombre de coeurs dispo, l'activité est importante.
+Par exemple, runq de 5 soutenue sur une VM avec 2 vCPU
+
+Comparer aussi avec le load average (commande = uptime)
+
+Regarder aussi si des processus sont bloqués (colonne b) et corréler
+éventuellement avec un stress disque ou réseau (abordé ci-dessous)
+
+Colonne cs : nombre de changements de contextes par secondes
+
+Sur des processeurs modernes, au delà de 50000 c'est un symptôme de multiples
+tâches (threads, processus, parallélisme de traitements....).
+Et au delà de 100 000 on peut suspecter un stress.
+
+En cas de contention CPU :
+
+- forte runq et faibles cs : les traitements se font en série donc il faut
+donner plus de puissance ex : résa CPU et shares en high pour la VM sur vSphere
+
+ex : processeurs à plus haute fréquence sur un serveur physsique
+
+- forte runq et forts cs : augmenter le nombre de coeurs, activer
+l'hyperthreading
+
+Attention sur l'augmentation du nombre de vCPU sur vSphere, ça peut être
+contre-productif s'il y a contention sur l'accès aux CPU physiques de
+l'hyperviseur.
+
+_____________________________________________________________________________
+VMware’s scheduler requires that all the vCPU’s on a VM run concurrently
+(even if the Guest OS is trying to execute a single thread).
+
+The 4 vCPU’s on a VM have to wait until all logical pCPU’s on the box are idle
+(including the one that runs ESX itself) before it can run.
+
+If ESX can’t accomplish that (we are experiencing resource contention) it
+starts prioritizing workloads according to what it can best run. It is much
+easier to schedule the smaller VM’s, so it tends to run those on pCPU more
+frequently
+_____________________________________________________________________________
+
+
+Donc il faut tester et vérifier que le CPU ready (métrique dans vSphere)
+n'est pas élevé sur la VM après ajout des vCPU.
+
+Colonne wa de vmstat : c'est déjà un très bon indicateur de stress I/O (disque
+ou réseau). C'est le % de temps CPU perdu à attendre des remontées
+d'information (généralement disques ou réseau)
+
+Audit réseau : regarder
+
+- sar -n DEV
+- le nombre d'interruptions CPU (compteur 'in' sur vmstat)
+- le pourcentage de CPU système (compteur 'sy' sur vmstat)
+
+Forts I/O disques ou réseau = fort %CPU système et nombreuses interruptions.
+
+Audit disques : regarder
+
+- iostat -x
+
+%util : élevé (80% ou plus), c'est un symptôme de saturation disque
+
+r/s, w/s :  IO en lecture et écriture
+
+Attention, ce sont les I/O DEMANDES par le kernel.
+
+S'ils sont servis correctement, le temps d'IO est faible (compteur await =
+temps d'attente dans la file I/O + temps de service = svctm) et le %util est
+faible
+
+S'il y a goulet, await et %util sont élevés.
+
+Pour donner un ordre de grandeur, sur un besoin courant on souhaite généralement
+await < 20ms et pour une base de donnée await < 4 ou 2ms
+
+L'intérêt d'avoir les I/O demandés est que l'on peut tailler le sous-système
+disque pour répondre à la demande.
+
+En gros, un disque classique SAS ou FC 15 ktpm fournit 150 à 200 IOPS en mode
+I/O aléatoires (et plus pour des I/O séquentiels) avec un temps de service I/O
+correct.
+
+Attention à la pondération RAID ou vRAID.
+
+1 I/O logique = demande du kernel et ce qu'on voit avec iostat -x
+
+1 IO logique en lecture = 1 IO physique en RAID 1
+
+1 IO logique en écriture = 2 IO physiques en RAID 1
+
+1 IO logique en lecture = 1 IO physique en RAID 5
+
+1 IO logique en écriture = 4 IO physiques en RAID 5
+
+Par exemple, si on voit avec iostat 100 r/s et 100 w/s et que l'on sait que le
+backend est un RAID 5, il faut 100+4x100 = 500 IO physiques pour soutenir la
+charge. Donc 3 disques SAS ou FC 15 ktpm. Sachant qu'il y des caches sur les
+contrôleurs et les baies donc qu'avec les 3 disques on aura que des bonnes
+surprises.
+
+Pour des disques SSD le nombre d'IOps fournis est considérablement plus
+important.
+
+Compteurs à vérifier cette fois-ci coté vSphere :
+
+* Memory Ballooning
+* CPU Ready
+* SCSI Queue Length
+

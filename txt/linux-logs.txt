@@ -1,0 +1,23 @@
+linux - logs
+============
+
+[source,sh]
+-----------------------------------------------------------------------------
+ls /var/log/
+dmesg # kernel log
+dmesg -c # clean history
+
+# Main log files :
+/var/log/syslog     # generic system log
+/var/log/boot.log   # boot log
+/var/log/auth.log   # sessions, privilege escalations, ssh
+/var/log/Xorg.0.log # X window
+
+# Configure the logs targets :
+/etc/rsyslog.conf
+/etc/rsyslog.d/
+
+# Configure log rotation :
+/etc/logrotate.conf
+/etc/logrotate.d/
+-----------------------------------------------------------------------------

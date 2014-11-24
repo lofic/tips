@@ -1,0 +1,12 @@
+akonadi - disable
+=================
+
+Akonadi is a storage service for personal information management (PIM) data and
+metadata. It is a core technology of KDE 4.
+
+Open `~/.config/akonadi/akonadiserverrc` and set `StartServer` to `false`
+
+--------------------------------------------------------------------------------
+[QMYSQL]
+StartServer=false
+--------------------------------------------------------------------------------

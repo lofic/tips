@@ -1,0 +1,10 @@
+ssh-copy-id
+===========
+
+Install your public key in a remote machine's authorized_keys
+
+--------------------------------------------------------------------------------
+ssh-copy-id -i ~/.ssh/id_dsa.pub user@remote
+--------------------------------------------------------------------------------
+
+Additional tags : automatic, passwordless, password-less, connection

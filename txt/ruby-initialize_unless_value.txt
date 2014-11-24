@@ -1,0 +1,11 @@
+ruby - idiom - initialize unless value
+======================================
+
+[source, ruby]
+--------------------------------------------------------------------------------
+test1 = 'Louis was here' #=> "Louis was here"
+test2 = nil              #=> nil
+test1 ||= 'pim'          #=> "Louis was here"
+test2 ||= 'pam'          #=> "pam"
+test3 ||= 'poum'         #=> "poum"
+--------------------------------------------------------------------------------

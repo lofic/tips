@@ -1,0 +1,56 @@
+lvm - snapshot for vm
+=====================
+
+Work on a snapshot then revert the changes
+
+Prerequisites : you need a VM with a LV as a virtual disk source.
+
+Example below with KVM.
+
+-----------------------------------------------------------------------------
+# Shutdown the VM
+ssh root@el6 'halt -p'
+
+# Create a snapshot of the virtual disk
+lvcreate -s -n vmel6snap -L+500M /dev/vg0/vmel6
+
+# Edit the VM properties and change the virtual disk source device
+vi /etc/libvirt/qemu/el6.xml
+grep 'source dev' /etc/libvirt/qemu/el6.xml
+# ->      <source dev='/dev/vg0/vmel6snap'/>
+
+# Refresh libvirt to take the new configuration into account
+service libvirt-bin reload # On Debian/Ubuntu
+
+# Start the VM on the snapshot
+virsh start el6
+
+# Work in the VM
+ssh bob@el6 "echo '<your name here>' > ~/probe.txt"
+
+# Monitor the snapshot use
+lvs
+
+# Shutdown the VM
+ssh root@el6 'halt -p'
+
+# Edit the VM properties and change back the virtual disk source device
+vi /etc/libvirt/qemu/el6.xml
+grep 'source dev' /etc/libvirt/qemu/el6.xml
+# ->      <source dev='/dev/vg0/vmel6'/>
+
+# Refresh libvirt to take the new configuration into account
+service libvirt-bin reload # On Debian/Ubuntu
+
+# Start the VM on the original disk
+virsh start el6
+
+# Check that the modifications have been reverted
+ssh bob@el6 'ls ~/probe.txt'
+
+# You could also stay on the snapshot but revert it from time to time
+lvremove /dev/vg0/vmel6snap
+lvcreate -s -n vmel6snap -L+500M /dev/vg0/vmel6 # back to original clean state
+-----------------------------------------------------------------------------
+
+Additional tags : lvm, vm, lab, snapshot, revert

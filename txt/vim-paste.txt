@@ -1,0 +1,85 @@
+vim - paste
+===========
+
+For proper behavior with autoindent/smartindent enabled :
+
+--------------------------------------------------------------------------------
+:set paste
+---------------------------------------------------------------------------------
+
+If necessary, disable the autoindent mode :
+
+--------------------------------------------------------------------------------
+:set noai
+--------------------------------------------------------------------------------
+
+The basics :
+
+--------------------------------------------------------------------------------
+:help p
+--------------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------
+["x]p                   Put the text [from register x] after the cursor
+                        [count] times.  {Vi: no count}
+-----------------------------------------------------------------------------
+
+Paste from clipboard :
+
+-----------------------------------------------------------------------------
+The * register corresponds to the X selection buffer
+(pasted with <MiddleClick>).
+
+The + register corresponds to the system clipboard
+(pasted with <C-v> or Edit->Paste).
+
+On windows, both registers are for the system clipboard.
+
+To use the clipboard in terminal vim, vim must be built with
++xterm_clipboard
+-----------------------------------------------------------------------------
+
+Paste from the X selection buffer :
+
+-----------------------------------------------------------------------------
+"*p
+-----------------------------------------------------------------------------
+
+Paste from the system clipboard :
+
+-----------------------------------------------------------------------------
+"+p
+-----------------------------------------------------------------------------
+
+Paste while in insert mode :
+
+-----------------------------------------------------------------------------
+:help i_ctrl-r
+C-r "       paste from the unnamed register (i.e. inserts the last delete or yank)
+C-r *       paste from the X selection buffer
+C-r +       paste from the system clipboard
+-----------------------------------------------------------------------------
+
+
+Shortcut to set paste mode and enter insert mode at the same time (to be ready
+to paste from <MiddleClick>) :
+
+-----------------------------------------------------------------------------
+nnoremap <leader>p :set paste<cr>i
+-----------------------------------------------------------------------------
+
+Paste + new line : you can paste a buffer in insert mode using <C-R> followed
+by the name of the buffer to paste. The default buffer is ", so you would do
+
+------------------------------------------------------------------------------
+o<C-R>"
+-----------------------------------------------------------------------------
+
+Other option:
+
+-----------------------------------------------------------------------------
+o<Alt-p>
+-----------------------------------------------------------------------------
+
+
+Additional tag : vi

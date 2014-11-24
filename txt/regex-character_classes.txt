@@ -1,0 +1,21 @@
+regex - some common character classes and abbreviations
+=======================================================
+
+-------------------------------------------------------------------------------
+[:alnum:]  -    - [A-Za-z0-9]    Alphanumeric chars
+[:word:]   - \w - [A-Za-z0-9_]   Alphanumeric chars plus "_"
+           - \W - [^A-Za-z0-9_]  Non-word chars
+[:alpha:]  -    - [A-Za-z]       Alphabetic chars
+[:blank:]  -    - [ \t]          Space or tab chars only
+[:digit:]  - \d - [0-9]          Digits chars
+           - \D - [^0-9]         Non-digits chars
+[:lower:]  -    - [a-z]          Lower-case alphabetic chars
+[:punct:]  -    -                Punctuation and symbol chars
+[:space:]  - \s - [ \t\r\n\v\f]  All whitespace chars
+           - \S - [^ \t\r\n\v\f] Non-whitespace chars
+[:upper:]  -    - [A-Z]          Upper-case alphabetic chars
+[:xdigit:] - \h - [0-9a-fA-F]    Hexadecimal digit chars
+           - \H - [^0-9a-fA-F]   Non-hexadecimal digit chars
+-------------------------------------------------------------------------------
+
+Additional tags : regexp, char, ruby

@@ -1,0 +1,65 @@
+python - pretty print xml
+=========================
+
+Given :
+
+[source, xml]
+--------------------------------------------------------------------------------
+<message><warning>Louis was here</warning></message>
+--------------------------------------------------------------------------------
+
+You can use :
+
+[source, python]
+--------------------------------------------------------------------------------
+import lxml.etree as etree # deb package : python-lxml
+
+fic='test.xml'
+x = etree.parse(fic)
+with open(fic+'.pretty','w') as f: f.write(etree.tostring(x, pretty_print =
+    True))
+--------------------------------------------------------------------------------
+
+Output :
+
+[source, xml]
+--------------------------------------------------------------------------------
+<message>
+  <warning>Louis was here</warning>
+</message>
+--------------------------------------------------------------------------------
+
+Many parsers don't like extra spaces surrounding the content of text nodes
+
+Given :
+
+[source, xml]
+--------------------------------------------------------------------------------
+<message>
+    <warning>
+    Louis was here
+    </warning>
+</message>
+--------------------------------------------------------------------------------
+
+You can use :
+
+--------------------------------------------------------------------------------
+import re
+
+def fixxml(xmlstr):
+    fix = re.compile(r'((?<=>)(\n[ ]*)(?=[^< ]))|(?<=[^> ])(\n[ ]*)(?=<)')
+    return re.sub(fix, '', xmlstr.expandtabs())
+
+fic='test.xml'
+with open(fic) as f: print fixxml(f.read())
+--------------------------------------------------------------------------------
+
+Output :
+
+[source, xml]
+--------------------------------------------------------------------------------
+<message>
+   <warning>Louis was here</warning>
+</message>
+--------------------------------------------------------------------------------

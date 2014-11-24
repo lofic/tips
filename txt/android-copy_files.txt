@@ -1,0 +1,14 @@
+android - copy files from the phone device
+==========================================
+
+[source, sh]
+--------------------------------------------------------------------------------
+apt-get install mtpfs
+
+mkdir /media/GalaxyNexus
+mount.mtpfs -o allow_other /media/GalaxyNexus
+cd /media/GalaxyNexus/
+--------------------------------------------------------------------------------
+
+Additional tags : galaxy, nexus, cyanogen
+

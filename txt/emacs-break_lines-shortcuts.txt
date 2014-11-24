@@ -1,0 +1,10 @@
+emacs - break lines shortcut
+============================
+
+Break lines at 72 characters
+
+--------------------------------------------------------------------------------
+E-q
+--------------------------------------------------------------------------------
+
+Additional tags : eighty, character, characters, line, wrap, wrapping, shortcut

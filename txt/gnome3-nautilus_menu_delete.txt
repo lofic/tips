@@ -1,0 +1,21 @@
+gnome 3 - option Delete Permanently in the nautilus context menu
+================================================================
+
+-----------------------------------------------------------------------------
+# old :
+gsettings set org.gnome.nautilus.preferences enable-delete 'true'
+# new :
+gsettings set org.gnome.nautilus.preferences show-delete-permanently true
+-----------------------------------------------------------------------------
+
+Then open nautilus
+
+Go to `Edit -> Preferences`, open the `Behavior` tab
+
+Go to the options of `Trash`
+
+Check `Include a delete command that bypasses Trash`
+
+
+Additional tags : gnome3, tweak, tweaks
+

@@ -1,0 +1,31 @@
+puppet - delete certificate
+===========================
+
+(and get a new one)
+
+1- On the node
+--------------
+
+----
+/etc/init.d/puppet stop
+rm -rf /var/lib/puppet/ssl/*
+----
+
+2 - On the puppet master
+------------------------
+
+----
+puppet cert revoke node.example.com
+puppet cert clean  node.example.com
+----
+
+
+3 - On the node
+---------------
+
+----
+puppet agent --test
+/etc/init.d/puppet start
+----
+
+

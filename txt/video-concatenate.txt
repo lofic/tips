@@ -1,0 +1,12 @@
+video - concatenate
+===================
+
+Example :
+
+--------------------------------------------------------------------------------
+mkvmerge -o output.webm -w file1.webm + file2.webm
+
+mencoder -forceidx -ovc copy -oac copy file1.webm file2.webm -o output.webm
+--------------------------------------------------------------------------------
+
+Additional tags : merge, join

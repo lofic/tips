@@ -1,0 +1,35 @@
+apt - cleaning
+==============
+
+Purge all removed packages :
+
+--------------------------------------------------------------------------------
+dpkg --get-selections | grep deinstall | xargs dpkg --purge
+--------------------------------------------------------------------------------
+
+Basic cleaning :
+
+--------------------------------------------------------------------------------
+apt-get autoremove
+
+apt-get install deborphan
+apt-get remove --purge `deborphan`
+apt-get remove --purge `deborphan --guess-all`
+--------------------------------------------------------------------------------
+
+Uninstall a package and dependencies that are only used by this package :
+
+--------------------------------------------------------------------------------
+apt-get install debfoster
+debfoster thepackage-
+--------------------------------------------------------------------------------
+
+Remove unnecessary files using `localepurge` :
+
+--------------------------------------------------------------------------------
+apt-get install localepurge
+# Edit /etc/locale.nopurge
+localepurge
+--------------------------------------------------------------------------------
+
+

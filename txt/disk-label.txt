@@ -1,0 +1,12 @@
+disk - label
+============
+
+Ex : relabel a USB key
+
+--------------------------------------------------------------------------------
+sudo mlabel -i /dev/sdb1 ::my_disk # FAT32
+
+ntfslabel -f /dev/sdb1 my_disk # NTFS
+
+e2label /dev/sdb1 my_disk # ext2,3,4
+--------------------------------------------------------------------------------

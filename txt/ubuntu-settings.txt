@@ -1,0 +1,23 @@
+ubuntu and gnome 3 settings
+===========================
+
+With Ubuntu 12.04
+
+--------------------------------------------------------------------------------
+ubuntu-tweak
+gnome-tweak-tool
+gnome-control-center
+gconf-editor
+--------------------------------------------------------------------------------
+
+This may need :
+
+--------------------------------------------------------------------------------
+sudo apt-get -y install gnome-tweak-tool dconf-tools
+
+sudo add-apt-repository -y ppa:tualatrix/ppa
+sudo apt-get update
+sudo apt-get -y install ubuntu-tweak
+--------------------------------------------------------------------------------
+
+Additional tags : gnome3, tweak

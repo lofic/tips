@@ -1,0 +1,31 @@
+ruby - daemonize
+================
+
+[source, ruby]
+--------------------------------------------------------------------------------
+#!/usr/bin/ruby
+require 'rubygems'
+require 'daemons'
+require 'logger'
+
+class Probe
+  def initialize
+    @LOG = Logger.new('/tmp/probe.log', 'daily')
+  end
+
+  def mainloop
+    loop do
+       @LOG.info('Louis was here')
+       sleep(60)
+    end
+  end
+end
+
+Daemons.run_proc("testd", { :dir_mode => :normal, :dir => '/tmp', }) do
+  p=Probe.new
+  p.mainloop
+end
+--------------------------------------------------------------------------------
+
+Additional tag : daemon
+

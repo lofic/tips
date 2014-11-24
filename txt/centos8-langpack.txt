@@ -1,0 +1,9 @@
+centos 8 - langpack and locale fr
+=================================
+
+-----------------------------------------------------------------------------
+dnf -y install langpacks-fr
+localectl set-locale LANG=fr_FR.UTF-8
+-----------------------------------------------------------------------------
+
+Additional tags : langpack, langpacks, french, locale, locales, centos

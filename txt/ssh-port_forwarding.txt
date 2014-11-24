@@ -1,0 +1,29 @@
+ssh - using port forwarding
+===========================
+
+Example : Access with http://localhost:8080 to a remote Tomcat server, when
+the port 8080 is blocked by a firewall.
+
+Below, `remote` is the host name of the target server.
+
+--------------------------------------------------------------------------------
+ssh -L 8080:remote:8080 user@remote
+--------------------------------------------------------------------------------
+
+With `putty.exe` :
+
+Connection -> SSH -> Tunnels
+
+Source Port : `8080`
+
+Destination : `remote:8080`
+
+Bouton 'Add'
+
+In 'Forwarded ports' you should see:
+
+--------------------------------------------------------------------------------
+L8080 remote:8080
+--------------------------------------------------------------------------------
+
+Additional tag : tunnel

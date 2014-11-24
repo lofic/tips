@@ -1,0 +1,102 @@
+openvpn - setup
+===============
+
+Install and set OpenVPN on Debian Squeeze
+
+Some variables
+--------------
+
+-----------------------------------------------------------------------------
+COUNTRY=fr
+PROVINCE=north
+CITY=lille
+ORG=labolinux
+EMAIL=foo@labolinux.fr
+
+NODE1=squeeze1 # <- will hold the CA and OpenVPN server
+NODE2=squeeze2
+-----------------------------------------------------------------------------
+
+
+Install OpenVPN
+---------------
+
+-----------------------------------------------------------------------------
+apt-get -y install openvpn udev # On both nodes
+
+cp -R /usr/share/doc/openvpn/examples/easy-rsa/ /etc/openvpn
+
+# Configure Public Key Infrastructure Variables
+
+sed -i \
+    -e '/KEY_COUNTRY/d'  \
+    -e '/KEY_PROVINCE/d' \
+    -e '/KEY_CITY/d'     \
+    -e '/KEY_ORG/d'      \
+    -e '/KEY_EMAIL/d' /etc/openvpn/easy-rsa/2.0/vars
+
+cat<<EOF>> /etc/openvpn/easy-rsa/2.0/vars
+export KEY_COUNTRY="$COUNTRY"
+export KEY_PROVINCE="$PROVINCE"
+export KEY_CITY="$CITY"
+export KEY_ORG="$ORG"
+export KEY_EMAIL="$EMAIL"
+EOF
+
+# Initialize the Public Key Infrastructure (PKI)
+
+cd /etc/openvpn/easy-rsa/2.0/
+. /etc/openvpn/easy-rsa/2.0/vars
+. /etc/openvpn/easy-rsa/2.0/clean-all
+. /etc/openvpn/easy-rsa/2.0/build-ca # Press only ENTER
+
+# Generate the key for the nodes
+
+cd /etc/openvpn/easy-rsa/2.0/
+. /etc/openvpn/easy-rsa/2.0/vars
+
+. /etc/openvpn/easy-rsa/2.0/build-key-server $NODE1 # Press only ENTER
+
+. /etc/openvpn/easy-rsa/2.0/build-key $NODE2 # Press only ENTER
+
+
+# Generate the key exchange and authentication parameters
+
+. /etc/openvpn/easy-rsa/2.0/build-dh
+
+# Relocate the keys
+
+ls /etc/openvpn/easy-rsa/2.0/keys
+
+cp /etc/openvpn/easy-rsa/2.0/keys/{ca.crt,ca.key,dh1024.pem,$NODE1.crt,$NODE1.key} /etc/openvpn
+
+scp /etc/openvpn/easy-rsa/2.0/keys/{ca.crt,$NODE2.crt,$NODE2.key} root@$NODE2:/etc/openvpn
+-----------------------------------------------------------------------------
+
+
+
+Configure the VPN - Server side
+-------------------------------
+
+-----------------------------------------------------------------------------
+cd /usr/share/doc/openvpn/examples/sample-config-files
+gunzip -d server.conf.gz
+cp server.conf /etc/openvpn/
+sed -i "s/cert server.crt/cert $NODE1.crt/g" /etc/openvpn/server.conf
+sed -i "s/key server.key/key $NODE1.key/g" /etc/openvpn/server.conf
+/etc/init.d/openvpn start
+-----------------------------------------------------------------------------
+
+
+Configure the VPN - Client side
+-------------------------------
+
+-----------------------------------------------------------------------------
+cd /usr/share/doc/openvpn/examples/sample-config-files
+cp client.conf /etc/openvpn/
+# Edit in /etc/openvpn/client.conf the params : remote, cert, key, then :
+openvpn --config /etc/openvpn/client.conf
+-----------------------------------------------------------------------------
+
+Additional tags : lab, debian
+
