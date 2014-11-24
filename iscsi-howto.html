@@ -1,0 +1,594 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<meta name="generator" content="AsciiDoc 10.2.1" />
+<title>iSCSI how to on Linux Red Hat</title>
+<style type="text/css">
+/* ---------------------------------------------------------------------------
+ *  Pryz theme based on Bare Theme (http://tomayko.com/src/adoc-themes/)
+ *  https://github.com/Pryz/asciidoc
+ *-------------------------------------------------------------------------- */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+
+blockquote, q {
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+a:focus {
+  outline: none;
+}
+
+body {
+	font-family:verdana,helvetica,arial,sans-serif;
+	margin:40px auto;
+	max-width:53.8461538462em;
+    box-sizing: border-box;
+    color:#373737;
+    background: #f2f2f2;
+    font-size: 16px;
+    font-family: 'Myriad Pro', Calibri, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+
+em {
+	font-style:italic;
+}
+
+strong {
+	font-weight:bold;
+	color:#000;
+}
+
+tt {
+	font-family: monospace, consolas, 'lucida console', 'bitstream vera sans mono',
+	           'courier new';
+	color:#000;
+}
+
+p, ul, ol, dl {
+	margin:10px 0;
+    /*font-size:15px;*/
+    font-size:13px;
+}
+
+dl {
+	margin-left:40px
+}
+
+dt {
+	font-weight:normal;
+	color:#000;
+}
+
+h1, h2, h3, h4, h5 {
+    margin: 10px 0;
+    font-weight: 700;
+    color:#222222;
+    font-family: 'Lucida Grande', 'Calibri', Helvetica, Arial, sans-serif;
+    letter-spacing: -1px;
+}
+
+h1 {
+	font-size:30px;
+	line-height:1.428;
+	margin:20px 0;
+}
+
+h2 {
+	font-size:23px;
+	line-height:1.36363636;
+	margin:20px 0;
+}
+
+h2 + .sectionbody {}
+
+h3 {
+	font-size:18px;
+	line-height:1.1;
+	margin:30px 0 10px 0;
+}
+
+h4 {
+	font-size:13px;
+	font-weight:bold;
+	line-height:1.538;
+}
+
+h5 {
+	font-size:13px;
+	font-style:italic;
+	line-height:1.538;
+}
+
+pre {
+	font-size:larger;
+}
+
+#header {
+	text-align:center;
+	margin-bottom:30px;
+}
+
+#header h1 { margin-bottom:0 }
+
+
+.title, .sidebar-title {
+	font-weight:normal;
+	color:#000;
+	margin-bottom:5px;
+	margin-top:10px;
+}
+
+.admonitionblock .title {
+	font-weight:bold;
+}
+
+.admonitionblock {
+	margin:30px 0px;
+	color:#555;
+}
+
+.admonitionblock td.icon {
+	width:30px;
+	padding-right:20px;
+	padding-left:20px;
+	text-transform:uppercase;
+	font-weight:bold;
+	color:#888;
+}
+
+.listingblock {
+    margin-bottom:30px;
+}
+
+.listingblock .content {
+	background:#eee;
+    width: 100%;
+    box-shadow: 0 0 10px rgba(0,0,0,.1);
+    overflow: auto;
+}
+
+.listingblock .content pre {
+    color: #222;
+    background-color: #fff;
+    font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
+    font-size: 14px;
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    padding: 10px;
+}
+
+.literalblock .content {
+	margin-left:40px;
+}
+
+.verseblock .content {
+	white-space:pre
+}
+
+.sidebarblock .sidebar-content {
+	border:1px solid silver;
+	background:#FFFFEE;
+	padding:0 10px;
+	color:#222;
+	font-size:smaller;
+	line-height:1.5;
+}
+
+.sidebar-title {
+	margin:10px 0;
+	font-weight:bold;
+	color:#442;
+}
+
+.quoteblock-content {
+	font-style:italic;
+	color:#444;
+	margin-left:40px;
+}
+
+.quoteblock-content .attribution {
+	font-style:normal;
+	text-align:right;
+	color:#000;
+}
+
+.exampleblock-content *:first-child { margin-top:0 }
+.exampleblock-content {
+	border-left:2px solid silver;
+	padding-left:8px;
+}
+
+#footer {
+	font-size:11px;
+	margin-top:40px;
+	border-top:1px solid silver;
+	color:#555;
+}
+
+#author {
+	color:#000;
+	text-transform:uppercase
+}
+
+a:link, a:visited {
+    text-decoration:none;
+    color:#1C1C1C;
+}
+
+a:hover {
+    text-decoration:underline;
+    text-decoration-color:red;
+}
+
+#search {
+    margin-right:10px;
+}
+
+.sort {
+    margin-left:15px;
+    font-size:13px;
+}
+
+.sort:hover {
+    cursor:pointer;
+}
+
+hidden {
+    display:none;
+}
+
+#toc {
+    text-align:left;
+    margin-bottom:30px;
+}
+
+/* vim: set ft=css ts=4 sw=4 noexpandtab: */
+
+
+</style>
+<script type="text/javascript">
+/*<![CDATA[*/
+var asciidoc = {  // Namespace.
+
+/////////////////////////////////////////////////////////////////////
+// Table Of Contents generator
+/////////////////////////////////////////////////////////////////////
+
+/* Author: Mihai Bazon, September 2002
+ * http://students.infoiasi.ro/~mishoo
+ *
+ * Table Of Content generator
+ * Version: 0.4
+ *
+ * Feel free to use this script under the terms of the GNU General Public
+ * License, as long as you do not remove or alter this notice.
+ */
+
+ /* modified by Troy D. Hanson, September 2006. License: GPL */
+ /* modified by Stuart Rackham, 2006, 2009. License: GPL */
+
+// toclevels = 1..4.
+toc: function (toclevels) {
+
+  function getText(el) {
+    var text = "";
+    for (var i = el.firstChild; i != null; i = i.nextSibling) {
+      if (i.nodeType == 3 /* Node.TEXT_NODE */) // IE doesn't speak constants.
+        text += i.data;
+      else if (i.firstChild != null)
+        text += getText(i);
+    }
+    return text;
+  }
+
+  function TocEntry(el, text, toclevel) {
+    this.element = el;
+    this.text = text;
+    this.toclevel = toclevel;
+  }
+
+  function tocEntries(el, toclevels) {
+    var result = new Array;
+    var re = new RegExp('[hH]([2-'+(toclevels+1)+'])');
+    // Function that scans the DOM tree for header elements (the DOM2
+    // nodeIterator API would be a better technique but not supported by all
+    // browsers).
+    var iterate = function (el) {
+      for (var i = el.firstChild; i != null; i = i.nextSibling) {
+        if (i.nodeType == 1 /* Node.ELEMENT_NODE */) {
+          var mo = re.exec(i.tagName);
+          if (mo && (i.getAttribute("class") || i.getAttribute("className")) != "float") {
+            result[result.length] = new TocEntry(i, getText(i), mo[1]-1);
+          }
+          iterate(i);
+        }
+      }
+    }
+    iterate(el);
+    return result;
+  }
+
+  var toc = document.getElementById("toc");
+  if (!toc) {
+    return;
+  }
+
+  // Delete existing TOC entries in case we're reloading the TOC.
+  var tocEntriesToRemove = [];
+  var i;
+  for (i = 0; i < toc.childNodes.length; i++) {
+    var entry = toc.childNodes[i];
+    if (entry.nodeName == 'div'
+     && entry.getAttribute("class")
+     && entry.getAttribute("class").match(/^toclevel/))
+      tocEntriesToRemove.push(entry);
+  }
+  for (i = 0; i < tocEntriesToRemove.length; i++) {
+    toc.removeChild(tocEntriesToRemove[i]);
+  }
+
+  // Rebuild TOC entries.
+  var entries = tocEntries(document.getElementById("content"), toclevels);
+  for (var i = 0; i < entries.length; ++i) {
+    var entry = entries[i];
+    if (entry.element.id == "")
+      entry.element.id = "_toc_" + i;
+    var a = document.createElement("a");
+    a.href = "#" + entry.element.id;
+    a.appendChild(document.createTextNode(entry.text));
+    var div = document.createElement("div");
+    div.appendChild(a);
+    div.className = "toclevel" + entry.toclevel;
+    toc.appendChild(div);
+  }
+  if (entries.length == 0)
+    toc.parentNode.removeChild(toc);
+},
+
+
+/////////////////////////////////////////////////////////////////////
+// Footnotes generator
+/////////////////////////////////////////////////////////////////////
+
+/* Based on footnote generation code from:
+ * http://www.brandspankingnew.net/archive/2005/07/format_footnote.html
+ */
+
+footnotes: function () {
+  // Delete existing footnote entries in case we're reloading the footnodes.
+  var i;
+  var noteholder = document.getElementById("footnotes");
+  if (!noteholder) {
+    return;
+  }
+  var entriesToRemove = [];
+  for (i = 0; i < noteholder.childNodes.length; i++) {
+    var entry = noteholder.childNodes[i];
+    if (entry.nodeName == 'div' && entry.getAttribute("class") == "footnote")
+      entriesToRemove.push(entry);
+  }
+  for (i = 0; i < entriesToRemove.length; i++) {
+    noteholder.removeChild(entriesToRemove[i]);
+  }
+
+  // Rebuild footnote entries.
+  var cont = document.getElementById("content");
+  var spans = cont.getElementsByTagName("span");
+  var refs = {};
+  var n = 0;
+  for (i=0; i<spans.length; i++) {
+    if (spans[i].className == "footnote") {
+      n++;
+      var note = spans[i].getAttribute("data-note");
+      if (!note) {
+        // Use [\s\S] in place of . so multi-line matches work.
+        // Because JavaScript has no s (dotall) regex flag.
+        note = spans[i].innerHTML.match(/\s*\[([\s\S]*)]\s*/)[1];
+        spans[i].innerHTML =
+          "[<a id='_footnoteref_" + n + "' href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+        spans[i].setAttribute("data-note", note);
+      }
+      noteholder.innerHTML +=
+        "<div class='footnote' id='_footnote_" + n + "'>" +
+        "<a href='#_footnoteref_" + n + "' title='Return to text'>" +
+        n + "</a>. " + note + "</div>";
+      var id =spans[i].getAttribute("id");
+      if (id != null) refs["#"+id] = n;
+    }
+  }
+  if (n == 0)
+    noteholder.parentNode.removeChild(noteholder);
+  else {
+    // Process footnoterefs.
+    for (i=0; i<spans.length; i++) {
+      if (spans[i].className == "footnoteref") {
+        var href = spans[i].getElementsByTagName("a")[0].getAttribute("href");
+        href = href.match(/#.*/)[0];  // Because IE return full URL.
+        n = refs[href];
+        spans[i].innerHTML =
+          "[<a href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+      }
+    }
+  }
+},
+
+install: function(toclevels) {
+  var timerId;
+
+  function reinstall() {
+    asciidoc.footnotes();
+    if (toclevels) {
+      asciidoc.toc(toclevels);
+    }
+  }
+
+  function reinstallAndRemoveTimer() {
+    clearInterval(timerId);
+    reinstall();
+  }
+
+  timerId = setInterval(reinstall, 500);
+  if (document.addEventListener)
+    document.addEventListener("DOMContentLoaded", reinstallAndRemoveTimer, false);
+  else
+    window.onload = reinstallAndRemoveTimer;
+}
+
+}
+asciidoc.install();
+/*]]>*/
+</script>
+</head>
+<body class="article">
+<div id="header">
+<h1>iSCSI how to on Linux Red Hat</h1>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_rhel_7">RHEL 7</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_configure_the_target">Configure the target</h3>
+<div class="paragraph"><p>Let&#8217;s assume that we want to share a disk = /dev/sdc</p></div>
+<div class="paragraph"><p>Create a logical volume :</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>pvcreate /dev/sdc
+vgcreate vgiscsi /dev/sdc
+lvcreate -n lviscsi -L<span style="color: #990000">+</span>100G vgiscsi</tt></pre></div></div>
+<div class="paragraph"><p>Now we have a logical volume named <code>/dev/vgiscsi/lviscsi</code></p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>firewall-cmd --add-service=iscsi-target --permanent
+firewall-cmd --add-service=iscsi-target
+yum -y install targetcli
+systemctl enable target
+targetcli
+/&gt; cd backstores/fileio
+/backstores/fileio&gt; create disk01 /dev/vgiscsi/lviscsi
+/backstores/fileio&gt; cd /iscsi
+/iscsi&gt; create iqn.2017-04.example.lab:storage.target00
+/iscsi&gt; cd iqn.2017-04.example.lab:storage.target00/tpg1/luns
+/iscsi/iqn.20...t00/tpg1/luns&gt; create /backstores/fileio/disk01
+# ACL for initiators :
+/iscsi/iqn.20...t00/tpg1/luns&gt; cd ../acls
+/iscsi/iqn.20...t00/tpg1/acls&gt; create iqn.1998-01.com.vmware:esxlab1-55a41a99
+/iscsi/iqn.20...t00/tpg1/acls&gt; create iqn.1998-01.com.vmware:esxlab2-788b99d8
+/iscsi/iqn.20...t00/tpg1/acls&gt; ls</code></pre>
+</div></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_rhel_6_and_centos_6">RHEL 6 and Centos 6</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_configure_the_target_2">Configure the target</h3>
+<div class="paragraph"><p>Let&#8217;s assume that we want to share a disk = /dev/sdc</p></div>
+<div class="paragraph"><p>Create a logical volume :</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>pvcreate /dev/sdc
+vgcreate vgiscsi /dev/sdc
+lvcreate -n lviscsi -L<span style="color: #990000">+</span>10G vgiscsi</tt></pre></div></div>
+<div class="paragraph"><p>Now we have a logical volume named <code>/dev/vgiscsi/lviscsi</code></p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>yum -y install scsi-target-utils
+yum -y install lvm2
+vim /etc/tgt/targets<span style="color: #990000">.</span>conf</tt></pre></div></div>
+<div class="paragraph"><p>Here is a basic configuration example to set in <code>targets.conf</code> :</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="color: #990000">&lt;</span>target iqn<span style="color: #990000">.</span><span style="color: #993399">2013</span>-<span style="color: #993399">04</span><span style="color: #990000">.</span>com<span style="color: #990000">.</span>example<span style="color: #990000">:</span>server<span style="color: #990000">.</span>target1<span style="color: #990000">&gt;</span>
+    backing-store /dev/vgiscsi/lviscsi
+    initiator-address <span style="color: #993399">192.168</span><span style="color: #990000">.</span><span style="color: #993399">1.10</span>
+    initiator-address <span style="color: #993399">192.168</span><span style="color: #990000">.</span><span style="color: #993399">1.11</span>
+<span style="color: #990000">&lt;</span>/target<span style="color: #990000">&gt;</span></tt></pre></div></div>
+<div class="paragraph"><p>Then :</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>/sbin/chkconfig tgtd on
+/sbin/service tgtd start
+tgtadm --lld iscsi --mode target --op show
+tgt-admin -s</tt></pre></div></div>
+</div>
+<div class="sect2">
+<h3 id="_configure_the_initiator">Configure the initiator</h3>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>yum -y install iscsi-initiator-utils
+grep lu_reset_timeout /etc/iscsi/iscsid<span style="color: #990000">.</span>conf <span style="font-style: italic"><span style="color: #9A1900"># set 10</span></span>
+grep timeo<span style="color: #990000">.</span>replace /etc/iscsi/iscsid<span style="color: #990000">.</span>conf    <span style="font-style: italic"><span style="color: #9A1900"># set 10</span></span>
+/sbin/chkconfig iscsi on
+/sbin/service iscsi start
+iscsiadm -m discovery -t sendtargets -p <span style="color: #990000">&lt;</span>tgtip<span style="color: #990000">&gt;</span>
+iscsiadm -m node -T <span style="color: #990000">&lt;</span>tgtiqn<span style="color: #990000">&gt;</span> -p <span style="color: #990000">&lt;</span>tgtip<span style="color: #990000">&gt;</span> -l
+iscsiadm -m node
+ls /var/lib/iscsi/send_targets<span style="color: #990000">/</span></tt></pre></div></div>
+<div class="paragraph"><p>You should now have a new /dev/sd&lt;x&gt; device available for mounting.</p></div>
+<div class="paragraph"><p>Warning : if you set a mount mapping in <code>/etc/fstab</code> for persistence across
+reboots, use the <code>_netdev</code> option.</p></div>
+</div>
+</div>
+</div>
+</div>
+<div id="footnotes"><hr /></div>
+<div id="footer">
+<div id="footer-text">
+</div>
+</div>
+</body>
+</html>
