@@ -1,0 +1,688 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<meta name="generator" content="AsciiDoc 10.2.1" />
+<title>ruby - gruff installation</title>
+<style type="text/css">
+/* ---------------------------------------------------------------------------
+ *  Pryz theme based on Bare Theme (http://tomayko.com/src/adoc-themes/)
+ *  https://github.com/Pryz/asciidoc
+ *-------------------------------------------------------------------------- */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+
+blockquote, q {
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+a:focus {
+  outline: none;
+}
+
+body {
+	font-family:verdana,helvetica,arial,sans-serif;
+	margin:40px auto;
+	max-width:53.8461538462em;
+    box-sizing: border-box;
+    color:#373737;
+    background: #f2f2f2;
+    font-size: 16px;
+    font-family: 'Myriad Pro', Calibri, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+
+em {
+	font-style:italic;
+}
+
+strong {
+	font-weight:bold;
+	color:#000;
+}
+
+tt {
+	font-family: monospace, consolas, 'lucida console', 'bitstream vera sans mono',
+	           'courier new';
+	color:#000;
+}
+
+p, ul, ol, dl {
+	margin:10px 0;
+    /*font-size:15px;*/
+    font-size:13px;
+}
+
+dl {
+	margin-left:40px
+}
+
+dt {
+	font-weight:normal;
+	color:#000;
+}
+
+h1, h2, h3, h4, h5 {
+    margin: 10px 0;
+    font-weight: 700;
+    color:#222222;
+    font-family: 'Lucida Grande', 'Calibri', Helvetica, Arial, sans-serif;
+    letter-spacing: -1px;
+}
+
+h1 {
+	font-size:30px;
+	line-height:1.428;
+	margin:20px 0;
+}
+
+h2 {
+	font-size:23px;
+	line-height:1.36363636;
+	margin:20px 0;
+}
+
+h2 + .sectionbody {}
+
+h3 {
+	font-size:18px;
+	line-height:1.1;
+	margin:30px 0 10px 0;
+}
+
+h4 {
+	font-size:13px;
+	font-weight:bold;
+	line-height:1.538;
+}
+
+h5 {
+	font-size:13px;
+	font-style:italic;
+	line-height:1.538;
+}
+
+pre {
+	font-size:larger;
+}
+
+#header {
+	text-align:center;
+	margin-bottom:30px;
+}
+
+#header h1 { margin-bottom:0 }
+
+
+.title, .sidebar-title {
+	font-weight:normal;
+	color:#000;
+	margin-bottom:5px;
+	margin-top:10px;
+}
+
+.admonitionblock .title {
+	font-weight:bold;
+}
+
+.admonitionblock {
+	margin:30px 0px;
+	color:#555;
+}
+
+.admonitionblock td.icon {
+	width:30px;
+	padding-right:20px;
+	padding-left:20px;
+	text-transform:uppercase;
+	font-weight:bold;
+	color:#888;
+}
+
+.listingblock {
+    margin-bottom:30px;
+}
+
+.listingblock .content {
+	background:#eee;
+    width: 100%;
+    box-shadow: 0 0 10px rgba(0,0,0,.1);
+    overflow: auto;
+}
+
+.listingblock .content pre {
+    color: #222;
+    background-color: #fff;
+    font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
+    font-size: 14px;
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    padding: 10px;
+}
+
+.literalblock .content {
+	margin-left:40px;
+}
+
+.verseblock .content {
+	white-space:pre
+}
+
+.sidebarblock .sidebar-content {
+	border:1px solid silver;
+	background:#FFFFEE;
+	padding:0 10px;
+	color:#222;
+	font-size:smaller;
+	line-height:1.5;
+}
+
+.sidebar-title {
+	margin:10px 0;
+	font-weight:bold;
+	color:#442;
+}
+
+.quoteblock-content {
+	font-style:italic;
+	color:#444;
+	margin-left:40px;
+}
+
+.quoteblock-content .attribution {
+	font-style:normal;
+	text-align:right;
+	color:#000;
+}
+
+.exampleblock-content *:first-child { margin-top:0 }
+.exampleblock-content {
+	border-left:2px solid silver;
+	padding-left:8px;
+}
+
+#footer {
+	font-size:11px;
+	margin-top:40px;
+	border-top:1px solid silver;
+	color:#555;
+}
+
+#author {
+	color:#000;
+	text-transform:uppercase
+}
+
+a:link, a:visited {
+    text-decoration:none;
+    color:#1C1C1C;
+}
+
+a:hover {
+    text-decoration:underline;
+    text-decoration-color:red;
+}
+
+#search {
+    margin-right:10px;
+}
+
+.sort {
+    margin-left:15px;
+    font-size:13px;
+}
+
+.sort:hover {
+    cursor:pointer;
+}
+
+hidden {
+    display:none;
+}
+
+#toc {
+    text-align:left;
+    margin-bottom:30px;
+}
+
+/* vim: set ft=css ts=4 sw=4 noexpandtab: */
+
+
+</style>
+<script type="text/javascript">
+/*<![CDATA[*/
+var asciidoc = {  // Namespace.
+
+/////////////////////////////////////////////////////////////////////
+// Table Of Contents generator
+/////////////////////////////////////////////////////////////////////
+
+/* Author: Mihai Bazon, September 2002
+ * http://students.infoiasi.ro/~mishoo
+ *
+ * Table Of Content generator
+ * Version: 0.4
+ *
+ * Feel free to use this script under the terms of the GNU General Public
+ * License, as long as you do not remove or alter this notice.
+ */
+
+ /* modified by Troy D. Hanson, September 2006. License: GPL */
+ /* modified by Stuart Rackham, 2006, 2009. License: GPL */
+
+// toclevels = 1..4.
+toc: function (toclevels) {
+
+  function getText(el) {
+    var text = "";
+    for (var i = el.firstChild; i != null; i = i.nextSibling) {
+      if (i.nodeType == 3 /* Node.TEXT_NODE */) // IE doesn't speak constants.
+        text += i.data;
+      else if (i.firstChild != null)
+        text += getText(i);
+    }
+    return text;
+  }
+
+  function TocEntry(el, text, toclevel) {
+    this.element = el;
+    this.text = text;
+    this.toclevel = toclevel;
+  }
+
+  function tocEntries(el, toclevels) {
+    var result = new Array;
+    var re = new RegExp('[hH]([2-'+(toclevels+1)+'])');
+    // Function that scans the DOM tree for header elements (the DOM2
+    // nodeIterator API would be a better technique but not supported by all
+    // browsers).
+    var iterate = function (el) {
+      for (var i = el.firstChild; i != null; i = i.nextSibling) {
+        if (i.nodeType == 1 /* Node.ELEMENT_NODE */) {
+          var mo = re.exec(i.tagName);
+          if (mo && (i.getAttribute("class") || i.getAttribute("className")) != "float") {
+            result[result.length] = new TocEntry(i, getText(i), mo[1]-1);
+          }
+          iterate(i);
+        }
+      }
+    }
+    iterate(el);
+    return result;
+  }
+
+  var toc = document.getElementById("toc");
+  if (!toc) {
+    return;
+  }
+
+  // Delete existing TOC entries in case we're reloading the TOC.
+  var tocEntriesToRemove = [];
+  var i;
+  for (i = 0; i < toc.childNodes.length; i++) {
+    var entry = toc.childNodes[i];
+    if (entry.nodeName == 'div'
+     && entry.getAttribute("class")
+     && entry.getAttribute("class").match(/^toclevel/))
+      tocEntriesToRemove.push(entry);
+  }
+  for (i = 0; i < tocEntriesToRemove.length; i++) {
+    toc.removeChild(tocEntriesToRemove[i]);
+  }
+
+  // Rebuild TOC entries.
+  var entries = tocEntries(document.getElementById("content"), toclevels);
+  for (var i = 0; i < entries.length; ++i) {
+    var entry = entries[i];
+    if (entry.element.id == "")
+      entry.element.id = "_toc_" + i;
+    var a = document.createElement("a");
+    a.href = "#" + entry.element.id;
+    a.appendChild(document.createTextNode(entry.text));
+    var div = document.createElement("div");
+    div.appendChild(a);
+    div.className = "toclevel" + entry.toclevel;
+    toc.appendChild(div);
+  }
+  if (entries.length == 0)
+    toc.parentNode.removeChild(toc);
+},
+
+
+/////////////////////////////////////////////////////////////////////
+// Footnotes generator
+/////////////////////////////////////////////////////////////////////
+
+/* Based on footnote generation code from:
+ * http://www.brandspankingnew.net/archive/2005/07/format_footnote.html
+ */
+
+footnotes: function () {
+  // Delete existing footnote entries in case we're reloading the footnodes.
+  var i;
+  var noteholder = document.getElementById("footnotes");
+  if (!noteholder) {
+    return;
+  }
+  var entriesToRemove = [];
+  for (i = 0; i < noteholder.childNodes.length; i++) {
+    var entry = noteholder.childNodes[i];
+    if (entry.nodeName == 'div' && entry.getAttribute("class") == "footnote")
+      entriesToRemove.push(entry);
+  }
+  for (i = 0; i < entriesToRemove.length; i++) {
+    noteholder.removeChild(entriesToRemove[i]);
+  }
+
+  // Rebuild footnote entries.
+  var cont = document.getElementById("content");
+  var spans = cont.getElementsByTagName("span");
+  var refs = {};
+  var n = 0;
+  for (i=0; i<spans.length; i++) {
+    if (spans[i].className == "footnote") {
+      n++;
+      var note = spans[i].getAttribute("data-note");
+      if (!note) {
+        // Use [\s\S] in place of . so multi-line matches work.
+        // Because JavaScript has no s (dotall) regex flag.
+        note = spans[i].innerHTML.match(/\s*\[([\s\S]*)]\s*/)[1];
+        spans[i].innerHTML =
+          "[<a id='_footnoteref_" + n + "' href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+        spans[i].setAttribute("data-note", note);
+      }
+      noteholder.innerHTML +=
+        "<div class='footnote' id='_footnote_" + n + "'>" +
+        "<a href='#_footnoteref_" + n + "' title='Return to text'>" +
+        n + "</a>. " + note + "</div>";
+      var id =spans[i].getAttribute("id");
+      if (id != null) refs["#"+id] = n;
+    }
+  }
+  if (n == 0)
+    noteholder.parentNode.removeChild(noteholder);
+  else {
+    // Process footnoterefs.
+    for (i=0; i<spans.length; i++) {
+      if (spans[i].className == "footnoteref") {
+        var href = spans[i].getElementsByTagName("a")[0].getAttribute("href");
+        href = href.match(/#.*/)[0];  // Because IE return full URL.
+        n = refs[href];
+        spans[i].innerHTML =
+          "[<a href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+      }
+    }
+  }
+},
+
+install: function(toclevels) {
+  var timerId;
+
+  function reinstall() {
+    asciidoc.footnotes();
+    if (toclevels) {
+      asciidoc.toc(toclevels);
+    }
+  }
+
+  function reinstallAndRemoveTimer() {
+    clearInterval(timerId);
+    reinstall();
+  }
+
+  timerId = setInterval(reinstall, 500);
+  if (document.addEventListener)
+    document.addEventListener("DOMContentLoaded", reinstallAndRemoveTimer, false);
+  else
+    window.onload = reinstallAndRemoveTimer;
+}
+
+}
+asciidoc.install();
+/*]]>*/
+</script>
+</head>
+<body class="article">
+<div id="header">
+<h1>ruby - gruff installation</h1>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph"><p>The Gruff Graphing Library is a project to make beautiful graphs with Ruby easily.</p></div>
+<div class="paragraph"><p>It relies on ImageMagick and RMagick.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_installation_on_red_hat_centos_systems">Installation on Red Hat/Centos systems</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>The package <code>ImageMagick</code> is in the standard OS repository.</p></div>
+<div class="paragraph"><p>The package <code>ruby-RMagick</code> is available on EPEL.</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>yum -y install ImageMagick
+yum -y install ruby-RMagick <span style="font-style: italic"><span style="color: #9A1900"># needs EPEL</span></span>
+yum -y install liberation-fonts <span style="font-style: italic"><span style="color: #9A1900"># RHEL 5</span></span>
+yum -y install liberation-fonts-common liberation-sans-fonts <span style="font-style: italic"><span style="color: #9A1900"># RHEL 6</span></span>
+gem install gruff</tt></pre></div></div>
+<div class="paragraph"><p>You can download the gem on <a href="http://www.rubygems.org">http://www.rubygems.org</a></p></div>
+<div class="paragraph"><p>Alternatively you can use a rpm package for gruff, <code>rubygem-gruff</code>, available on
+<a href="http://www.kermit.fr/custom/">http://www.kermit.fr/custom/</a></p></div>
+<div class="paragraph"><p>Use the font like this :</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>g <span style="color: #990000">=</span> Gruff<span style="color: #990000">::</span>Line<span style="color: #990000">.</span>new<span style="color: #990000">()</span>
+g<span style="color: #990000">.</span>font <span style="color: #990000">=</span> <span style="color: #FF0000">'/usr/share/fonts/liberation/LiberationSans-Regular.ttf'</span></tt></pre></div></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_installation_on_windows">Installation on Windows</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>I followed the video tutorial <a href="http://www.youtube.com/watch?v=gEWAVlNCKhg">RMagick 2.13.1 Gem Install for Ruby 1.9.3 on Windows 7</a></p></div>
+<div class="paragraph"><p>Here is a summary with some extra details.</p></div>
+<div class="paragraph"><p>Tested on Windows 2003 and Windows Seven.</p></div>
+<div class="paragraph"><p>Download Ruby for Windows from <a href="http://www.rubyinstaller.org/downloads/">http://www.rubyinstaller.org/downloads/</a></p></div>
+<div class="paragraph"><p>Install in <code>c:\Ruby193</code> :</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<code>rubyinstaller-1.9.3-p194.exe</code>
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>During the installation, select <em>Add Ruby executables to you PATH</em> and <em>Associate .rb files with this Ruby installation</em>.</p></div>
+<div class="paragraph"><p>Download Development Kit from <a href="http://www.rubyinstaller.org/downloads/">http://www.rubyinstaller.org/downloads/</a></p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<code>DevKit-tdm-32-4.5.2-20111229-1559-sfx.exe</code>
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Check the installation procedure from <a href="https://github.com/oneclick/rubyinstaller/wiki/Development-Kit">https://github.com/oneclick/rubyinstaller/wiki/Development-Kit</a></p></div>
+<div class="paragraph"><p>Unzip in <code>C:\DevKit</code></p></div>
+<div class="paragraph"><p>Then at a command prompt :</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>C:
+cd \DevKit
+ruby dk.rb init
+ruby dk.rb install</code></pre>
+</div></div>
+<div class="paragraph"><p>Download MinGW from <a href="http://sourceforge.net/projects/mingw/files/">http://sourceforge.net/projects/mingw/files/</a></p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<code>x86-mingw32-build-1.0-sh.tar.bz2</code>
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Install in <code>C:\MinGW</code></p></div>
+<div class="paragraph"><p>During the installation, select <em>MinGW Developer Toolkit</em>.</p></div>
+<div class="paragraph"><p>Add <code>C:\MinGW\bin;</code> at the beginning of the PATH environment variable.</p></div>
+<div class="paragraph"><p>Download ImageMagick from <a href="http://imagemagick.org/script/binary-releases.php#windows">http://imagemagick.org/script/binary-releases.php#windows</a></p></div>
+<div class="paragraph"><p>Install in <code>C:\ImageMagick</code> :</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<code>ImageMagick-6.7.9-4-Q16-windows-static.exe</code>
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>AND</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<code>ImageMagick-6.7.9-4-Q16-windows-dll.exe</code>
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>During the installation, select <em>Install development headers for C and C++</em>.</p></div>
+<div class="paragraph"><p>Download the source code from <a href="http://www.imagemagick.org/script/download.php">http://www.imagemagick.org/script/download.php</a></p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<code>ImageMagick-6.7.9-4.zip</code>
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Extract as <code>C:\ImageMagick\SourceCode</code></p></div>
+<div class="paragraph"><p>Get the <code>rmagick</code> gem from <a href="http://www.rubygems.org">http://www.rubygems.org</a></p></div>
+<div class="paragraph"><p>Build it in a command prompt :</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>gem install rmagick-2.13.1.gem --platform=ruby -- "--with-opt-include=C:/ImageMagick/SourceCode" "--with-opt-lib=C:/ImageMagick"</code></pre>
+</div></div>
+<div class="paragraph"><p>Get the <code>gruff</code> gem from <a href="http://www.rubygems.org">http://www.rubygems.org</a></p></div>
+<div class="paragraph"><p>Install it :</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>gem install gruff-0.3.6.gem</code></pre>
+</div></div>
+<div class="paragraph"><p>In your programs with Gruff 0.3.6, you get a "ZeroDivisionError".</p></div>
+<div class="paragraph"><p>Patch with information from <a href="https://github.com/topfunky/gruff/issues/21">https://github.com/topfunky/gruff/issues/21</a></p></div>
+<div class="paragraph"><p>In <code>lib/gruff/base.rb</code> (<code>C:\Ruby193\lib\ruby\gems\1.9.1\gems\gruff-0.3.6\lib\gruff\base.rb</code>),</p></div>
+<div class="paragraph"><p>replace :</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>     <span style="font-weight: bold"><span style="color: #0000FF">def</span></span> label<span style="color: #990000">(</span>value<span style="color: #990000">)</span>
+       label <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> <span style="color: #990000">(</span><span style="color: #009900">@spread</span><span style="color: #990000">.</span>to_f <span style="color: #990000">%</span> <span style="color: #009900">@marker_count</span><span style="color: #990000">.</span>to_f <span style="color: #990000">==</span> <span style="color: #993399">0</span><span style="color: #990000">)</span> <span style="color: #990000">||</span> <span style="color: #990000">!</span><span style="color: #009900">@y_axis_increment</span><span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #0000FF">nil</span></span><span style="color: #990000">?</span></tt></pre></div></div>
+<div class="paragraph"><p>With :</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>     <span style="font-weight: bold"><span style="color: #0000FF">def</span></span> label<span style="color: #990000">(</span>value<span style="color: #990000">)</span>
+       label <span style="color: #990000">=</span> <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> <span style="color: #990000">(</span><span style="color: #009900">@spread</span><span style="color: #990000">.</span>to_f <span style="color: #990000">%</span> <span style="color: #990000">(</span><span style="color: #009900">@marker_count</span><span style="color: #990000">.</span>to_f<span style="color: #990000">==</span><span style="color: #993399">0</span> <span style="color: #990000">?</span> <span style="color: #993399">1</span> <span style="color: #990000">:</span> <span style="color: #009900">@marker_count</span><span style="color: #990000">.</span>to_f<span style="color: #990000">)</span> <span style="color: #990000">==</span> <span style="color: #993399">0</span><span style="color: #990000">)</span> <span style="color: #990000">||</span> <span style="color: #990000">!</span><span style="color: #009900">@y_axis_increment</span><span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #0000FF">nil</span></span><span style="color: #990000">?</span></tt></pre></div></div>
+<div class="paragraph"><p>Or force <code>maker_count</code> just after instantiation :</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>g <span style="color: #990000">=</span> Gruff<span style="color: #990000">::</span>Line<span style="color: #990000">.</span>new<span style="color: #990000">()</span>
+g<span style="color: #990000">.</span>marker_count <span style="color: #990000">=</span> <span style="color: #993399">10</span></tt></pre></div></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_monkey_patch_for_displaying_labels_vertically">Monkey patch for displaying labels vertically</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>For Gruff 0.3.6.</p></div>
+<div class="paragraph"><p>Just add at the top of your program :</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900"># Monkey patch for displaying labels vertically in Gruff 0.3.6</span></span>
+
+<span style="font-weight: bold"><span style="color: #0000FF">class</span></span> Gruff<span style="color: #990000">::</span>Base
+    <span style="font-weight: bold"><span style="color: #0000FF">def</span></span> draw_label<span style="color: #990000">(</span>x_offset<span style="color: #990000">,</span> index<span style="color: #990000">)</span>
+          <span style="font-weight: bold"><span style="color: #0000FF">return</span></span> <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> <span style="color: #009900">@hide_line_markers</span>
+
+          <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> <span style="color: #990000">!</span><span style="color: #009900">@labels</span><span style="color: #990000">[</span>index<span style="color: #990000">].</span><span style="font-weight: bold"><span style="color: #0000FF">nil</span></span><span style="color: #990000">?</span> <span style="color: #990000">&amp;&amp;</span> <span style="color: #009900">@labels_seen</span><span style="color: #990000">[</span>index<span style="color: #990000">].</span><span style="font-weight: bold"><span style="color: #0000FF">nil</span></span><span style="color: #990000">?</span>
+            y_offset <span style="color: #990000">=</span> <span style="color: #009900">@graph_bottom</span> <span style="color: #990000">+</span> LABEL_MARGIN
+
+            <span style="color: #009900">@d</span><span style="color: #990000">.</span>fill <span style="color: #990000">=</span> <span style="color: #009900">@font_color</span>
+            <span style="color: #009900">@d</span><span style="color: #990000">.</span>font <span style="color: #990000">=</span> <span style="color: #009900">@font</span> <span style="font-weight: bold"><span style="color: #0000FF">if</span></span> <span style="color: #009900">@font</span>
+            <span style="color: #009900">@d</span><span style="color: #990000">.</span>stroke<span style="color: #990000">(</span><span style="color: #FF0000">'transparent'</span><span style="color: #990000">)</span>
+            <span style="color: #009900">@d</span><span style="color: #990000">.</span>rotation <span style="color: #990000">=</span> <span style="color: #993399">90</span> <span style="font-style: italic"><span style="color: #9A1900"># patch</span></span>
+            <span style="color: #009900">@d</span><span style="color: #990000">.</span>text_align<span style="color: #990000">(</span> LeftAlign <span style="color: #990000">)</span> <span style="font-style: italic"><span style="color: #9A1900"># patch</span></span>
+            <span style="color: #009900">@d</span><span style="color: #990000">.</span>font_weight <span style="color: #990000">=</span> NormalWeight
+            <span style="color: #009900">@d</span><span style="color: #990000">.</span>pointsize <span style="color: #990000">=</span> scale_fontsize<span style="color: #990000">(</span><span style="color: #009900">@marker_font_size</span><span style="color: #990000">)</span>
+            <span style="color: #009900">@d</span><span style="color: #990000">.</span>gravity <span style="color: #990000">=</span> NorthWestGravity <span style="font-style: italic"><span style="color: #9A1900"># patch</span></span>
+            <span style="color: #009900">@d</span> <span style="color: #990000">=</span> <span style="color: #009900">@d</span><span style="color: #990000">.</span>annotate_scaled<span style="color: #990000">(</span><span style="color: #009900">@base_image</span><span style="color: #990000">,</span>
+                                    <span style="color: #993399">1.0</span><span style="color: #990000">,</span> <span style="color: #993399">1.0</span><span style="color: #990000">,</span>
+                                    x_offset<span style="color: #990000">,</span> y_offset<span style="color: #990000">,</span>
+                                    <span style="color: #009900">@labels</span><span style="color: #990000">[</span>index<span style="color: #990000">],</span> <span style="color: #009900">@scale</span><span style="color: #990000">)</span>
+            <span style="color: #009900">@d</span><span style="color: #990000">.</span>rotation <span style="color: #990000">=</span> <span style="color: #990000">-</span><span style="color: #993399">90</span> <span style="font-style: italic"><span style="color: #9A1900"># patch</span></span>
+            <span style="color: #009900">@labels_seen</span><span style="color: #990000">[</span>index<span style="color: #990000">]</span> <span style="color: #990000">=</span> <span style="color: #993399">1</span>
+            debug <span style="color: #FF0000">{</span> <span style="color: #009900">@d</span><span style="color: #990000">.</span>line <span style="color: #993399">0.0</span><span style="color: #990000">,</span> y_offset<span style="color: #990000">,</span> <span style="color: #009900">@raw_columns</span><span style="color: #990000">,</span> y_offset <span style="color: #FF0000">}</span>
+          <span style="font-weight: bold"><span style="color: #0000FF">end</span></span>
+    <span style="font-weight: bold"><span style="color: #0000FF">end</span></span>
+
+    <span style="font-weight: bold"><span style="color: #0000FF">def</span></span> bmargin<span style="color: #990000">=(</span>margin<span style="color: #990000">)</span>
+        <span style="color: #009900">@bottom_margin</span> <span style="color: #990000">=</span> margin
+    <span style="font-weight: bold"><span style="color: #0000FF">end</span></span>
+<span style="font-weight: bold"><span style="color: #0000FF">end</span></span></tt></pre></div></div>
+<div class="paragraph"><p>You may need also to reduce the font size for the labels and adjust the margin :</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>g <span style="color: #990000">=</span> Gruff<span style="color: #990000">::</span>Line<span style="color: #990000">.</span>new<span style="color: #990000">()</span>
+g<span style="color: #990000">.</span>marker_font_size <span style="color: #990000">=</span> <span style="color: #993399">11</span>
+g<span style="color: #990000">.</span>bmargin <span style="color: #990000">=</span> <span style="color: #993399">60</span>          <span style="font-style: italic"><span style="color: #9A1900"># check the method in the monkey patch above</span></span></tt></pre></div></div>
+<div class="paragraph"><p>Additional tags : graph, chart, rmagick, imagemagick</p></div>
+</div>
+</div>
+</div>
+<div id="footnotes"><hr /></div>
+<div id="footer">
+<div id="footer-text">
+</div>
+</div>
+</body>
+</html>

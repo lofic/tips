@@ -1,0 +1,1230 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<meta name="generator" content="AsciiDoc 10.2.1" />
+<title>Notes</title>
+<style type="text/css">
+/* ---------------------------------------------------------------------------
+ *  Pryz theme based on Bare Theme (http://tomayko.com/src/adoc-themes/)
+ *  https://github.com/Pryz/asciidoc
+ *-------------------------------------------------------------------------- */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+
+blockquote, q {
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+a:focus {
+  outline: none;
+}
+
+body {
+	font-family:verdana,helvetica,arial,sans-serif;
+	margin:40px auto;
+	max-width:53.8461538462em;
+    box-sizing: border-box;
+    color:#373737;
+    background: #f2f2f2;
+    font-size: 16px;
+    font-family: 'Myriad Pro', Calibri, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+
+em {
+	font-style:italic;
+}
+
+strong {
+	font-weight:bold;
+	color:#000;
+}
+
+tt {
+	font-family: monospace, consolas, 'lucida console', 'bitstream vera sans mono',
+	           'courier new';
+	color:#000;
+}
+
+p, ul, ol, dl {
+	margin:10px 0;
+    /*font-size:15px;*/
+    font-size:13px;
+}
+
+dl {
+	margin-left:40px
+}
+
+dt {
+	font-weight:normal;
+	color:#000;
+}
+
+h1, h2, h3, h4, h5 {
+    margin: 10px 0;
+    font-weight: 700;
+    color:#222222;
+    font-family: 'Lucida Grande', 'Calibri', Helvetica, Arial, sans-serif;
+    letter-spacing: -1px;
+}
+
+h1 {
+	font-size:30px;
+	line-height:1.428;
+	margin:20px 0;
+}
+
+h2 {
+	font-size:23px;
+	line-height:1.36363636;
+	margin:20px 0;
+}
+
+h2 + .sectionbody {}
+
+h3 {
+	font-size:18px;
+	line-height:1.1;
+	margin:30px 0 10px 0;
+}
+
+h4 {
+	font-size:13px;
+	font-weight:bold;
+	line-height:1.538;
+}
+
+h5 {
+	font-size:13px;
+	font-style:italic;
+	line-height:1.538;
+}
+
+pre {
+	font-size:larger;
+}
+
+#header {
+	text-align:center;
+	margin-bottom:30px;
+}
+
+#header h1 { margin-bottom:0 }
+
+
+.title, .sidebar-title {
+	font-weight:normal;
+	color:#000;
+	margin-bottom:5px;
+	margin-top:10px;
+}
+
+.admonitionblock .title {
+	font-weight:bold;
+}
+
+.admonitionblock {
+	margin:30px 0px;
+	color:#555;
+}
+
+.admonitionblock td.icon {
+	width:30px;
+	padding-right:20px;
+	padding-left:20px;
+	text-transform:uppercase;
+	font-weight:bold;
+	color:#888;
+}
+
+.listingblock {
+    margin-bottom:30px;
+}
+
+.listingblock .content {
+	background:#eee;
+    width: 100%;
+    box-shadow: 0 0 10px rgba(0,0,0,.1);
+    overflow: auto;
+}
+
+.listingblock .content pre {
+    color: #222;
+    background-color: #fff;
+    font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
+    font-size: 14px;
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    padding: 10px;
+}
+
+.literalblock .content {
+	margin-left:40px;
+}
+
+.verseblock .content {
+	white-space:pre
+}
+
+.sidebarblock .sidebar-content {
+	border:1px solid silver;
+	background:#FFFFEE;
+	padding:0 10px;
+	color:#222;
+	font-size:smaller;
+	line-height:1.5;
+}
+
+.sidebar-title {
+	margin:10px 0;
+	font-weight:bold;
+	color:#442;
+}
+
+.quoteblock-content {
+	font-style:italic;
+	color:#444;
+	margin-left:40px;
+}
+
+.quoteblock-content .attribution {
+	font-style:normal;
+	text-align:right;
+	color:#000;
+}
+
+.exampleblock-content *:first-child { margin-top:0 }
+.exampleblock-content {
+	border-left:2px solid silver;
+	padding-left:8px;
+}
+
+#footer {
+	font-size:11px;
+	margin-top:40px;
+	border-top:1px solid silver;
+	color:#555;
+}
+
+#author {
+	color:#000;
+	text-transform:uppercase
+}
+
+a:link, a:visited {
+    text-decoration:none;
+    color:#1C1C1C;
+}
+
+a:hover {
+    text-decoration:underline;
+    text-decoration-color:red;
+}
+
+#search {
+    margin-right:10px;
+}
+
+.sort {
+    margin-left:15px;
+    font-size:13px;
+}
+
+.sort:hover {
+    cursor:pointer;
+}
+
+hidden {
+    display:none;
+}
+
+#toc {
+    text-align:left;
+    margin-bottom:30px;
+}
+
+/* vim: set ft=css ts=4 sw=4 noexpandtab: */
+</style>
+<script type="text/javascript">
+/*<![CDATA[*/
+var asciidoc = {  // Namespace.
+
+/////////////////////////////////////////////////////////////////////
+// Table Of Contents generator
+/////////////////////////////////////////////////////////////////////
+
+/* Author: Mihai Bazon, September 2002
+ * http://students.infoiasi.ro/~mishoo
+ *
+ * Table Of Content generator
+ * Version: 0.4
+ *
+ * Feel free to use this script under the terms of the GNU General Public
+ * License, as long as you do not remove or alter this notice.
+ */
+
+ /* modified by Troy D. Hanson, September 2006. License: GPL */
+ /* modified by Stuart Rackham, 2006, 2009. License: GPL */
+
+// toclevels = 1..4.
+toc: function (toclevels) {
+
+  function getText(el) {
+    var text = "";
+    for (var i = el.firstChild; i != null; i = i.nextSibling) {
+      if (i.nodeType == 3 /* Node.TEXT_NODE */) // IE doesn't speak constants.
+        text += i.data;
+      else if (i.firstChild != null)
+        text += getText(i);
+    }
+    return text;
+  }
+
+  function TocEntry(el, text, toclevel) {
+    this.element = el;
+    this.text = text;
+    this.toclevel = toclevel;
+  }
+
+  function tocEntries(el, toclevels) {
+    var result = new Array;
+    var re = new RegExp('[hH]([1-'+(toclevels+1)+'])');
+    // Function that scans the DOM tree for header elements (the DOM2
+    // nodeIterator API would be a better technique but not supported by all
+    // browsers).
+    var iterate = function (el) {
+      for (var i = el.firstChild; i != null; i = i.nextSibling) {
+        if (i.nodeType == 1 /* Node.ELEMENT_NODE */) {
+          var mo = re.exec(i.tagName);
+          if (mo && (i.getAttribute("class") || i.getAttribute("className")) != "float") {
+            result[result.length] = new TocEntry(i, getText(i), mo[1]-1);
+          }
+          iterate(i);
+        }
+      }
+    }
+    iterate(el);
+    return result;
+  }
+
+  var toc = document.getElementById("toc");
+  if (!toc) {
+    return;
+  }
+
+  // Delete existing TOC entries in case we're reloading the TOC.
+  var tocEntriesToRemove = [];
+  var i;
+  for (i = 0; i < toc.childNodes.length; i++) {
+    var entry = toc.childNodes[i];
+    if (entry.nodeName.toLowerCase() == 'div'
+     && entry.getAttribute("class")
+     && entry.getAttribute("class").match(/^toclevel/))
+      tocEntriesToRemove.push(entry);
+  }
+  for (i = 0; i < tocEntriesToRemove.length; i++) {
+    toc.removeChild(tocEntriesToRemove[i]);
+  }
+
+  // Rebuild TOC entries.
+  var entries = tocEntries(document.getElementById("content"), toclevels);
+  for (var i = 0; i < entries.length; ++i) {
+    var entry = entries[i];
+    if (entry.element.id == "")
+      entry.element.id = "_toc_" + i;
+    var a = document.createElement("a");
+    a.href = "#" + entry.element.id;
+    a.appendChild(document.createTextNode(entry.text));
+    var div = document.createElement("div");
+    div.appendChild(a);
+    div.className = "toclevel" + entry.toclevel;
+    toc.appendChild(div);
+  }
+  if (entries.length == 0)
+    toc.parentNode.removeChild(toc);
+},
+
+
+/////////////////////////////////////////////////////////////////////
+// Footnotes generator
+/////////////////////////////////////////////////////////////////////
+
+/* Based on footnote generation code from:
+ * http://www.brandspankingnew.net/archive/2005/07/format_footnote.html
+ */
+
+footnotes: function () {
+  // Delete existing footnote entries in case we're reloading the footnodes.
+  var i;
+  var noteholder = document.getElementById("footnotes");
+  if (!noteholder) {
+    return;
+  }
+  var entriesToRemove = [];
+  for (i = 0; i < noteholder.childNodes.length; i++) {
+    var entry = noteholder.childNodes[i];
+    if (entry.nodeName.toLowerCase() == 'div' && entry.getAttribute("class") == "footnote")
+      entriesToRemove.push(entry);
+  }
+  for (i = 0; i < entriesToRemove.length; i++) {
+    noteholder.removeChild(entriesToRemove[i]);
+  }
+
+  // Rebuild footnote entries.
+  var cont = document.getElementById("content");
+  var spans = cont.getElementsByTagName("span");
+  var refs = {};
+  var n = 0;
+  for (i=0; i<spans.length; i++) {
+    if (spans[i].className == "footnote") {
+      n++;
+      var note = spans[i].getAttribute("data-note");
+      if (!note) {
+        // Use [\s\S] in place of . so multi-line matches work.
+        // Because JavaScript has no s (dotall) regex flag.
+        note = spans[i].innerHTML.match(/\s*\[([\s\S]*)]\s*/)[1];
+        spans[i].innerHTML =
+          "[<a id='_footnoteref_" + n + "' href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+        spans[i].setAttribute("data-note", note);
+      }
+      noteholder.innerHTML +=
+        "<div class='footnote' id='_footnote_" + n + "'>" +
+        "<a href='#_footnoteref_" + n + "' title='Return to text'>" +
+        n + "</a>. " + note + "</div>";
+      var id =spans[i].getAttribute("id");
+      if (id != null) refs["#"+id] = n;
+    }
+  }
+  if (n == 0)
+    noteholder.parentNode.removeChild(noteholder);
+  else {
+    // Process footnoterefs.
+    for (i=0; i<spans.length; i++) {
+      if (spans[i].className == "footnoteref") {
+        var href = spans[i].getElementsByTagName("a")[0].getAttribute("href");
+        href = href.match(/#.*/)[0];  // Because IE return full URL.
+        n = refs[href];
+        spans[i].innerHTML =
+          "[<a href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+      }
+    }
+  }
+},
+
+install: function(toclevels) {
+  var timerId;
+
+  function reinstall() {
+    asciidoc.footnotes();
+    if (toclevels) {
+      asciidoc.toc(toclevels);
+    }
+  }
+
+  function reinstallAndRemoveTimer() {
+    clearInterval(timerId);
+    reinstall();
+  }
+
+  timerId = setInterval(reinstall, 500);
+  if (document.addEventListener)
+    document.addEventListener("DOMContentLoaded", reinstallAndRemoveTimer, false);
+  else
+    window.onload = reinstallAndRemoveTimer;
+}
+
+}
+asciidoc.install();
+/*]]>*/
+</script>
+</head>
+<body class="article">
+<div id="header">
+<h1>Notes</h1>
+</div>
+<div id="content">
+<a name="preamble"></a>
+<p><a href="http://lofic.github.io/tips/">lofic.github.io/tips</a></p>
+<p>If you like these tips,
+<strong><a href="https://github.com/lofic/tips/">&gt; give me a star here &lt;</a></strong>
+to help other people know about it !</p>
+<hr>
+<h2><a name="_list"></a>List</h2>
+<div id="hacked-ulist"><input class="search" /><span class="sort" data-sort="linklist">Sort by name</span><ul class="list">
+<li><p class="linklist">
+<a href="zellij-config.html">zellij - custom config</a>
+</p></li>
+<li><p class="linklist">
+<a href="zeitgeist-tracker-purge.html">zeitgeist and tracker - disable</a> <hidden>Additional tags : tracker, track, tracking</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="yum-variables.html">yum - display variables</a>
+</p></li>
+<li><p class="linklist">
+<a href="yum-checksum_error.html">yum - fix checksum error</a>
+</p></li>
+<li><p class="linklist">
+<a href="x11-forwarding.html">X11 Forwarding</a> <hidden>Additional tags : ssh, sshd</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="windows-ping.html">windows - enable ping</a>
+</p></li>
+<li><p class="linklist">
+<a href="windows-license_trial.html">windows - trial period</a>
+</p></li>
+<li><p class="linklist">
+<a href="windows-firewall.html">windows - firewall</a>
+</p></li>
+<li><p class="linklist">
+<a href="windows-banalize.html">Windows - banalize a system</a> <hidden>Additional tag : sysprep</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="wezterm.html">wezterm - custom config</a>
+</p></li>
+<li><p class="linklist">
+<a href="vscode_sane_defaults.html">vscode sane defaults</a> <hidden>Additional tags : visual, studio, code</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="vnc-use.html">vnc - use</a>
+</p></li>
+<li><p class="linklist">
+<a href="vim-visual_line.html">vim - visual line mode</a> <hidden>Additional tag : vi</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="vim-visual_block.html">vim - visual block mode</a> <hidden>Additional tag : vi</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="vim-vimdir.html">vim - vimdir</a> <hidden>Additional tag : vi</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="vim-unix_file_format.html">vim - save with unix file format</a> <hidden>Additional tag : vi</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="vim-tabs2spaces.html">vim - tabs to spaces</a> <hidden>Additional tags : vi, expand, tab, tabs, space, spaces, character, characters</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="vim-switch_window.html">vim : switch active window</a>
+</p></li>
+<li><p class="linklist">
+<a href="vim-spellcheck.html">vim - spellcheck</a> <hidden>Additional tags : orthographe, correction</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="vim-snipmate.html">vim - snipmate</a> <hidden>Additional tag : vi</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="vim-selection-shortcuts.html">vim - selection shortcuts</a> <hidden>Additional tags : vi, shortcut</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="vim-paste.html">vim - paste</a> <hidden>Additional tag : vi</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="vim-next_blank_line-shortcuts.html">vim - go to next blank line shortcut</a> <hidden>Additional tag : vi</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="vim-motions.html">vim - motions</a>
+</p></li>
+<li><p class="linklist">
+<a href="vim-minibufexpl-shortcuts.html">vim - minibufexpl shortcuts</a> <hidden>Additional tags : vi, shortcut</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="vim-jump-shortcuts.html">vim - jump shortcuts</a> <hidden>Additional tags : vi, shortcut</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="vim-intro.html">Guide de survim</a>
+</p></li>
+<li><p class="linklist">
+<a href="vim-ide.html">vim - ide shortcuts</a>
+</p></li>
+<li><p class="linklist">
+<a href="vim-highlight_search.html">vim - highlight search</a> <hidden>Additional tag : vi</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="vim-highlight_long_lines.html">vim - highlight lines longer than 80 chars</a> <hidden>Additional tags : vi, eighty, character, characters, line, wrap, wrapping</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="vim-exit-shortcuts.html">vim - exit shortcuts</a> <hidden>Additional tags : vi, shortcut</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="vim-delete_blank_lines.html">vim - delete empty and blank lines</a> <hidden>Additional tag : vi</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="vim-completion-shortcuts.html">vim - completion shortcuts</a> <hidden>Additional tags : vi, shortcut, filename</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="vim-color_highlight.html">vim - color highlighting</a> <hidden>Additional tags : vi, highlight</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="vim-break_lines-shortcuts.html">vim - break lines shortcuts</a> <hidden>Additional tags : vi, eighty, character, characters, line, wrap, wrapping, shortcut</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="vim-append_at_end_of_lines.html">vim - append at end of lines</a>
+</p></li>
+<li><p class="linklist">
+<a href="video-cut_split.html">video - cut or split</a> <hidden>Additional tags : avi, wmv</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="video-convert.html">video - convert</a> <hidden>Additional tags : h264, mp4, webm</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="video-concatenate.html">video - concatenate</a> <hidden>Additional tags : merge, join</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="video-check.html">video - check</a>
+</p></li>
+<li><p class="linklist">
+<a href="ubuntu-sound_ko.html">Ubuntu - Fix the not working sound</a>
+</p></li>
+<li><p class="linklist">
+<a href="ubuntu-settings.html">ubuntu and gnome 3 settings</a> <hidden>Additional tags : gnome3, tweak</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="ubuntu-network_configuration.html">ubuntu - network configuration</a> <hidden>Additional tags : resolvconf, config</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="ubuntu-manual_network_configuration.html">ubuntu - manual network configuration</a> <hidden>Additional tags : resolvconf, config</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="ubuntu-jupiter_notifications.html">ubuntu - disable annoying jupiter notifications</a>
+</p></li>
+<li><p class="linklist">
+<a href="ubuntu-install.html">ubuntu - installation</a>
+</p></li>
+<li><p class="linklist">
+<a href="tse-clients.html">tse - Linux clients</a> <hidden>Additional tags : client, rdp</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="troubleshooting-by-topics.html">Troubleshooting RHEL - summary by topics</a>
+</p></li>
+<li><p class="linklist">
+<a href="tree-ascii_chars.html">tree - ascii</a>
+</p></li>
+<li><p class="linklist">
+<a href="top-sort_processes.html">top - sort processes</a>
+</p></li>
+<li><p class="linklist">
+<a href="terminator-config.html">terminator - customize</a>
+</p></li>
+<li><p class="linklist">
+<a href="terminal-visual_bell.html">terminal - visual bell</a>
+</p></li>
+<li><p class="linklist">
+<a href="tcpdump-examples.html">tcpdump - examples</a>
+</p></li>
+<li><p class="linklist">
+<a href="tabs2spaces-expand.html">tabs2spaces - expand</a> <hidden>Additional tags : tab, tabs, space, spaces, character, characters</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="systemd-services.html">systemd - services</a> <hidden>Additional tags : systemctl, service</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="ssh-rev_tunnel.html">ssh - reverse tunnel</a> <hidden>Additional tag : tunnel</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="ssh-port_forwarding.html">ssh - using port forwarding</a> <hidden>Additional tag : tunnel</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="ssh-pipe.html">ssh - pipe through ssh</a>
+</p></li>
+<li><p class="linklist">
+<a href="ssh-copy-id.html">ssh-copy-id</a> <hidden>Additional tags : automatic, passwordless, password-less, connection</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="ssh-agent.html">ssh agent - start automatically</a> <hidden>Additional tags : wsl, wsl2, ssh-agent</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="sql-case_insensitive.html">sql - case insensitive query</a>
+</p></li>
+<li><p class="linklist">
+<a href="selinux-troubleshoot.html">SELinux - troubleshoot</a> <hidden>Additional tags : audit, troubleshooting, selinux</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="sed-tabs2spaces.html">sed - tabs to spaces</a> <hidden>Additional tags : expand, tab, tabs, space, spaces, character, characters</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="sed-delete_spaces.html">sed - delete trailing spaces</a>
+</p></li>
+<li><p class="linklist">
+<a href="sed-delete_block.html">sed - delete block</a>
+</p></li>
+<li><p class="linklist">
+<a href="scsi-view.html">scsi devices - view</a> <hidden>Additional tags : scan, map, mapping, viewing</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="scsi-rescan.html">scsi devices - rescan</a> <hidden>Additional tags : scan</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="screencast-howto.html">screencast - howto</a>
+</p></li>
+<li><p class="linklist">
+<a href="satellite6-clean_tasks.html">Satellite 6 - purge tasks</a>
+</p></li>
+<li><p class="linklist">
+<a href="ruby-xml_parse.html">ruby - examples of xml parsing</a> <hidden>Additional tag : parser</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="ruby-trace.html">ruby - trace a program</a> <hidden>Additional tags : debugging, debug</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="ruby-ternary_operator.html">ruby - ternary operator</a>
+</p></li>
+<li><p class="linklist">
+<a href="ruby-silent_warning.html">ruby - temporary silent warning</a>
+</p></li>
+<li><p class="linklist">
+<a href="ruby-regex.html">ruby - examples of regex search</a> <hidden>Additional tag : regexp</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="ruby-recursive_globbing.html">ruby - recursive globbing with all files and subdirs</a> <hidden>Additional tags : glob, subdirectory, subdirectories, directory, directories,
+subfolder, subfolders, folder, folders, subdir</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="ruby-initialize_unless_value.html">ruby - idiom - initialize unless value</a>
+</p></li>
+<li><p class="linklist">
+<a href="ruby-heredoc.html">ruby - heredoc or multi-line string</a> <hidden>Additional tag : heredocument</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="ruby-gruff.html">ruby - gruff installation</a> <hidden>Additional tags : graph, chart, rmagick, imagemagick</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="ruby-file_to_string.html">ruby - read file to a string</a>
+</p></li>
+<li><p class="linklist">
+<a href="ruby-file_open.html">ruby - open file</a>
+</p></li>
+<li><p class="linklist">
+<a href="ruby-daemonize.html">ruby - daemonize</a> <hidden>Additional tag : daemon</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="ruby-case_var_type.html">ruby - case statements on the type of a variable</a>
+</p></li>
+<li><p class="linklist">
+<a href="rpm-rebuild.html">rpm - build or rebuild</a> <hidden>Additional tags : scl, rhscl, software, collections</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="rpm-list_gpg_keys.html">rpm - list all imported gpg keys</a>
+</p></li>
+<li><p class="linklist">
+<a href="rpm-delete_gpg_keys.html">rpm - delete all imported rpm gpg keys</a>
+</p></li>
+<li><p class="linklist">
+<a href="rj45-colour_code.html">rj45 - colour coding</a>
+</p></li>
+<li><p class="linklist">
+<a href="rhel-vs_fedora.html">rhel - relationship with fedora</a>
+</p></li>
+<li><p class="linklist">
+<a href="regex-character_classes.html">regex - some common character classes and abbreviations</a> <hidden>Additional tags : regexp, char, ruby</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="recode-example.html">recode - example</a> <hidden>Additional tags : charset, charsets, character, set, sets</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="python-xml_pretty.html">python - pretty print xml</a>
+</p></li>
+<li><p class="linklist">
+<a href="python-xml_parse.html">python - examples of xml parsing</a> <hidden>Additional tag : parser</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="python-with_statement.html">python - with statement and blocks</a>
+</p></li>
+<li><p class="linklist">
+<a href="python-var_named_from_str.html">python - create variables named from strings</a>
+</p></li>
+<li><p class="linklist">
+<a href="python-ternary_operator.html">python - ternary operator</a>
+</p></li>
+<li><p class="linklist">
+<a href="python-recursive_globbing.html">python - recursive globbing with all files and subdirs</a> <hidden>Additional tags : glob, subdirectory, subdirectories, directory, directories,
+subfolder, subfolders, folder, folders, subdir</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="python-oo_switch_case.html">python - object oriented switch case</a>
+</p></li>
+<li><p class="linklist">
+<a href="python-killer_docs.html">python - killer docs</a> <hidden>Additional tags : documentation, doc</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="python-intersection.html">python - list intersection</a>
+</p></li>
+<li><p class="linklist">
+<a href="python-heredoc.html">python - heredoc or multiline string</a> <hidden>Additional tag : heredocument</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="python-file_to_string.html">python - read file to a string</a>
+</p></li>
+<li><p class="linklist">
+<a href="python-daemonize.html">python - daemonize</a> <hidden>Additional tag : daemon</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="puppet-validate.html">puppet - syntax and style guide compliance</a> <hidden>Additional tags : syntax, style, lint</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="puppet-passenger.html">puppet - running the master with passenger</a>
+</p></li>
+<li><p class="linklist">
+<a href="puppet-list_resources.html">puppet - list resources applied on a node</a>
+</p></li>
+<li><p class="linklist">
+<a href="puppet-list_nodes.html">puppet - list all nodes</a>
+</p></li>
+<li><p class="linklist">
+<a href="puppet-list_classes.html">puppet - list applied classes</a> <hidden>Additional tag : class</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="puppet-install_multiple_packages.html">puppet - install multiple packages at once</a>
+</p></li>
+<li><p class="linklist">
+<a href="puppet-inspect_variable.html">puppet - inspect a variable</a>
+</p></li>
+<li><p class="linklist">
+<a href="puppet-del_cert.html">puppet - delete certificate</a>
+</p></li>
+<li><p class="linklist">
+<a href="puppet-debug.html">puppet - debug</a>
+</p></li>
+<li><p class="linklist">
+<a href="ps-2pps.html">postscript - 2 pages per sheet</a>
+</p></li>
+<li><p class="linklist">
+<a href="postgres-quick_and_dirty_setup.html">Postgres server - quick and dirty setup</a>
+</p></li>
+<li><p class="linklist">
+<a href="polkit-intro.html">polkit - intro</a>
+</p></li>
+<li><p class="linklist">
+<a href="perl-heredoc.html">perl - heredoc or multi-line string</a> <hidden>Additional tag : heredocument</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="perl-file_to_string.html">perl - file to string</a>
+</p></li>
+<li><p class="linklist">
+<a href="perl-cpan.html">perl - add a module for cpan</a>
+</p></li>
+<li><p class="linklist">
+<a href="pdf-split.html">pdf - split, extract, delete pages</a>
+</p></li>
+<li><p class="linklist">
+<a href="pdf-owner_password.html">pdf - remove  OWNER PASSWORD</a>
+</p></li>
+<li><p class="linklist">
+<a href="pdf-concatenate.html">pdf - concatenate documents</a> <hidden>Additional tags : merge, join</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="pdf-2pps.html">pdf - 2 pages per sheet</a>
+</p></li>
+<li><p class="linklist">
+<a href="password-generate.html">Generate a password</a> <hidden>Additional tag : passwords</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="openvpn-setup.html">openvpn - setup</a> <hidden>Additional tags : lab, debian</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="openssl-trust_a_ca.html">openssl - trust a custom CA</a> <hidden>Additional tags : ssl, certificate, authority, ca, cert, root</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="openssl-troubleshoot.html">openssl - troubleshoot</a> <hidden>Additional tags : ssl, certificate, authority, ca, cert</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="nfs-howto.html">NFS - basic server</a> <hidden>Additional tag : nfs</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="network-bonding.html">network - Linux network bonding or teaming</a>
+</p></li>
+<li><p class="linklist">
+<a href="neovim-debian.html">Install a recent neovim version on Debian</a> <hidden>Additional tag : nvim</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="mysql-reset_password.html">mysql - reset the root password</a>
+</p></li>
+<li><p class="linklist">
+<a href="mutt-delete_all_messages.html">mutt - delete all messages</a> <hidden>Additional tag : mail</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="msa-cli.html">MAS - CLI commands</a> <hidden>Additional tags : HP, storage</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="mp3-tags.html">mp3 - ID3 tags</a>
+</p></li>
+<li><p class="linklist">
+<a href="memory-clean_cache.html">memory - clean cache</a>
+</p></li>
+<li><p class="linklist">
+<a href="mcollective-keepalive.html">mcollective - keepalive</a>
+</p></li>
+<li><p class="linklist">
+<a href="markdown-viewers_text_console.html">markdown - viewers for a text console</a>
+</p></li>
+<li><p class="linklist">
+<a href="markdown-convert_to_asciidoc.html">markdown - convert to asciidoc</a>
+</p></li>
+<li><p class="linklist">
+<a href="lvm-snapshot_for_vm.html">lvm - snapshot for vm</a> <hidden>Additional tags : lvm, vm, lab, snapshot, revert</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="lvm-snapshot_for_backup.html">lvm - snaphot for backups</a> <hidden>Additional tags : lvm, backup, lab, snapshot</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="lvm-raid1.html">lvm - RAID 1</a> <hidden>Additional tags : lvm, raid</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="linux-shell_profile.html">linux - shell profile</a>
+</p></li>
+<li><p class="linklist">
+<a href="linux-services_upstart.html">linux - upstart services</a>
+</p></li>
+<li><p class="linklist">
+<a href="linux-services_sysv.html">linux - system V services</a>
+</p></li>
+<li><p class="linklist">
+<a href="linux-services.html">linux - services</a>
+</p></li>
+<li><p class="linklist">
+<a href="linux-perf_audit.html">Linux - performance audit</a>
+</p></li>
+<li><p class="linklist">
+<a href="linux-logs.html">linux - logs</a>
+</p></li>
+<li><p class="linklist">
+<a href="linux-id.html">linux - ID</a>
+</p></li>
+<li><p class="linklist">
+<a href="linux-hardware_inventory.html">linux - hardware inventory</a>
+</p></li>
+<li><p class="linklist">
+<a href="linux-compile_a_driver.html">linux - compile and install a third part driver</a>
+</p></li>
+<li><p class="linklist">
+<a href="linux-basic_system_monitoring.html">linux - basic system monitoring</a>
+</p></li>
+<li><p class="linklist">
+<a href="linux-banalize.html">Linux - banalize a system</a> <hidden>Additional tag : sysprep</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="kill-freeze_process.html">kill - freeze / unfreeze a process</a>
+</p></li>
+<li><p class="linklist">
+<a href="kde-composition.html">KDE - composition</a>
+</p></li>
+<li><p class="linklist">
+<a href="iscsi-howto.html">iSCSI how to on Linux Red Hat</a>
+</p></li>
+<li><p class="linklist">
+<a href="irc-use_services.html">IRC - use services</a>
+</p></li>
+<li><p class="linklist">
+<a href="ipv6-disable.html">IPv6 - disable</a>
+</p></li>
+<li><p class="linklist">
+<a href="iptables-save_rules.html">iptables - save active rules</a>
+</p></li>
+<li><p class="linklist">
+<a href="ip-second_ip.html">IP - add a second IP on the same interface</a> <hidden>Additional tags : secondary, virtual, network</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="ip-get_address.html">IP - get address</a>
+</p></li>
+<li><p class="linklist">
+<a href="index.html">Notes</a>
+</p></li>
+<li><p class="linklist">
+<a href="image-processing.html">image - processing</a>
+</p></li>
+<li><p class="linklist">
+<a href="id-everything_is.html">id - everything is an id</a>
+</p></li>
+<li><p class="linklist">
+<a href="hiera-implicit_lookup.html">hiera - implicit lookup</a> <hidden>Additional tag : puppet</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="hammer-examples.html">Hammer - examples</a> <hidden>Additional tags : satellite, foreman</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="gvim-mouse_popup.html">gvim - mouse popup</a> <hidden>Additional tags : vim, vi</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="grub2-password.html">Grub 2 - set a password</a>
+</p></li>
+<li><p class="linklist">
+<a href="grep-motcroises.html">grep - crossword puzzles</a>
+</p></li>
+<li><p class="linklist">
+<a href="gpg-ascii_armor.html">gpg - encrypt a file with output in ASCII</a>
+</p></li>
+<li><p class="linklist">
+<a href="google-ncr.html">google - no country redirection (ncr)</a>
+</p></li>
+<li><p class="linklist">
+<a href="gnome3-vpn_configuration.html">gnome 3 - set a vpn</a> <hidden>Additional tags : vpn, gnome</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="gnome3-tiling.html">gnome 3 - tiling</a> <hidden>Additional tags : gnome3, tile</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="gnome3-poweroff_option.html">gnome 3 - power off option in menu</a> <hidden>Additional tags : gnome3, tweak, tweaks</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="gnome3-power_button.html">gnome 3 - make the power button interactive</a> <hidden>Additional tags : gnome3, tweak, tweaks</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="gnome3-no_recent_docs.html">gnome 3 - no recent documents</a> <hidden>Additional tags : gnome3, tweak, tweaks</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="gnome3-nautilus_menu_delete.html">gnome 3 - option Delete Permanently in the nautilus context menu</a> <hidden>Additional tags : gnome3, tweak, tweaks</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="gnome3-misc_tweaks.html">gnome 3 - misc. tweaks</a> <hidden>Additional tags : gnome3, tweak</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="gnome3-favorite_apps.html">gnome 3 - favorite apps</a> <hidden>Additional tags : gnome3, application, applications, menu</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="gnome3-disable_visual_keyboard.html">gnome 3 - disable the visual keyboard in the unlock screen</a> <hidden>Additional tags : gnome3, tweak, tweaks</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="gnome3-disable_trash.html">gnome 3 - disable the trash</a> <hidden>Additional tags : gnome3, tweak, tweaks</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="gnome3-desktop_bg.html">gnome 3 - desktop background</a> <hidden>Additional tags : gnome3, tweak, tweaks</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="gnome3-custom_shortcuts.html">gnome 3 - custom shortcuts</a> <hidden>Additional tags : gnome3, tweak</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="gnome3-brightness.html">gnome 3 - brightness</a>
+</p></li>
+<li><p class="linklist">
+<a href="gitlab-troubleshoot.html">gitlab - troubleshoot</a> <hidden>Additional tag : omnibus</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="gitlab-no_gravatar.html">gitlab - disable gravatar</a>
+</p></li>
+<li><p class="linklist">
+<a href="git-repo.html">git - create a ro and rw repo</a>
+</p></li>
+<li><p class="linklist">
+<a href="git-remove_branches.html">git - remove some branches</a> <hidden>Additional tag : branch</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="git-rebase_fixup_squash.html">git - rebase</a>
+</p></li>
+<li><p class="linklist">
+<a href="git-patch.html">git - make a patch</a>
+</p></li>
+<li><p class="linklist">
+<a href="git-make_rpm.html">git - make rpm</a>
+</p></li>
+<li><p class="linklist">
+<a href="git-last_commit.html">git - show last git commit diff</a>
+</p></li>
+<li><p class="linklist">
+<a href="git-create_archive.html">git - create an archive from a git repo</a>
+</p></li>
+<li><p class="linklist">
+<a href="git-config.html">git - config</a> <hidden>Additional tags: .gitconfig</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="git-checkout.html">git - checkout</a>
+</p></li>
+<li><p class="linklist">
+<a href="git-better_pull.html">git - better pull</a> <hidden>Additional tags : fetch, merge</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="git-bash_prompt.html">git - bash prompt</a>
+</p></li>
+<li><p class="linklist">
+<a href="form-clean_field.html">form - clean a form field</a>
+</p></li>
+<li><p class="linklist">
+<a href="foreman-install.html">Foreman - install with Puppet masters on smart proxies</a>
+</p></li>
+<li><p class="linklist">
+<a href="firefox-quick_search.html">firefox - keyword for a quick search</a>
+</p></li>
+<li><p class="linklist">
+<a href="firefox-navbar_history.html">firefox - no navigation bar history</a>
+</p></li>
+<li><p class="linklist">
+<a href="firefox-google_ads.html">firefox - get rid of Google ads</a>
+</p></li>
+<li><p class="linklist">
+<a href="file_transfer.html">network file transfer - without scp and netcat</a>
+</p></li>
+<li><p class="linklist">
+<a href="fdisk-plus_or_minus.html">fdisk - output with plus or minus sign</a>
+</p></li>
+<li><p class="linklist">
+<a href="facter-custom_facts.html">facter - custom facts</a> <hidden>Additional tag : puppet</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="emacs-psprint-shortcuts.html">emacs - print in a postscript file shortcut</a> <hidden>Additional tag : shortcut</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="emacs-install.html">emacs - install</a>
+</p></li>
+<li><p class="linklist">
+<a href="emacs-break_lines-shortcuts.html">emacs - break lines shortcut</a> <hidden>Additional tags : eighty, character, characters, line, wrap, wrapping, shortcut</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="emacs-auto_fill-shortcuts.html">emacs - auto fill shortcuts</a> <hidden>Additional tag : shortcut</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="eclipse-shortcuts.html">eclipse - shortcuts</a> <hidden>Additional tag : shortcut</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="dvd-rip.html">dvd - rip</a>
+</p></li>
+<li><p class="linklist">
+<a href="drac-language.html">DRAC - localized version</a> <hidden>Additional tags : dell, english</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="dpkg-create_package.html">dpkg - create a Debian package from source code</a>
+</p></li>
+<li><p class="linklist">
+<a href="download-resume.html">download - resume</a> <hidden>Additional tags : rsync, wget, scp, downloads</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="disk-label.html">disk - label</a>
+</p></li>
+<li><p class="linklist">
+<a href="disk-full_fsck.html">disk - full fsck</a> <hidden>Additional tags : cryptsetup, luks, LUKS</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="debian-survival_kit.html">Debian Buster, Bullseye, Bookworm survival kit</a> <hidden>Additional tags : french, utf8, locales, lang, vim</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="debian-locale.html">Debian 10 - French locale</a> <hidden>Additional tags : french, utf8, locales, lang</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="debian-install.html">Debian 7 - Installation</a>
+</p></li>
+<li><p class="linklist">
+<a href="cyanogen-update.html">lineageos - update</a> <hidden>Additional tag : android, lineageos, lineageOS</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="compilation-build_deps.html">compilation - build dependencies</a>
+</p></li>
+<li><p class="linklist">
+<a href="centos8-langpack.html">centos 8 - langpack and locale fr</a> <hidden>Additional tags : langpack, langpacks, french, locale, locales, centos</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="cdrecord-audio_cd.html">cdrecord - write an audio CD</a>
+</p></li>
+<li><p class="linklist">
+<a href="cd_image-cuebin_to_iso.html">cd image - cue/bin to iso format</a>
+</p></li>
+<li><p class="linklist">
+<a href="bash-shortcuts.html">bash - shortcuts</a> <hidden>Additional tag : shortcut</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="bash-protect_quotes.html">bash - protect quotes</a> <hidden>Additional tag : quote</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="bash-history_subtitution.html">bash - history substitution</a>
+</p></li>
+<li><p class="linklist">
+<a href="bash-heredoc.html">bash - heredoc</a> <hidden>Additional tag : heredocument</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="awk-simple_search.html">awk - simple search</a>
+</p></li>
+<li><p class="linklist">
+<a href="awk-print_fields.html">awk - print various fields</a>
+</p></li>
+<li><p class="linklist">
+<a href="awk-histchars.html">awk - get rid of history characters</a>
+</p></li>
+<li><p class="linklist">
+<a href="awk-case_insensitive_search.html">awk - case insensitive search</a>
+</p></li>
+<li><p class="linklist">
+<a href="augeas-examples.html">augeas - examples</a> <hidden>Additional tags : puppet, augtool</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="asciidoc-stylesheets.html">asciidoc - stylesheets</a>
+</p></li>
+<li><p class="linklist">
+<a href="asciidoc-slides.html">asciidoc - slides</a>
+</p></li>
+<li><p class="linklist">
+<a href="asciidoc-pdf_output.html">asciidoc - pdf output</a>
+</p></li>
+<li><p class="linklist">
+<a href="asciidoc-html5_output.html">asciidoc - html5 output</a>
+</p></li>
+<li><p class="linklist">
+<a href="ascii-banner.html">ascii art - various banners</a>
+</p></li>
+<li><p class="linklist">
+<a href="apt-metapackages.html">apt - metapackages</a>
+</p></li>
+<li><p class="linklist">
+<a href="apt-fixing.html">apt - fixing</a>
+</p></li>
+<li><p class="linklist">
+<a href="apt-cleaning.html">apt - cleaning</a>
+</p></li>
+<li><p class="linklist">
+<a href="apt-badsig.html">apt - fix badsig GPG Error</a> <hidden>Additional tags : bad, signature</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="apt-add_keys.html">apt - add keys</a>
+</p></li>
+<li><p class="linklist">
+<a href="android-copy_files.html">android - copy files from the phone device</a> <hidden>Additional tags : galaxy, nexus, cyanogen</hidden>
+</p></li>
+<li><p class="linklist">
+<a href="akonadi-disable.html">akonadi - disable</a>
+</p></li>
+</ul></div>
+</div>
+<div id="footnotes"><hr /></div>
+<div id="footer">
+<div id="footer-text">
+Last updated
+ 2025-06-27 09:59:21 CEST
+</div>
+</div>
+<script src="./javascripts/list.min.js"></script>
+<script type="text/javascript">
+var options = {
+    valueNames: [ 'linklist' ]
+};
+
+var hackerList = new List('hacked-ulist', options);
+</script>
+</body>
+</html>
