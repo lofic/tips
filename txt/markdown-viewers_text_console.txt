@@ -1,0 +1,6 @@
+markdown - viewers for a text console
+=====================================
+
+glow (https://github.com/charmbracelet/glow)
+
+mdcat (https://github.com/swsnr/mdcat)
