@@ -18,6 +18,8 @@ git config --global pull.rebase true
 git config --global push.default simple
 git config --global merge.ff true
 
+git config --global init.defaultBranch main
+
 # the quotes are essential here :
 git config --global alias.pf 'push --force-with-lease'
 

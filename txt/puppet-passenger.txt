@@ -14,7 +14,6 @@ puppetmaster.conf
 
 In the configuration of Apache.
 
-[source, apacheconf]
 ------------------------------------------------------------------------------
 # /etc/httpd/conf.d/puppetmaster.conf
 # It replaces webrick and listens by default on 8140

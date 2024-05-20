@@ -5,7 +5,6 @@ For environments with no internet access.
 
 In /var/opt/gitlab/gitlab-rails/etc/gitlab.yml :
 
-[source, yaml]
 -----------------------------------------------------------------------------
 gravatar:
     enabled: false
