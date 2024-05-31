@@ -20,6 +20,8 @@ git config --global merge.ff true
 
 git config --global init.defaultBranch main
 
+git config --global --add --bool push.autoSetupRemote true
+
 # the quotes are essential here :
 git config --global alias.pf 'push --force-with-lease'
 
