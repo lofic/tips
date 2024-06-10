@@ -1,0 +1,21 @@
+Install a recent neovim version on Debian
+=========================================
+
+[source, sh]
+-------------------------------------------------------------------------
+#nvversion=9.9.5
+nvversion=0.10.0
+sudo apt install ninja-build gettext cmake unzip curl
+mkdir neovim
+cd neovim
+curl -LO "https://github.com/neovim/neovim/archive/refs/tags/v${nvversion}.tar.gz"
+tar xvzf "v${nvversion}.tar.gz"
+cd "neovim-${nvversion}"
+make CMAKE_BUILD_TYPE=RelWithDebInfo
+cd build
+cpack -G DEB
+sudo dpkg -i --force-overwrite nvim-linux64.deb
+-------------------------------------------------------------------------
+
+Additional tag : nvim
+

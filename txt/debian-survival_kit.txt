@@ -1,5 +1,5 @@
-Debian Buster survival kit
-==========================
+Debian Buster, Bullseye, Bookworm survival kit
+==============================================
 
 For my sake, when I log into a fresh Debian on a cloud VM instance from a
 default Debian image, I need at least :
@@ -10,7 +10,8 @@ sed -i  's/^#[\t ]\(en_US.UTF-8 UTF-8\)/\1/' /etc/locale.gen
 sed -i  's/^#[\t ]\(fr_FR.UTF-8 UTF-8\)/\1/' /etc/locale.gen
 locale-gen
 
-sed -i 's/set mouse=a/set mouse-=a/g' /usr/share/vim/vim81/defaults.vim
+vimfolder=$(find /usr/share/vim -mindepth 1 -maxdepth 1 -type d -regex '.*/vim[0-9]+' -print -quit)
+sed -i 's/set mouse=a/set mouse-=a/g' "${vimfolder}/defaults.vim"
 
 cat<<EOF>/etc/vim/vimrc.local
 set mouse-=a
