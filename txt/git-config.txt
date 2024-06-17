@@ -10,20 +10,27 @@ git config --global alias.co    checkout
 git config --global alias.mrg   merge
 git config --global alias.st    status
 
-git config --global core.editor 'vim -f'
-
-git config --global pager.branch false
 
 git config --global pull.rebase true
-git config --global push.default simple
 git config --global merge.ff true
+
+git config --global push.default simple
+git config --global --add --bool push.autoSetupRemote true
+# the quotes are essential here :
+git config --global alias.pf 'push --force-with-lease'
 
 git config --global init.defaultBranch main
 
-git config --global --add --bool push.autoSetupRemote true
+git config --global pager.branch false
 
-# the quotes are essential here :
-git config --global alias.pf 'push --force-with-lease'
+
+git config --global core.editor 'vim -f'
+git config --global merge.tool 'vimdiff'
+# or
+if which nvim &>/dev/null; then
+  git config --global core.editor 'nvim -f'
+  git config --global merge.tool 'nvimdiff'
+fi
 
 cat ~/.gitconfig
 -----------------------------------------------------------------------------
