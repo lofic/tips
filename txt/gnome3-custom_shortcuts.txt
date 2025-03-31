@@ -17,7 +17,7 @@ gsettings set ${s}.${c}-keybinding:${p}/${c}0/ command 'gvim'
 gsettings set ${s}.${c}-keybinding:${p}/${c}0/ name    'Graphical Vim'
 
 gsettings set ${s}.${c}-keybinding:${p}/${c}1/ binding '<Primary><Alt>t'
-gsettings set ${s}.${c}-keybinding:${p}/${c}1/ command 'gnome-terminal --tab --tab'
+gsettings set ${s}.${c}-keybinding:${p}/${c}1/ command 'gnome-terminal --full-screen'
 gsettings set ${s}.${c}-keybinding:${p}/${c}1/ name    'Terminal'
 
 gsettings set ${s}.${c}-keybinding:${p}/${c}2/ binding '<Primary><Alt>e'

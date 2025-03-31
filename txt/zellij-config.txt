@@ -1,0 +1,49 @@
+zellij - custom config
+======================
+
+In ~/.config/zellij/config.kdl :
+
+-------------------------------------------------------------------------------
+simplified_ui false
+theme "pencil-light"
+default_layout "compact"
+mouse_mode false
+pane_frames false
+show_startup_tips false
+-------------------------------------------------------------------------------
+
+Help command (in a file named zhelp somewhere in the PATH) :
+
+[source,bash]
+-------------------------------------------------------------------------------
+cat<<EOF
+
+Ctrl + <p> PANE
+  n    new
+  r    new right
+  d    new down
+  ←↑↓→ change focus
+  f    toggle full screen
+  e    toggle floating
+
+Ctrl + <n> RESIZE
+  +|-  increase/decrease size
+  ←↑↓→ increase to
+
+Ctrl + <h> MOVE
+  ←↑↓→ switch location
+
+Ctrl + <s> SCROLL
+  s   enter search term
+  ↑↓  scroll
+  PgDn|PgUp scroll page
+  e edit scrollback in default editor
+
+Ctrl + <q> QUIT
+
+Alt + <n> NEW PANE
+
+Alt + ←↑↓→ CHANGE FOCUS
+
+EOF
+-------------------------------------------------------------------------------
