@@ -1,0 +1,116 @@
+wezterm - custom config
+=======================
+
+In `%USERPROFILE%/.wezterm.lua` on Windows :
+
+-------------------------------------------------------------------------------
+-- Pull in the wezterm API
+local wezterm = require 'wezterm'
+local mux = wezterm.mux
+local act = wezterm.action
+
+-- This will hold the configuration.
+local config = wezterm.config_builder()
+
+-- This is where you actually apply your config choices
+
+-- To open new WSL panes in the current working dir (cwd), you'll need
+-- https://wezterm.org/shell-integration.html
+-- curl -sL https://raw.githubusercontent.com/wezterm/wezterm/refs/heads/main/assets/shell-integration/wezterm.sh -o ~/.wezterm.sh
+-- source ~/.wezterm.sh
+
+-- Needed on a VDI machine :
+-- config.prefer_egl = true
+
+
+-- Adjust to your WSL instance name, cf wsl --list --verbose
+config.default_domain = 'WSL:Debian'
+
+
+-- Maximize at startup
+wezterm.on('gui-startup', function(cmd)
+    local tab, pane, window = mux.spawn_window(cmd or {})
+    window:gui_window():maximize()
+end)
+
+
+-- Changing the color scheme
+-- Full list here : https://wezterm.org/colorschemes/index.html
+config.color_scheme = 'Londontube (light) (terminal.sexy)'
+-- Some light themes alternatives :
+--config.color_scheme = 'Google Light (Gogh)'
+--config.color_scheme = 'iTerm2 Tango Light'
+--config.color_scheme = 'Night Owlish Light'
+--config.color_scheme = 'Raycast_Light'
+--config.color_scheme = 'Spring'
+--config.color_scheme = 'Tango Adapted'
+-- Some classic dark themes :
+--config.color_scheme = 'Catppuccin Mocha (Gogh)'
+--config.color_scheme = 'Monokai Dark (Gogh)'
+
+-- Minimalism : no tab bar, no title bar
+config.hide_tab_bar_if_only_one_tab = true
+config.window_decorations = "RESIZE"
+
+
+-- Decent font
+config.font = wezterm.font("MesloLGS Nerd Font Mono")
+
+-- Styling Inactive Panes
+config.inactive_pane_hsb = {
+    saturation = 1.0,
+    brightness = 0.99,
+  }
+
+-- Background image, cf https://wezterm.org/config/appearance.html#window-background-image
+-- config.window_background_image = 'C:\\Users\\jdoe\\Documents\\images\\light_bg.jpg'
+
+
+-- Custom key assignments
+-- See defaul bindings here : https://wezterm.org/config/default-keys.html
+config.keys = {
+    -- hOrizontal (same shortcut as in terminator)
+    { action = act.SplitVertical({domain="CurrentPaneDomain"}), mods = "CTRL|SHIFT", key = "o" },
+    -- vErtical (same shortcut as in terminator)
+    { action = act.SplitHorizontal({domain="CurrentPaneDomain"}), mods = "CTRL|SHIFT", key = "e" },
+    -- eXpand (same shortcut as in terminator)
+    { action = act.TogglePaneZoomState, mods = "CTRL|SHIFT", key = "x" },
+    -- Turn off any side effects from pressing F15
+    { key = "F15", mods = "", action = wezterm.action.Nop },
+    -- default binding, for reminder :
+    --{ key = 'w', mods = 'CMD', action = wezterm.action.CloseCurrentPane { confirm = true } },
+}
+
+
+-- Paste with mouse right click
+config.mouse_bindings = {
+    {
+        event = { Down = { streak = 1, button = "Right" } },
+        mods = "NONE",
+        action = wezterm.action_callback(function(window, pane)
+            local has_selection = window:get_selection_text_for_pane(pane) ~= ""
+            if has_selection then
+                window:perform_action(act.CopyTo("ClipboardAndPrimarySelection"), pane)
+                window:perform_action(act.ClearSelection, pane)
+            else
+                window:perform_action(act({ PasteFrom = "Clipboard" }), pane)
+            end
+        end),
+    },
+}
+
+-- Visual bell
+config.audible_bell = "Disabled"
+config.visual_bell = {
+	fade_in_function = 'EaseIn',
+	fade_in_duration_ms = 50,
+	fade_out_function = 'EaseOut',
+	fade_out_duration_ms = 50,
+}
+config.colors = {
+	visual_bell = '#FFFFFF',
+}
+
+-- and finally, return the configuration to wezterm
+return config
+-------------------------------------------------------------------------------
