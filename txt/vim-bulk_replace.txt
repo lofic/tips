@@ -1,0 +1,13 @@
+vim - bulk find and replace
+===========================
+
+Bulk replace in multiple files
+
+With ack installed (`apt install ack`) and the vim plugin mileszs/ack.vim.
+
+--------------------------------------------------------------------------------
+:Ack foo
+:cdo s/foo/bar/gc
+--------------------------------------------------------------------------------
+
+Additional tags : multiple, replacement, search, nvim, neovim
