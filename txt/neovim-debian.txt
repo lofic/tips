@@ -3,7 +3,7 @@ Install a recent neovim version on Debian
 
 [source, sh]
 -------------------------------------------------------------------------
-nvversion=0.11.0
+nvversion=0.11.4
 sudo apt install file ninja-build gettext cmake unzip curl
 mkdir neovim
 cd neovim
@@ -13,7 +13,7 @@ cd "neovim-${nvversion}"
 make CMAKE_BUILD_TYPE=RelWithDebInfo
 cd build
 cpack -G DEB
-sudo dpkg -i --force-overwrite nvim-linux64.deb
+sudo dpkg -i --force-overwrite nvim-linux-x86_64.deb
 -------------------------------------------------------------------------
 
 Additional tag : nvim
