@@ -3,7 +3,7 @@ Install a recent neovim version on Debian
 
 [source, sh]
 -------------------------------------------------------------------------
-nvversion=0.11.4
+nvversion=0.12.4
 sudo apt install file ninja-build gettext cmake unzip curl
 mkdir neovim
 cd neovim
