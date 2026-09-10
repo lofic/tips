@@ -10,4 +10,13 @@ With ack installed (`apt install ack`) and the vim plugin mileszs/ack.vim.
 :cdo s/foo/bar/gc
 --------------------------------------------------------------------------------
 
+or
+
+--------------------------------------------------------------------------------
+:Ack foo
+:cdo s/foo/bar/g | update
+--------------------------------------------------------------------------------
+
+
+
 Additional tags : multiple, replacement, search, nvim, neovim
